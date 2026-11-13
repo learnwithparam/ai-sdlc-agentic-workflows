@@ -29,4 +29,81 @@ This part takes 35 minutes.
 
 ## Walkthrough
 
-TODO(part session): one command per step, each followed by its `Expect:` line. Build each step's folder with `problem/`, `solution/` and `prompts.md`, and `wrong/`, as `parts/01-ready-the-repo/` does.
+Start the first step. It makes `kestrel/` with the repo you readied in Part 1.
+
+```bash
+bun run start find-the-real-problem
+```
+
+Expect: `kestrel/ is ready at the start of find-the-real-problem.`
+
+Open Claude Code in `kestrel/` and give it the prompt in the step's README. When it is done, check the four numbers:
+
+```bash
+bun run verify find-the-real-problem
+```
+
+Expect: `Done. All 5 rules pass.`
+
+Go on to the intent. The next step starts from the sample findings, so your numbers match the README.
+
+```bash
+bun run start capture-the-intent
+```
+
+Expect: `kestrel/ is ready at the start of capture-the-intent.`
+
+Give Claude Code the intent prompt in the step's README. Read `work/intent.md`. Then sign it yourself:
+
+```bash
+bun run approve work/intent.md --role pm
+```
+
+Expect: `Approved work/intent.md as pm`
+
+```bash
+bun run verify capture-the-intent
+```
+
+Expect: `Done. All 6 rules pass.`
+
+Last, check the whole part:
+
+```bash
+bun run verify part plan-the-change
+```
+
+Expect: `Part plan-the-change is done: 2/2 steps pass.`
+
+For example, the passing table reads:
+
+```text
+Part plan-the-change:
+  PASS   find-the-real-problem  (5/5 rules)
+  PASS   capture-the-intent  (6/6 rules)
+```
+
+The part check reads your `kestrel/` as it is now. So `find-the-real-problem` passes too, because the findings are still there.
+
+To see a sample end state instead, run `bun run catch-up capture-the-intent`.
+
+## Assignment
+
+Hand in your branch with `work/findings.md`, `work/intent.md` and the pm line in `work/approvals.jsonl`. The grader runs `bun run verify find-the-real-problem` and `bun run verify capture-the-intent`.
+
+| #   | Question                                                                         | Answered by            |
+| --- | -------------------------------------------------------------------------------- | ---------------------- |
+| 1   | Does every number in `findings.md` sit beside the command that made it?          | the check              |
+| 2   | Does `intent.md` quote at least two numbers from data the author names?          | the check and a reader |
+| 3   | Does the pm approval match the file as it is now?                                | the check              |
+| 4   | Does Proposed outcome say what changes for riders and crews, not how to code it? | a reader               |
+
+Pass is 4 of 4.
+
+**If you already know this:** write a second intent for station outages from the same data, in `work/intent/station-outages.md`. Then say which of the two to do first, with the one number that decides it.
+
+## Finished
+
+You now have the first stage of the chain: findings with a command for every number, and an intent the product manager signed. The answer is not "more crews". It is "take wrenched bikes out of the feed, and sort the queue by deadline".
+
+In Part 3, Claude Code turns this intent into a spec. The open question about the 15 minute grace period comes back there, and the contract decides it.
