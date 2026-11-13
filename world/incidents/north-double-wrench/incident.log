@@ -1,0 +1,10 @@
+2026-11-03T06:10:00Z deploy D-071 starts district rollout of wrench-disables-bike to North
+2026-11-03T06:14:00Z deploy D-071 finished, flag wrench_disables_bike on for North
+2026-11-03T07:40:00Z retry storm begins: rider app retries failed POST /wrench up to 3 times
+2026-11-03T07:52:00Z each retry opens a new repair job and disables the bike again
+2026-11-03T08:05:00Z alert: North bike availability under 96 percent
+2026-11-03T08:20:00Z on-call engineer acknowledges the alert
+2026-11-03T09:05:00Z cause found: POST /wrench has no duplicate check, retries count as new reports
+2026-11-03T09:30:00Z flag wrench_disables_bike turned off for North
+2026-11-03T10:20:00Z script re-enables 212 bikes with duplicate jobs
+2026-11-03T10:50:00Z North bike availability back above 96 percent, incident resolved
