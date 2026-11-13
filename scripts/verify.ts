@@ -1,4 +1,4 @@
-// bun run verify <step-name>           check your work on one step, then show all progress
+// bun run verify <step-name>           check your work in kestrel/ on one step, then show progress
 // bun run verify <step-name> solution  check the sample solution instead
 // bun run verify part <part-name>      check every step in one part (a deliverable)
 // bun run verify --report              write verify-report.json for cohort grading
@@ -8,14 +8,15 @@
 
 import { existsSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { allSteps, findStep, parts, ROOT, type Step } from "./structure";
+import { kestrelFolderFor } from "../checks/lib/snapshot";
+import { allSteps, findStep, parts, ROOT, type Step, WORKSPACE } from "./structure";
 
 export type Rule = {
   says: string;
   test: (dir: string) => boolean | Promise<boolean>;
   tryNext: string;
 };
-type Result = {
+export type Result = {
   step: string;
   status: "pass" | "fail" | "error";
   passed: number;
@@ -41,7 +42,7 @@ function printRuleLine(rule: Rule, holds: boolean) {
   else console.log(`  FAIL  ${rule.says}\n        Try next: ${rule.tryNext}`);
 }
 
-async function run(step: Step, folder: string, print = false): Promise<Result> {
+export async function run(step: Step, folder: string, print = false): Promise<Result> {
   let rules: Rule[];
   try {
     rules = await rulesFor(step);
@@ -53,8 +54,9 @@ async function run(step: Step, folder: string, print = false): Promise<Result> {
     return { step: step.name, status: "error", passed: 0, total: 0, failed: [] };
   }
   const failed: string[] = [];
+  const kestrelFolder = kestrelFolderFor(folder);
   for (const rule of rules) {
-    const holds = await ruleHolds(rule, folder);
+    const holds = await ruleHolds(rule, kestrelFolder);
     if (!holds) failed.push(rule.says);
     if (print) printRuleLine(rule, holds);
   }
@@ -64,6 +66,14 @@ async function run(step: Step, folder: string, print = false): Promise<Result> {
 }
 
 const starterFolder = (step: Step) => join(step.dir, "problem");
+
+// The learner's work is always their own Kestrel repo, made by bun run start <step-name>.
+function learnerFolder(): string {
+  if (existsSync(WORKSPACE)) return WORKSPACE;
+  console.log("There is no kestrel/ folder yet. Make it first:");
+  console.log("  bun run start meet-kestrel");
+  process.exit(1);
+}
 
 function wrongAnswers(step: Step): { name: string; dir: string }[] {
   const wrongFolder = join(step.dir, "wrong");
@@ -140,7 +150,8 @@ async function verifyEveryCheck(): Promise<never> {
 
 async function writeReport(): Promise<never> {
   const results: Result[] = [];
-  for (const step of allSteps()) results.push(await run(step, starterFolder(step)));
+  const folder = learnerFolder();
+  for (const step of allSteps()) results.push(await run(step, folder));
   const report = { version: 1, at: new Date().toISOString(), results };
   writeFileSync(join(ROOT, "verify-report.json"), `${JSON.stringify(report, null, 2)}\n`);
   const passing = countPassing(results).length;
@@ -166,7 +177,7 @@ async function verifyOnePart(): Promise<never> {
   console.log(`Part ${part.name}:`);
   const results: Result[] = [];
   for (const step of part.steps) {
-    const result = await run(step, starterFolder(step));
+    const result = await run(step, learnerFolder());
     results.push(result);
     const label = result.status.toUpperCase().padEnd(5);
     console.log(`  ${label}  ${step.name}  (${result.passed}/${result.total} rules)`);
@@ -188,7 +199,7 @@ function listStepsAndStop(): never {
 async function printProgress() {
   // Done is recomputed from the checks every time, never read from a saved flag.
   const everyResult: Result[] = [];
-  for (const step of allSteps()) everyResult.push(await run(step, starterFolder(step)));
+  for (const step of allSteps()) everyResult.push(await run(step, learnerFolder()));
   const passing = countPassing(everyResult).length;
   console.log(`Progress: ${passing}/${everyResult.length} steps pass.`);
 }
@@ -197,7 +208,7 @@ async function verifyOneStep(step: Step): Promise<never> {
   const asSolution = secondArgument === "solution";
   const whose = asSolution ? "sample solution" : "your work";
   console.log(`Checking ${step.name} (${whose}):`);
-  const folder = asSolution ? join(step.dir, "solution") : starterFolder(step);
+  const folder = asSolution ? join(step.dir, "solution") : learnerFolder();
   const result = await run(step, folder, true);
   if (result.status === "error") process.exit(2);
   if (result.status === "pass") {

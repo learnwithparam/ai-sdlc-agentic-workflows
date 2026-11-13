@@ -15,6 +15,7 @@ export const NOT_COURSE_CONTENT = new Set([
   ".venv",
   "kestrel",
   ".kestrel-backups",
+  ".finished-run",
 ]);
 
 export type Step = {
