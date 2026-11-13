@@ -62,5 +62,6 @@ export function deniedPathsOf(run: RunLine[]): string[] {
 // No page, screen or recording the learner sees names a model (briefs/MODELS.md).
 // This is the only change made to a raw transcript before it is saved.
 export function withoutModelNames(transcript: string): string {
-  return transcript.replace(/"model":"[^"]*"/g, '"model":"(not shown)"');
+  const withoutModelField = transcript.replace(/"model":"[^"]*"/g, '"model":"(not shown)"');
+  return withoutModelField.replace(/claude-(opus|sonnet|haiku|fable)-[\w.[\]-]*/g, "(not shown)");
 }

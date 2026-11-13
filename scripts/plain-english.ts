@@ -59,12 +59,21 @@ const SIMPLER_WORDS: Record<string, string> = {
 
 type Problem = { file: string; message: string };
 
+// Files Claude Code wrote in a real run are a record, so they are kept as Claude wrote them.
+// The step's prompts.md, written for the learner, is still checked.
+function isClaudeCodeOutput(path: string): boolean {
+  const inRecordedState = /\/(solution|wrong)\//.test(path);
+  return inRecordedState && !path.endsWith("prompts.md");
+}
+
 function markdownFiles(folder: string, found: string[] = []): string[] {
   for (const entry of readdirSync(folder)) {
     if (SKIPPED_FOLDERS.has(entry)) continue;
     const path = join(folder, entry);
     if (statSync(path).isDirectory()) markdownFiles(path, found);
-    else if (path.endsWith(".md") && !AUTHOR_PAGES.has(entry)) found.push(path);
+    else if (path.endsWith(".md") && !AUTHOR_PAGES.has(entry) && !isClaudeCodeOutput(path)) {
+      found.push(path);
+    }
   }
   return found;
 }

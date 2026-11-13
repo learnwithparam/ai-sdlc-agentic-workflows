@@ -67,8 +67,15 @@ function checkProseLine(file: string, line: string, lineNumber: number) {
   }
 }
 
+// Files Claude Code wrote in a real run are a record, so they keep Claude's own words.
+// The step's prompts.md, written for the learner, is still checked.
+function isClaudeCodeOutput(file: string): boolean {
+  return /\/(solution|wrong)\//.test(file) && !file.endsWith("prompts.md");
+}
+
 function checkProse() {
   for (const file of markdownFiles) {
+    if (isClaudeCodeOutput(file)) continue;
     const lines = readText(file).split("\n");
     lines.forEach((line, index) => {
       checkProseLine(file, line, index + 1);
