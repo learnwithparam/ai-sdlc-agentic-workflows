@@ -23,7 +23,9 @@ function runForPicture(command: string): string {
   const environment = { ...process.env, CI: "true" };
   const result = Bun.spawnSync(words, { cwd: ROOT, env: environment, stderr: "pipe" });
   const output = result.stdout.toString() + result.stderr.toString();
-  const shortLines = output.split("\n").map((line) => line.slice(0, 96));
+  // bun echoes each script it starts, as "$ bun ...". The picture shows the command once.
+  const outputLines = output.split("\n").filter((line) => !line.startsWith("$ bun "));
+  const shortLines = outputLines.map((line) => line.slice(0, 96));
   return `$ ${command}\n${shortLines.join("\n").trim()}`;
 }
 
