@@ -1,0 +1,7 @@
+{"file":"work/intent.md","sha256":"0251aad22320545b80dcc26b788549b4c58b266cc6acaeaee37795f27ae40ad4","role":"pm","at":"2026-11-02T10:00:00.000Z","by":"Theo Lindqvist"}
+{"file":"work/spec.md","sha256":"fe9a64a1d73c593fa3fbf75c6ca0b1b4673251e61a7d02f936ae6bdee9f99c09","role":"pm","at":"2026-11-02T11:15:00.000Z","by":"Theo Lindqvist"}
+{"file":"work/decisions/0001-disable-in-feed.md","sha256":"e07209d52742f505deb3dea62a6b8b985716d534a1752d97b035b40285263d72","role":"tech-lead","at":"2026-11-02T12:30:00.000Z","by":"Ines Moreau"}
+{"file":"work/plan.md","sha256":"6dc5ef43c7377d2a11d695be54153099dc377caf25be2318d04ecc1004ac0fbb","role":"tech-lead","at":"2026-11-02T13:45:00.000Z","by":"Ines Moreau"}
+{"file":"test/acceptance","sha256":"7a8de09d307486ac8f94c12e4b383d97217bc9230b6add0b5e9a9c1cb34cb6da","role":"qa","at":"2026-11-02T15:00:00.000Z","by":"Raj Patel"}
+{"file":"REVIEW.md","sha256":"b23349d045ecc73b4dc781a5450355f42b222c5098e6bae0e2def788b1312557","role":"tech-lead","at":"2026-11-13T05:19:16.130Z","by":"Ines Moreau"}
+{"file":"work/release.md","sha256":"fb0b1afb36a37660c01e12910fc3cc6c44061bba11e49eee189957986ba90468","role":"pm","at":"2026-11-13T05:33:04.517Z","by":"Theo Lindqvist"}

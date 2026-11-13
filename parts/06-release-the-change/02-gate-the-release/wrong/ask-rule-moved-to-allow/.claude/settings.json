@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(/data/contract/**)",
+      "Write(/data/contract/**)",
+      "Edit(/test/acceptance/**)",
+      "Write(/test/acceptance/**)",
+      "Bash(bun run approve *)"
+    ],
+    "allow": ["Bash(bun run deploy:production *)"]
+  }
+}
