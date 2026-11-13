@@ -1,0 +1,11 @@
+{
+  "name": "kestrel-spoke",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "world": "bun src/server.ts",
+    "test": "bun test",
+    "deploy:production": "bun scripts/deploy.ts production",
+    "rollback": "bun scripts/deploy.ts rollback"
+  }
+}

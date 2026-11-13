@@ -1,0 +1,8 @@
+08:21 Sam Achebe: looking at the North availability alert now
+08:34 Ines Moreau: crew queue for North has 600 jobs, normal is about 40
+08:47 Sam Achebe: same bike ids appear three times each, a few seconds apart
+09:02 Raj Patel: the app retries a wrench when the network drops, we never tested a retry
+09:05 Sam Achebe: found it, POST /wrench treats every retry as a new report
+09:28 Mei Tanaka: turning the flag off for North now
+10:18 Sam Achebe: re-enabling the 212 bikes that only have duplicate jobs
+10:51 Ines Moreau: availability is back above the line, closing the incident

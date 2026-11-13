@@ -1,0 +1,15 @@
+# How the release reaches riders, one district at a time.
+feature_flag: wrench_disables_bike
+stages:
+  - district: North
+  - district: East
+  - districts: [Centre, South, West]
+guardrails:
+  # Both numbers come from data/contract/sla.yaml.
+  - metric: bike_availability_percent
+    stop_below: 96
+  - metric: feed_age_seconds
+    stop_above: 60
+rollback:
+  command: bun run rollback
+  when: any guardrail is crossed for 10 minutes

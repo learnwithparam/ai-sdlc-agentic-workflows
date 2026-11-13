@@ -1,0 +1,17 @@
+b5008ae P-1: disable the bike when a wrench arrives
+
+ src/wrenches.ts | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+932df3a P-2: start the deadline clock at the wrench reported_at
+
+ src/crew-queue.ts | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+89c2468 P-3: sort the crew queue by deadline, due first
+
+ src/crew-queue.ts | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+cb70399 P-4: treat a retried wrench with the same request_id as one report
+
+ src/database.ts | 15 ++++++++++++++-
+ src/wrenches.ts | 17 ++++++++++++++---
+ 2 files changed, 28 insertions(+), 4 deletions(-)

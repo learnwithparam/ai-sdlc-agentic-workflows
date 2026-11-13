@@ -1,0 +1,10 @@
+incident_id,deploy_id,started_at,resolved_at,summary
+INC-01,D-009,2026-05-25T15:45:38Z,2026-05-25T19:39:18Z,crew queue page timed out
+INC-02,D-013,2026-06-07T11:29:31Z,2026-06-07T15:00:58Z,e-bike battery levels missing from feed
+INC-03,D-019,2026-07-02T11:45:59Z,2026-07-02T14:10:29Z,crew queue page timed out
+INC-04,D-023,2026-07-09T15:12:57Z,2026-07-09T19:29:04Z,feed served stale station counts
+INC-05,D-050,2026-09-15T17:15:14Z,2026-09-15T20:59:44Z,e-bike battery levels missing from feed
+INC-06,D-053,2026-09-24T13:57:57Z,2026-09-24T17:05:16Z,e-bike battery levels missing from feed
+INC-07,D-054,2026-10-01T17:09:21Z,2026-10-01T18:41:15Z,feed served stale station counts
+INC-08,D-062,2026-10-16T17:32:06Z,2026-10-16T21:22:22Z,crew queue page timed out
+INC-09,D-063,2026-10-19T22:08:15Z,2026-10-20T01:19:59Z,docks shown free while full

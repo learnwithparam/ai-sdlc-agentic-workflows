@@ -1,5 +1,28 @@
+# Parts mapped onto formats. Minutes are work time; breaks and intros are on top.
+# Every format covers every part. Parts still being written count 0 minutes until their steps exist.
+
 [one-day]
-sessions = [{ parts = ["meet-the-world"], minutes = 60 }]
+sessions = [
+  { parts = ["orientation", "ready-the-repo", "plan-the-change"], minutes = 70 },
+  { parts = ["design-the-change"], minutes = 55 },
+  { parts = ["build-the-change", "review-the-change"], minutes = 90 },
+  { parts = ["release-the-change", "learn-from-the-incident", "run-the-team"], minutes = 120 },
+]
 
 [four-evenings]
-sessions = [{ parts = ["meet-the-world"], minutes = 60 }]
+sessions = [
+  { parts = ["orientation", "ready-the-repo", "plan-the-change"], minutes = 70 },
+  { parts = ["design-the-change"], minutes = 55 },
+  { parts = ["build-the-change", "review-the-change"], minutes = 90 },
+  { parts = ["release-the-change", "learn-from-the-incident", "run-the-team"], minutes = 120 },
+]
+
+[six-sessions]
+sessions = [
+  { parts = ["orientation", "ready-the-repo"], minutes = 35 },
+  { parts = ["plan-the-change"], minutes = 35 },
+  { parts = ["design-the-change"], minutes = 55 },
+  { parts = ["build-the-change"], minutes = 60 },
+  { parts = ["review-the-change", "release-the-change"], minutes = 60 },
+  { parts = ["learn-from-the-incident", "run-the-team"], minutes = 90 },
+]
