@@ -50,7 +50,15 @@ bun run verify write-the-review-rules
 
 Expect: `Done. All 8 rules pass.`
 
-Next, in Claude Code, make the reviewer subagent and ask it to review `origin/teammate/local-deadlines`. Then record 3 reviews of each branch. This needs Claude Code signed in:
+Next, start the second step:
+
+```bash
+bun run start review-with-fresh-eyes
+```
+
+Expect: `kestrel/ is ready at the start of review-with-fresh-eyes.`
+
+In Claude Code, make the reviewer subagent and ask it to review `origin/teammate/local-deadlines`. Then record 3 reviews of each branch. This needs Claude Code signed in:
 
 ```bash
 bun parts/05-review-the-change/02-review-with-fresh-eyes/record.ts

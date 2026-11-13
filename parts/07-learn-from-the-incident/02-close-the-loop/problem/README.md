@@ -17,6 +17,14 @@ flowchart LR
 
 ## Your challenge
 
+Did you just finish `write-the-postmortem`? Then keep your `kestrel/` as it is. To jump in here instead, start the step:
+
+```bash
+bun run start close-the-loop
+```
+
+Expect: `kestrel/ is ready at the start of close-the-loop.`
+
 Open Claude Code in `kestrel/`. Give it two jobs, one at a time.
 
 1. Teach Claude Code the lesson, in one line:

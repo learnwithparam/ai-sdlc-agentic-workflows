@@ -21,6 +21,14 @@ flowchart LR
 
 ## Your challenge
 
+Did you just finish `write-the-team-playbook`? Then keep your `kestrel/` as it is. To jump in here instead, start the step:
+
+```bash
+bun run start ship-the-feature
+```
+
+Expect: `kestrel/ is ready at the start of ship-the-feature.`
+
 Open Claude Code in `kestrel/` and ask for the write-up:
 
 ```text
@@ -52,7 +60,7 @@ Expect: `Done. All 10 rules pass.`
 ## If you get stuck
 
 - `FAIL all 11 gates ... still hold`: a signed file changed. Run `git log -p` on it, undo the change, or sign it again.
-- `FAIL the world contract holds`: run `bun run world` in `kestrel/` and wrench `B-2207`.
+- `FAIL the world contract holds`: in the course folder, run `bun run world`. In a second terminal, run `bun run world wrench B-2207` and read what it prints.
 - `FAIL CHAIN.md ...`: ask Claude Code to copy three numbers from `work/metrics.md` word for word.
 
 ## Words you will use

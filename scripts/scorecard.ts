@@ -10,6 +10,7 @@ if (import.meta.main) {
     process.exit(1);
   }
   console.log("The goal: bun run verify ship-the-feature passes on your kestrel/.");
+  console.log("Each step's check runs now, one after another. This can take a while.");
   let passing = 0;
   for (const part of parts()) {
     if (part.steps.length === 0) console.log(`  ....  ${part.name} (being written)`);

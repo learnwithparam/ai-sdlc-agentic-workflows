@@ -18,6 +18,14 @@ flowchart LR
 
 ## Your challenge
 
+Start the step:
+
+```bash
+bun run start write-the-postmortem
+```
+
+Expect: `kestrel/ is ready at the start of write-the-postmortem.`
+
 Open Claude Code in `kestrel/`. Give it two jobs, one at a time.
 
 1. Ask for the postmortem:
@@ -32,7 +40,7 @@ so on; each starts with a verb and has an Owner role and a Check in backticks. A
 regression test that sends the same wrench three times. Do not write the test or fix yet.
 ```
 
-If a Check names no command or file, send Claude back to fix it.
+If a Check names no command or file, send Claude back.
 
 2. Ask for the test first, then the fix:
 

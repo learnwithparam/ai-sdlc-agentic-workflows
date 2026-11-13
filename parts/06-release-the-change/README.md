@@ -48,7 +48,15 @@ bun run verify write-the-release-notes
 
 Expect: `Done. All 7 rules pass.`
 
-Next, ask Claude Code for `work/rollout.yaml`, and sign it as the release manager:
+Next, start the second step:
+
+```bash
+bun run start gate-the-release
+```
+
+Expect: `kestrel/ is ready at the start of gate-the-release.`
+
+Ask Claude Code for `work/rollout.yaml`, as the step's README shows. Sign it as the release manager:
 
 ```bash
 bun run approve work/rollout.yaml --role release-manager

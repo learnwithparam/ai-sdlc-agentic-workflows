@@ -24,3 +24,4 @@ Every message a course command prints on failure is in this table. For example, 
 | `The step "..." has no recorded run`                          | That step does not use `bun run record`.                  | Check the step's README for its commands.                            |
 | `There is no recorded run yet`                                | `bun run finished` found no recording and no Claude Code. | Install and sign in to Claude Code, or pull the latest course.       |
 | `... links hold. The chain is broken.`                        | A gate, a test or the world contract failed.              | Read the `FAIL` lines above it.                                      |
+| `error: script "verify" exited with code 1`                   | Bun says a check found a `FAIL` line. It is not a crash.  | Read the `FAIL` lines and their `Try next` above it.                 |
