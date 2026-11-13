@@ -36,7 +36,7 @@ Read the file Claude Code shows you before you say yes. For example, if it adds 
 bun run verify meet-kestrel
 ```
 
-Expect: `Done. All 3 rules pass.` and a `Progress:` line.
+Expect: `Done. All 3 rules pass.` Then `verify` checks every step of the course, to count your progress. This is slow. Wait for the `Progress:` line.
 
 ![What a pass looks like](../images/expected.png)
 
@@ -46,7 +46,7 @@ Expect: `Done. All 3 rules pass.` and a `Progress:` line.
 | --------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `FAIL notes/doctor.md shows Claude Code 2.1.302 or newer` | Run `claude update`, then `bun run doctor` again.                      |
 | `FAIL notes/doctor.md shows Claude Code is signed in`     | Run `claude`, type `/login`, then `bun run doctor` again.              |
-| `FAIL notes/goal.md has one line that names a stage`      | Ask Claude Code to keep one line and use one stage name from the list. |
+| `FAIL notes/goal.md has one line that names a stage ...`  | Ask Claude Code to keep one line and use one stage name from the list. |
 
 ## Words you will use
 
