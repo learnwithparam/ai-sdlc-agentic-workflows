@@ -67,6 +67,15 @@ async function reviewOnce(kind: BranchKind, runNumber: number): Promise<string> 
   return `${kind} run ${runNumber}: ${existsSync(review) ? "wrote" : "did not write"} a review`;
 }
 
+function claudeCodeIsSignedIn(): boolean {
+  try {
+    return Bun.spawnSync(["claude", "auth", "status"]).exitCode === 0;
+  } catch {
+    // There is no claude command on this computer.
+    return false;
+  }
+}
+
 function stop(message: string): never {
   console.log(message);
   process.exit(1);
@@ -74,8 +83,8 @@ function stop(message: string): never {
 
 if (import.meta.main) {
   if (!existsSync(WORKSPACE)) stop("There is no kestrel/ yet. Run: bun run start meet-kestrel");
-  if (Bun.spawnSync(["claude", "auth", "status"]).exitCode !== 0) {
-    stop("Claude Code is not signed in. Run claude, then /login.");
+  if (!claudeCodeIsSignedIn()) {
+    stop("Claude Code is not installed or not signed in. Run claude, then /login.");
   }
   console.log("Claude Code is reviewing both branches, 3 times each. This takes a few minutes.");
   const runs: Promise<string>[] = [];
