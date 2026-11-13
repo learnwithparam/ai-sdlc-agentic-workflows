@@ -56,7 +56,8 @@ function checkNoMakefile() {
 // 2. Prose rules on every Markdown file.
 function checkProseLine(file: string, line: string, lineNumber: number) {
   if (line.includes("—")) report(file, `line ${lineNumber}: em dash`);
-  const hype = line.match(HYPE_WORDS);
+  // Unleash is the name of a flag server, not the hype word.
+  const hype = line.replaceAll("Unleash", "").match(HYPE_WORDS);
   if (hype) report(file, `line ${lineNumber}: hype word "${hype[0]}"`);
   const timeWord = line.match(TIME_WORDS);
   if (timeWord && !file.includes("schedules")) {

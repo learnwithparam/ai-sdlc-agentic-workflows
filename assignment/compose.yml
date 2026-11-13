@@ -1,0 +1,20 @@
+# The two containers this assignment needs. Run it from the repo root:
+#   docker compose -f assignment/compose.yml up -d
+services:
+  flagd:
+    image: ghcr.io/open-feature/flagd:v0.18.2
+    command: ["start", "--uri", "file:/flags/flagd.json"]
+    volumes:
+      # The folder is mounted, not the file, so an editor that replaces the file is still seen.
+      - ./flags:/flags:ro
+
+  reader:
+    image: oven/bun:1.4.4-alpine
+    working_dir: /app
+    command: ["sh", "-c", "bun install --frozen-lockfile && bun index.ts"]
+    volumes:
+      - ./reader:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - flagd

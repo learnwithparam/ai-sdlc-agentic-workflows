@@ -1,0 +1,9 @@
+{
+  "name": "kestrel-flag-reader",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@openfeature/flagd-provider": "0.18.0",
+    "@openfeature/server-sdk": "1.23.0"
+  }
+}

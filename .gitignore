@@ -4,3 +4,4 @@ node_modules
 /.kestrel-backups/
 /.finished-run/
 test-results/
+assignment/result.json
