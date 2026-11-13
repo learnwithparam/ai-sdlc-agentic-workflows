@@ -1,0 +1,3 @@
+[test]
+# Only the course tests. Kestrel's own tests run inside a Kestrel repo, with bun test there.
+root = "tests"

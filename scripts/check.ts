@@ -271,7 +271,8 @@ const NOT_CLAUDE_CODE = [
 function checkOnlyRealClaudeCode() {
   const sourceFiles = allFiles.filter((file) => /\.(ts|py|md|json|toml|ya?ml|example)$/.test(file));
   for (const file of sourceFiles) {
-    if (file.includes("/scripts/check.ts")) continue;
+    // These two files name the banned packages in order to ban them.
+    if (file.endsWith("/scripts/check.ts") || file.endsWith("/STANDARD.md")) continue;
     const text = readText(file);
     const found = NOT_CLAUDE_CODE.find((banned) => text.includes(banned));
     if (found) report(file, `"${found}" is not Claude Code; this course uses the real Claude Code`);

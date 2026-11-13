@@ -96,6 +96,17 @@ Easy to read:
 
 > Change the config. Then run `bun run verify`. For example, after you add a rule, the check tells you if it passes.
 
+## How this course differs from the template
+
+This is a Claude Code course (`briefs/build/CLAUDE-CODE.md`). These rules are added, each with a check:
+
+- **The learner writes no code.** A solution is the end state Claude Code made plus `prompts.md`. `check.ts` fails a `solution/` with no `prompts.md`.
+- **No model API.** `check.ts` fails any file that names the Vercel AI SDK, the Anthropic SDK, the Agent SDK, OpenRouter or `LLM_PROVIDER`. `config/claude-code.ts` replaces `config/models.ts` and names no model.
+- **The orientation is a part.** `00-orientation/` holds the step `meet-kestrel`; `structure.ts` reads it as the first part.
+- **Skeleton parts.** A part README that says `TODO(part session)` and has no steps yet needs its diagram and step table only.
+- **Snapshots are overlays.** Step folders hold only what differs from `world/kestrel/`; `checks/lib/snapshot.ts` builds the whole repo. The learner's repo is `kestrel/`.
+- **Claude Code's own words stay as written.** Markdown that a real run wrote, inside `solution/` and `wrong/`, is a record. `check.ts` and `plain-english.ts` skip it, except `prompts.md`.
+
 ## Checks test behaviour
 
 A check runs the learner's command or calls their endpoint and judges the answer. It never imports their
