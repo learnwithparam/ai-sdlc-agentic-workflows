@@ -6,7 +6,7 @@
 // in kestrel/ never changes the answer.
 import { cpSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { ROOT } from "../scripts/structure";
+import { findStep, ROOT } from "../scripts/structure";
 import { approvalHolds } from "./lib/approvals";
 import { headingsOf, readFile, sectionOf } from "./lib/files";
 import type { Rule } from "./lib/rule";
@@ -22,13 +22,7 @@ const HEADINGS = [
   "Action items",
 ];
 const INCIDENT_LOGS = join(ROOT, "world", "incidents", "north-double-wrench");
-const INCIDENT_BUILD = join(
-  ROOT,
-  "parts",
-  "07-learn-from-the-incident",
-  "write-the-postmortem",
-  "problem",
-);
+const INCIDENT_BUILD = join(findStep("write-the-postmortem")?.dir ?? "", "problem");
 const REGRESSION_FOLDER = "test/regression";
 
 // Imperative verbs an action item may start with. "Be" and "Try" are left out on purpose:
@@ -238,7 +232,7 @@ function everyTestPassesOnTheFix(folder: string): boolean {
 
 export default [
   {
-    says: `${POSTMORTEM} has the sections ${HEADINGS.join(", ")}, in that order`,
+    says: `${POSTMORTEM} has the six sections in order, from Summary to Action items`,
     test: headingsInOrder,
     tryNext: "ask Claude Code to use exactly these six ## headings, in this order",
   },
