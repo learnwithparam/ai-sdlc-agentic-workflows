@@ -1,0 +1,11 @@
+{"file":"work/intent.md","sha256":"0251aad22320545b80dcc26b788549b4c58b266cc6acaeaee37795f27ae40ad4","role":"pm","at":"2026-10-27T14:00:00Z","by":"Theo Lindqvist"}
+{"file":"work/spec.md","sha256":"fe9a64a1d73c593fa3fbf75c6ca0b1b4673251e61a7d02f936ae6bdee9f99c09","role":"pm","at":"2026-10-28T16:00:00Z","by":"Theo Lindqvist"}
+{"file":"work/decisions/0001-disable-in-feed.md","sha256":"e07209d52742f505deb3dea62a6b8b985716d534a1752d97b035b40285263d72","role":"tech-lead","at":"2026-10-29T10:30:00Z","by":"Ines Moreau"}
+{"file":"work/plan.md","sha256":"30f73d6469e2c7b023a090595803745a31ffbf2ae66d516aec1cec381ea291a5","role":"tech-lead","at":"2026-10-29T14:00:00Z","by":"Ines Moreau"}
+{"file":"test/acceptance","sha256":"7a8de09d307486ac8f94c12e4b383d97217bc9230b6add0b5e9a9c1cb34cb6da","role":"qa","at":"2026-10-30T10:00:00Z","by":"Raj Patel"}
+{"file":"REVIEW.md","sha256":"34cb52f6d3215f7f6bc0e4a2cd20ad0df82e2e05fe3b0f65fd114ea2a22cf57b","role":"tech-lead","at":"2026-10-31T10:00:00Z","by":"Ines Moreau"}
+{"file":"work/release.md","sha256":"2a97574d9d1dbef81c42a738664512c71f32d72d9fc6c98cae6e9f2a94f590c2","role":"pm","at":"2026-11-01T11:00:00Z","by":"Theo Lindqvist"}
+{"file":"work/rollout.yaml","sha256":"6f80cbd02337f4d400c38f29e2be4a376955ccc4afa00f995aeb60b1e42da822","role":"release-manager","at":"2026-11-01T15:00:00Z","by":"Mei Tanaka"}
+{"file":"work/postmortem.md","sha256":"8ba661faedcba90ccaada236459a5862ade6bf330b289dca487de14cfc659296","role":"tech-lead","at":"2026-11-04T11:00:00Z","by":"Ines Moreau"}
+{"file":"work/intent/next-dedupe-wrenches.md","sha256":"bd6f48f42c2dc9e2a01c867f44648201e11ee75540a0b3effa5e5c10724919e2","role":"pm","at":"2026-11-04T13:30:00Z","by":"Theo Lindqvist"}
+{"file":"PLAYBOOK.md","sha256":"55b8dbd9723f01a11144d8437ab9c2133a008230d0f431ef22cdc8389e742dab","role":"em","at":"2026-11-05T11:00:00Z","by":"Dana Okafor"}
