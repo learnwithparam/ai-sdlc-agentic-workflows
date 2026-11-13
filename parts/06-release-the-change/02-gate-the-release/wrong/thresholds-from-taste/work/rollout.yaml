@@ -1,0 +1,31 @@
+# Rollout plan: broken bikes leave the map, and crews fix the most urgent first.
+# See work/release.md. The release manager approves this file before deploy:production.
+# Thresholds come only from data/contract/sla.yaml.
+
+# Proposed name. No feature flag exists in src/ yet; P-items must add it before rollout.
+feature_flag: wrench_takes_bike_out_of_service
+
+# District names from data/stations.csv.
+stages:
+  - districts: [North] # 40 stations
+  - districts: [Centre] # 40 stations
+  - districts: [East, West] # 30 + 35 stations
+  - districts: [South] # 35 stations
+
+guardrails:
+  - metric: fleet_rentable_percent # share of fleet riders can rent, across every district
+    stop_below: 90 # what felt safe to the team
+  - metric: public_feed_age_seconds # age of real-time data in the public feed
+    stop_above: 300 # five minutes, what felt safe
+  - metric: wrenched_bikes_fixed_in_48h_percent # clock starts at the wrench, not when dispatch opens the job
+    stop_below: 95 # SLA-4 target_percent (within wrenched_limit_hours: 48)
+  - metric: longest_station_outage_hours
+    stop_above: 4 # SLA-11 limit_hours
+
+rollback:
+  command: bun run rollback
+  when: >-
+    Any guardrail crosses its threshold in a district that has the flag on,
+    or the public feed stops serving. Run it first, then turn the flag off and
+    tell the release manager. Do not move to the next stage until every
+    guardrail holds in the current stage.

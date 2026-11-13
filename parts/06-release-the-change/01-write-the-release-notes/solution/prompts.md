@@ -15,7 +15,7 @@ hour clock starts when the rider reports the bike, not when the job is opened. K
 file under 20 lines.
 ```
 
-Claude Code read the spec, then ran `git log` and `git diff` on the three build commits. It wrote 16 lines.
+Claude Code read the spec, then ran `git log` and `git diff` on the three build commits. It wrote 15 lines.
 
 ## What to check before you sign
 
