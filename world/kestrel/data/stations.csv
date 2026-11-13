@@ -1,0 +1,181 @@
+station_id,name,district,depot,x,y,docks
+S-001,Weaver Road,North,North,37,46,20
+S-002,Canal Lane,North,North,109,49,20
+S-003,Harbour Hill,North,North,164,46,20
+S-004,Granary Road,North,North,222,50,20
+S-005,Abbey Hill,North,North,269,31,20
+S-006,Weaver Square,North,North,344,41,20
+S-007,Mill Road,North,North,407,46,20
+S-008,Tannery Walk,North,North,463,45,20
+S-009,Rope Row,North,North,513,38,20
+S-010,Orchard Road,North,North,574,43,20
+S-011,Foundry Lane,North,North,644,47,20
+S-012,Mill Hill,North,North,689,41,20
+S-013,Weaver Yard,North,North,759,32,20
+S-014,Canal Road,North,North,809,31,20
+S-015,Harbour Walk,North,North,881,32,20
+S-016,Abbey Walk,North,North,47,92,20
+S-017,Castle Hill,North,North,95,80,20
+S-018,Canal Yard,North,North,155,84,20
+S-019,Chapel Road,North,North,228,95,20
+S-020,Bridge Road,North,North,270,93,20
+S-021,Quay Row,North,North,352,91,20
+S-022,Rope Street,North,North,405,92,20
+S-023,Willow Gate,North,North,470,86,20
+S-024,Bridge Hill,North,North,518,89,20
+S-025,Willow Hill,North,North,571,96,20
+S-026,Station Road,North,North,631,84,20
+S-027,Quay Street,North,North,696,81,20
+S-028,Quay Gate,North,North,768,95,20
+S-029,Castle Yard,North,North,819,84,20
+S-030,Station Yard,North,North,875,98,20
+S-031,Willow Street,North,North,41,133,20
+S-032,Meadow Walk,North,North,93,143,20
+S-033,Quay Walk,North,North,161,132,20
+S-034,Granary Lane,North,North,214,131,20
+S-035,Castle Gate,North,North,273,134,20
+S-036,Market Hill,North,North,336,145,20
+S-037,Harbour Road,North,North,392,149,20
+S-038,Tannery Yard,North,North,466,140,20
+S-039,Chapel Row,North,North,528,131,20
+S-040,Orchard Gate,North,North,587,133,20
+S-041,Quay Square,East,North,646,147,20
+S-042,Abbey Row,East,North,701,149,20
+S-043,Foundry Hill,East,North,762,130,20
+S-044,Quay Road,East,North,812,136,20
+S-045,Canal Street,East,North,884,149,20
+S-046,Orchard Street,East,North,41,192,20
+S-047,Chapel Gate,East,North,90,197,20
+S-048,Tannery Gate,East,North,158,187,20
+S-049,Foundry Row,East,North,220,199,20
+S-050,Orchard Yard,East,North,271,200,20
+S-051,Weaver Gate,East,North,350,194,20
+S-052,Quay Hill,East,North,397,188,20
+S-053,Mill Street,East,North,463,189,20
+S-054,Station Hill,East,North,514,188,20
+S-055,Granary Gate,East,North,582,196,20
+S-056,Meadow Road,East,North,638,191,20
+S-057,Rope Square,East,North,690,191,20
+S-058,Willow Lane,East,North,769,195,20
+S-059,Market Yard,East,North,809,196,20
+S-060,Harbour Row,East,North,869,196,20
+S-061,Harbour Gate,East,North,28,236,20
+S-062,Canal Walk,East,North,94,231,20
+S-063,Castle Road,East,North,169,247,20
+S-064,Foundry Walk,East,North,223,244,20
+S-065,Castle Walk,East,North,288,242,20
+S-066,Orchard Walk,East,North,350,237,20
+S-067,Station Square,East,North,405,242,20
+S-068,Castle Lane,East,North,451,243,20
+S-069,Weaver Hill,East,North,530,244,20
+S-070,Weaver Walk,East,North,583,240,20
+S-071,Granary Square,Centre,South,636,237,20
+S-072,Bridge Gate,Centre,South,700,233,20
+S-073,Tannery Hill,Centre,South,760,235,20
+S-074,Foundry Road,Centre,South,813,230,20
+S-075,Canal Gate,Centre,South,892,238,20
+S-076,Market Square,Centre,South,29,296,20
+S-077,Meadow Row,Centre,South,98,286,20
+S-078,Weaver Row,Centre,South,162,284,20
+S-079,Abbey Street,Centre,South,216,296,20
+S-080,Station Row,Centre,South,289,280,20
+S-081,Mill Gate,Centre,South,335,295,20
+S-082,Rope Walk,Centre,South,397,284,20
+S-083,Mill Walk,Centre,South,457,294,20
+S-084,Harbour Yard,Centre,South,519,282,20
+S-085,Market Road,Centre,South,576,293,20
+S-086,Foundry Street,Centre,South,640,293,20
+S-087,Granary Hill,Centre,South,704,299,20
+S-088,Orchard Square,Centre,South,749,294,20
+S-089,Harbour Lane,Centre,South,826,299,20
+S-090,Chapel Square,Centre,South,880,297,20
+S-091,Chapel Walk,Centre,South,45,333,20
+S-092,Weaver Lane,Centre,South,88,344,20
+S-093,Orchard Row,Centre,South,151,337,20
+S-094,Meadow Street,Centre,South,223,347,20
+S-095,Bridge Walk,Centre,South,281,334,20
+S-096,Bridge Yard,Centre,South,329,345,20
+S-097,Abbey Yard,Centre,South,405,339,20
+S-098,Station Walk,Centre,South,459,346,20
+S-099,Tannery Lane,Centre,South,511,343,20
+S-100,Willow Walk,Centre,South,572,335,20
+S-101,Market Row,Centre,South,631,338,20
+S-102,Chapel Hill,Centre,South,696,340,20
+S-103,Willow Road,Centre,South,751,332,20
+S-104,Rope Gate,Centre,South,827,332,20
+S-105,Abbey Road,Centre,South,872,340,20
+S-106,Rope Yard,Centre,South,32,398,20
+S-107,Tannery Row,Centre,South,91,396,20
+S-108,Rope Hill,Centre,South,170,389,20
+S-109,Mill Square,Centre,South,224,389,20
+S-110,Meadow Gate,Centre,South,271,381,20
+S-111,Meadow Hill,South,South,329,380,20
+S-112,Market Walk,South,South,399,395,20
+S-113,Foundry Gate,South,South,464,391,20
+S-114,Bridge Street,South,South,524,398,20
+S-115,Station Lane,South,South,578,397,20
+S-116,Quay Yard,South,South,635,383,20
+S-117,Chapel Yard,South,South,712,383,20
+S-118,Orchard Lane,South,South,762,393,20
+S-119,Harbour Street,South,South,818,396,20
+S-120,Meadow Yard,South,South,881,380,20
+S-121,Market Lane,South,South,39,434,20
+S-122,Weaver Street,South,South,95,435,20
+S-123,Market Gate,South,South,151,431,20
+S-124,Granary Walk,South,South,229,441,20
+S-125,Willow Row,South,South,272,435,20
+S-126,Tannery Road,South,South,341,446,20
+S-127,Castle Row,South,South,389,446,20
+S-128,Abbey Lane,South,South,469,434,20
+S-129,Abbey Gate,South,South,529,435,20
+S-130,Tannery Street,South,South,570,434,20
+S-131,Granary Row,South,South,629,439,20
+S-132,Rope Road,South,South,697,444,20
+S-133,Market Street,South,South,762,440,20
+S-134,Canal Hill,South,South,812,448,20
+S-135,Willow Square,South,South,879,433,20
+S-136,Chapel Street,South,South,51,497,20
+S-137,Castle Square,South,South,109,499,20
+S-138,Station Gate,South,South,149,486,20
+S-139,Abbey Square,South,South,227,498,20
+S-140,Harbour Square,South,South,274,487,20
+S-141,Mill Lane,South,South,351,499,20
+S-142,Foundry Yard,South,South,397,499,20
+S-143,Canal Square,South,South,464,490,20
+S-144,Castle Street,South,South,527,483,20
+S-145,Willow Yard,South,South,581,495,20
+S-146,Station Street,West,South,642,492,20
+S-147,Rope Lane,West,South,693,482,20
+S-148,Bridge Lane,West,South,763,491,20
+S-149,Bridge Row,West,South,811,491,20
+S-150,Canal Row,West,South,884,496,20
+S-151,Granary Street,West,South,46,534,20
+S-152,Quay Lane,West,South,92,534,20
+S-153,Mill Row,West,South,151,532,20
+S-154,Granary Yard,West,South,228,550,20
+S-155,Foundry Square,West,South,282,538,20
+S-156,Meadow Lane,West,South,329,536,20
+S-157,Orchard Hill,West,South,388,542,20
+S-158,Bridge Square,West,South,462,537,20
+S-159,Tannery Square,West,South,516,540,20
+S-160,Mill Yard,West,South,573,547,20
+S-161,Chapel Lane,West,South,644,532,20
+S-162,Meadow Square,West,South,700,534,20
+S-163,,West,South,749,545,20
+S-164,,West,South,828,547,20
+S-165,,West,South,871,536,20
+S-166,,West,South,46,592,20
+S-167,,West,South,110,591,20
+S-168,,West,South,161,582,20
+S-169,,West,South,219,600,20
+S-170,,West,South,273,600,20
+S-171,,West,South,341,585,20
+S-172,,West,South,388,580,20
+S-173,,West,South,459,598,20
+S-174,,West,South,530,594,20
+S-175,,West,South,586,582,20
+S-176,,West,South,647,593,20
+S-177,,West,South,707,587,20
+S-178,,West,South,758,588,20
+S-179,,West,South,811,582,20
+S-180,,West,South,880,591,20

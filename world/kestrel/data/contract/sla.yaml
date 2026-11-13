@@ -1,0 +1,26 @@
+# The service levels in Kestrel's contract with Brannock City Transport.
+# The shape follows the service levels in Citi Bike's monthly report to New York City:
+# https://mot-marketing-whitelabel-prod.s3.us-east-1.amazonaws.com/nyc/April-2026-Citi-Bike-Monthly-Report.pdf
+# Nobody edits this file except the city. Claude Code must never change it.
+contract: Brannock City Transport and Kestrel Bike Share
+service_levels:
+  - id: SLA-4
+    name: Bike defects
+    rule: A rider pressing the wrench button is notice of a defect.
+    clock_starts: when the rider reports the defect (the wrench)
+    wrenched_limit_hours: 48
+    not_wrenched_limit_hours: 96
+    target_percent: 95
+    credit_per_late_bike_gbp: 50
+  - id: SLA-9
+    name: Bike availability
+    rule: The share of the fleet that riders can rent, across every district.
+    minimum_percent: 96
+  - id: SLA-11
+    name: Station outage
+    rule: No single station outage lasts longer than this.
+    limit_hours: 4
+  - id: SLA-12
+    name: Public feed accuracy
+    rule: Real-time data in the public feed is accurate and available to the public at all times.
+    feed_max_age_seconds: 60
