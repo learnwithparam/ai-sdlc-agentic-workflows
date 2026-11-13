@@ -28,4 +28,109 @@ This part takes 55 minutes.
 
 ## Walkthrough
 
-TODO(part session): one command per step, each followed by its `Expect:` line. Build each step's folder with `problem/`, `solution/` and `prompts.md`, and `wrong/`, as `parts/01-ready-the-repo/` does.
+Start the first step. It makes `kestrel/` with the signed intent from Part 2.
+
+```bash
+bun run start write-the-contract-skill
+```
+
+Expect: `kestrel/ is ready at the start of write-the-contract-skill.`
+
+Give Claude Code the skill prompt in the step's README. Then prove the skill loads. Run this three times:
+
+```bash
+bun run record write-the-contract-skill
+```
+
+Expect: `Claude Code Skill`
+
+```bash
+bun run verify write-the-contract-skill
+```
+
+Expect: `Done. All 8 rules pass.`
+
+Go on to the spec:
+
+```bash
+bun run start write-the-spec
+```
+
+Expect: `kestrel/ is ready at the start of write-the-spec.`
+
+Let Claude Code interview you, then ask for `work/spec.md`, as the step's README shows. Read it, then sign it:
+
+```bash
+bun run approve work/spec.md --role pm
+```
+
+Expect: `Approved work/spec.md as pm`
+
+```bash
+bun run verify write-the-spec
+```
+
+Expect: `Done. All 8 rules pass.`
+
+Last, the decision record:
+
+```bash
+bun run start record-the-decision
+```
+
+Expect: `kestrel/ is ready at the start of record-the-decision.`
+
+Paste the GBFS text into your prompt, as the step's README shows. Read the record, then sign it as the tech lead:
+
+```bash
+bun run approve work/decisions/0001-disable-in-feed.md --role tech-lead
+```
+
+Expect: `Approved work/decisions/0001-disable-in-feed.md as tech-lead`
+
+```bash
+bun run verify record-the-decision
+```
+
+Expect: `Done. All 7 rules pass.`
+
+Check the whole part:
+
+```bash
+bun run verify part design-the-change
+```
+
+Expect: `Part design-the-change is done: 3/3 steps pass.`
+
+For example, the passing table reads:
+
+```text
+Part design-the-change:
+  PASS   write-the-contract-skill  (8/8 rules)
+  PASS   write-the-spec  (8/8 rules)
+  PASS   record-the-decision  (7/7 rules)
+```
+
+Each `start` gives you the sample end of the step before. To see a sample end state instead, run `bun run catch-up record-the-decision`.
+
+## Assignment
+
+Hand in your branch with the skill, its three recorded runs, `work/spec.md`, the decision record and their lines in `work/approvals.jsonl`. The grader runs `bun run verify part design-the-change`.
+
+| #   | Question                                                                  | Answered by            |
+| --- | ------------------------------------------------------------------------- | ---------------------- |
+| 1   | Does the skill load in 2 of 3 recorded runs?                              | the check              |
+| 2   | Does every acceptance criterion have an id, a WHEN line and a THEN line?  | the check              |
+| 3   | Does the spec name the grace period conflict, its clause and its owner?   | the check and a reader |
+| 4   | Does the decision quote the GBFS text, word for word?                     | the check and a reader |
+| 5   | Did each approval come after the one before it, and still match its file? | the check              |
+
+Pass is 5 of 5.
+
+**If you already know this:** prove the skill loads in 3 of 3 runs phrased three different ways. Change the prompt in your local `config/claude-code.ts` between runs, and say in one line which wording came closest to missing.
+
+## Finished
+
+You now have the design stage of the chain: a contract skill that loads when it should, a spec of checkable criteria that says no to the grace period, and a signed decision record. The product manager and the tech lead have each signed.
+
+In Part 4, Claude Code plans the build from this spec in plan mode. Then it writes one failing test per criterion, and builds the change in small slices.
