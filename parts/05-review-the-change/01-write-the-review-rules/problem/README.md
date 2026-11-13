@@ -4,7 +4,7 @@
 
 Kestrel's build is done. The tests are green and the plan is approved. Now someone has to review the change, and soon Claude Code will review it too.
 
-A reviewer with no rules comments on everything. Ines, the tech lead, gets forty comments about spacing and names. The one comment that matters, "this deadline is an hour late", is hidden in the pile. People stop reading AI reviews that look like this.
+A reviewer with no rules comments on everything. The one comment that matters, "this deadline is an hour late", hides in a pile of comments about names. People stop reading reviews like that.
 
 For example, ask Claude Code "write a REVIEW.md with code review guidelines". In a real run it wrote seven sections of checklists. It had no cap on nits, no meaning for Important, and no list of what to leave out.
 
@@ -41,7 +41,7 @@ Severity, Where, What goes wrong, Criterion, where Severity is Important or Nit.
 under 40 lines.
 ```
 
-Read the file it writes. Does the Important example come from Kestrel? Then sign it as the tech lead. Run this in the course folder, not inside Claude Code:
+Read the file. Does the Important example come from Kestrel? Then sign it as the tech lead, in the course folder:
 
 ```bash
 bun run approve REVIEW.md --role tech-lead
@@ -67,13 +67,11 @@ Expect: `Done. All 8 rules pass.`
 | What you see                                         | Fix                                                                                    |
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | `FAIL REVIEW.md caps nits with a number`             | "Keep nits few" is not a cap. Ask for "at most 3 nits per review".                     |
-| `FAIL a Do not report list names data/`              | Ask Claude Code to add `data/` under a heading called Do not report.                   |
 | `FAIL the tech lead approved REVIEW.md as it is now` | The file changed after you signed it. Read it again, then approve it again.            |
 | `Only a person can approve`                          | You ran approve inside Claude Code. Run it in your own terminal, in the course folder. |
 
 ## Words you will use
 
-- **Pass**: one reading of the change with one question in mind. Bugs asks "is it wrong?". Security asks "can someone abuse it?". Compliance asks "does it match the spec and the plan?".
+- **Pass**: one reading of the change with one question. Bugs: is it wrong? Security: can someone abuse it? Compliance: does it match the spec and plan?
 - **Important**: a finding that riders, crews or the city contract would feel. It must be fixed before release.
 - **Nit**: a small point, such as a stale comment. Nice to fix, never a blocker.
-- **Cap**: the most nits a review may hold. A cap makes the reviewer pick the ones that matter.
