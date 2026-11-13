@@ -40,7 +40,7 @@ so on; each starts with a verb and has an Owner role and a Check in backticks. A
 regression test that sends the same wrench three times. Do not write the test or fix yet.
 ```
 
-If a Check names no command or file, send Claude back to fix it.
+If a Check names no command or file, send Claude back.
 
 2. Ask for the test first, then the fix:
 

@@ -62,11 +62,11 @@ After one wrench on bike `B-2207`, the map counts 41 broken bikes out of service
 
 ## If you get stuck
 
-| What you see                                                  | Fix                                                                        |
-| ------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| What you see                                                  | Fix                                                                                                                                       |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `FAIL the acceptance tests are byte for byte as ... approved` | In `kestrel/`, run `git log --oneline`. Copy the id of `approve: test/acceptance by qa`. Run `git checkout <that id> -- test/acceptance`. |
-| `FAIL 2 or more code commits after the tests ...`             | Ask Claude Code to commit one item at a time, not all at once.             |
-| `FAIL bun test passes ...`                                    | Ask Claude Code which plan item is not built yet.                          |
+| `FAIL 2 or more code commits after the tests ...`             | Ask Claude Code to commit one item at a time, not all at once.                                                                            |
+| `FAIL bun test passes ...`                                    | Ask Claude Code which plan item is not built yet.                                                                                         |
 
 ## Words you will use
 
