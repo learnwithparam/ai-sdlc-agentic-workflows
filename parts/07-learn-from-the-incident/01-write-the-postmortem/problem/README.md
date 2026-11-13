@@ -18,6 +18,14 @@ flowchart LR
 
 ## Your challenge
 
+Start the step:
+
+```bash
+bun run start write-the-postmortem
+```
+
+Expect: `kestrel/ is ready at the start of write-the-postmortem.`
+
 Open Claude Code in `kestrel/`. Give it two jobs, one at a time.
 
 1. Ask for the postmortem:

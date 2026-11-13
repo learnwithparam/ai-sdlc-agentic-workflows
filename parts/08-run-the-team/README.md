@@ -46,7 +46,7 @@ bun run verify measure-the-lifecycle
 
 Expect: `Done. All 10 rules pass.`
 
-Commit `work/metrics.md` in `kestrel/`, then go on to `write-the-team-playbook`. Follow its README, then sign the playbook:
+Ask Claude Code to commit `work/metrics.md`. Then go on to `write-the-team-playbook`. Follow its README, then sign the playbook:
 
 ```bash
 bun run approve PLAYBOOK.md --role em

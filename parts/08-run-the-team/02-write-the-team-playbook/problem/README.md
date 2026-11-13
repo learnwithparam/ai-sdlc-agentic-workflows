@@ -2,7 +2,7 @@
 
 ## The problem
 
-A new engineer joins the spoke team next month. They ask: "Which files need a signature? What may Claude Code never do? How big may a commit be?" Today the answers live in five places: `work/approvals.jsonl`, `.claude/settings.json`, `CLAUDE.md`, and people's heads.
+A new engineer joins the spoke team next month. They ask: "Which files need a signature? What may Claude Code never do? How big may a commit be?" Today the answers live in four places: `work/approvals.jsonl`, `.claude/settings.json`, `CLAUDE.md`, and people's heads.
 
 A **playbook** puts them in one page. But a playbook can lie. It can list a gate nobody signs, or a rule nothing enforces.
 
@@ -20,6 +20,14 @@ flowchart LR
 ```
 
 ## Your challenge
+
+Did you just finish `measure-the-lifecycle`? Then keep your `kestrel/` as it is. To jump in here instead, start the step:
+
+```bash
+bun run start write-the-team-playbook
+```
+
+Expect: `kestrel/ is ready at the start of write-the-team-playbook.`
 
 Open Claude Code in `kestrel/`. Ask it to write only what the repo already enforces:
 

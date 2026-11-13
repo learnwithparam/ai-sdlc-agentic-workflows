@@ -16,6 +16,14 @@ flowchart LR
 
 ## Your challenge
 
+Start the step:
+
+```bash
+bun run start measure-the-lifecycle
+```
+
+Expect: `kestrel/ is ready at the start of measure-the-lifecycle.`
+
 Open Claude Code in `kestrel/` and ask for the numbers, each with the command that printed it:
 
 ```text
