@@ -28,4 +28,80 @@ This part takes 40 minutes.
 
 ## Walkthrough
 
-TODO(part session): one command per step, each followed by its `Expect:` line. Build each step's folder with `problem/`, `solution/` and `prompts.md`, and `wrong/`, as `parts/01-ready-the-repo/` does.
+Each step starts where the step before it ended. To jump in here, make `kestrel/` the begin state of the first step:
+
+```bash
+bun run start write-the-postmortem
+```
+
+Expect: `kestrel/ is ready at the start of write-the-postmortem.`
+
+Your `kestrel/` now holds the incident logs in `data/incidents/north-double-wrench/`. Follow the step's README in Claude Code. Then sign the postmortem:
+
+```bash
+bun run approve work/postmortem.md --role tech-lead
+```
+
+Expect: `Approved work/postmortem.md as tech-lead`
+
+```bash
+bun run verify write-the-postmortem
+```
+
+Expect: `Done. All 11 rules pass.`
+
+Go on to `close-the-loop` in the same `kestrel/`. Follow its README, then sign the next intent:
+
+```bash
+bun run approve work/intent/next-dedupe-wrenches.md --role pm
+```
+
+Expect: `Approved work/intent/next-dedupe-wrenches.md as pm`
+
+```bash
+bun run verify close-the-loop
+```
+
+Expect: `Done. All 8 rules pass.`
+
+Check the whole part:
+
+```bash
+bun run verify part learn-from-the-incident
+```
+
+Expect: `Part learn-from-the-incident is done: 2/2 steps pass.`
+
+For example, a passing part prints these lines:
+
+```text
+Part learn-from-the-incident:
+  PASS   write-the-postmortem  (11/11 rules)
+  PASS   close-the-loop  (8/8 rules)
+Part learn-from-the-incident is done: 2/2 steps pass.
+```
+
+To see the sample end state without a live Claude Code, run `bun run catch-up close-the-loop`. It copies the recorded end state into `kestrel/` and keeps your old copy in `.kestrel-backups/`.
+
+## Assignment
+
+Hand in a pushed branch with `work/postmortem.md`, the regression test in `test/regression/`, the fix, the new line in `CLAUDE.md` and `work/intent/next-dedupe-wrenches.md`, with both approvals.
+
+| #   | Question                                                                                 | Answered by                           |
+| --- | ---------------------------------------------------------------------------------------- | ------------------------------------- |
+| 1   | Does every Impact number match the logs: 212 bikes, 3 hours 10 minutes, 97.8% and 89.0%? | `bun run verify write-the-postmortem` |
+| 2   | Do the Contributing factors name no person?                                              | `bun run verify write-the-postmortem` |
+| 3   | Does every action item have a verb, an owner role and a check?                           | `bun run verify write-the-postmortem` |
+| 4   | Is the regression test red on the incident build and green on the fix?                   | `bun run verify write-the-postmortem` |
+| 5   | Was the test committed before the fix?                                                   | a reader, with `git log --oneline`    |
+| 6   | Did `CLAUDE.md` gain exactly one line, and did the pm sign the next intent?              | `bun run verify close-the-loop`       |
+
+Pass is 6 of 6.
+
+**If you already know this:** turn the incident into a recorded Claude Code run. Ask Claude Code, headless, for a new write route. Then show that in 2 of 3 runs its test sends the same request twice. Your new `CLAUDE.md` line is the reason.
+
+## Finished
+
+You now have a blameless postmortem with numbers a script can check. You have a regression test that failed before the fix. Claude Code reads one new lesson in every session. And the next change has a signed intent. The loop is closed: production taught the plan.
+
+Next, in Part 8, `run-the-team`, you measure the whole lifecycle from git and the deploy log. Then you write the team's playbook, and the last check walks the chain you built.
