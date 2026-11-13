@@ -68,19 +68,20 @@ You write no code in this course. You type prompts, read what Claude Code shows 
 
 ## The parts
 
-| Part                                                                  | Steps                                                                   | Minutes | What you leave with                                                   |
-| --------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------- | --------------------------------------------------------------------- |
-| [Orientation](00-orientation/README.md)                               | `meet-kestrel`                                                          | 15      | Claude Code ready, the world running, your goal named                 |
-| [Ready the repo](parts/01-ready-the-repo/README.md)                   | `ready-the-repo`                                                        | 20      | A short `CLAUDE.md`, `AGENTS.md` and settings that guard the contract |
-| [Plan the change](parts/02-plan-the-change/README.md)                 | `find-the-real-problem`, `capture-the-intent`                           | 35      | `intent.md`, signed by the product manager                            |
-| [Design the change](parts/03-design-the-change/README.md)             | `write-the-contract-skill`, `write-the-spec`, `record-the-decision`     | 55      | A skill, `spec.md` and a decision record                              |
-| [Build the change](parts/04-build-the-change/README.md)               | `plan-in-plan-mode`, `write-the-failing-tests`, `build-in-small-slices` | 60      | `plan.md`, red tests, then small green commits                        |
-| [Review the change](parts/05-review-the-change/README.md)             | `write-the-review-rules`, `review-with-fresh-eyes`                      | 30      | `REVIEW.md` and a reviewer that finds the planted bug                 |
-| [Release the change](parts/06-release-the-change/README.md)           | `write-the-release-notes`, `gate-the-release`                           | 30      | Release notes and a rollout a person approves                         |
-| [Learn from the incident](parts/07-learn-from-the-incident/README.md) | `write-the-postmortem`, `close-the-loop`                                | 40      | A blameless postmortem and the next intent                            |
-| [Run the team](parts/08-run-the-team/README.md)                       | `measure-the-lifecycle`, `write-the-team-playbook`, `ship-the-feature`  | 50      | `metrics.md`, `PLAYBOOK.md` and the Goal check                        |
+| Part                                                                    | Steps                                                                   | Minutes | What you leave with                                                   |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------- | --------------------------------------------------------------------- |
+| [Orientation](00-orientation/README.md)                                 | `meet-kestrel`                                                          | 15      | Claude Code ready, the world running, your goal named                 |
+| [Ready the repo](parts/01-ready-the-repo/README.md)                     | `ready-the-repo`                                                        | 20      | A short `CLAUDE.md`, `AGENTS.md` and settings that guard the contract |
+| [Plan the change](parts/02-plan-the-change/README.md)                   | `find-the-real-problem`, `capture-the-intent`                           | 35      | `intent.md`, signed by the product manager                            |
+| [Design the change](parts/03-design-the-change/README.md)               | `write-the-contract-skill`, `write-the-spec`, `record-the-decision`     | 55      | A skill, `spec.md` and a decision record                              |
+| [Build the change](parts/04-build-the-change/README.md)                 | `plan-in-plan-mode`, `write-the-failing-tests`, `build-in-small-slices` | 60      | `plan.md`, red tests, then small green commits                        |
+| [Review the change](parts/05-review-the-change/README.md)               | `write-the-review-rules`, `review-with-fresh-eyes`                      | 30      | `REVIEW.md` and a reviewer that finds the planted bug                 |
+| [Release the change](parts/06-release-the-change/README.md)             | `write-the-release-notes`, `gate-the-release`                           | 30      | Release notes and a rollout a person approves                         |
+| [Learn from the incident](parts/07-learn-from-the-incident/README.md)   | `write-the-postmortem`, `close-the-loop`                                | 40      | A blameless postmortem and the next intent                            |
+| [Run the team](parts/08-run-the-team/README.md)                         | `measure-the-lifecycle`, `write-the-team-playbook`, `ship-the-feature`  | 50      | `metrics.md`, `PLAYBOOK.md` and the Goal check                        |
+| [Roll out a change slowly](parts/09-roll-out-a-change-slowly/README.md) | `roll-out-with-openfeature`                                             | 25      | `assignment/flags/flagd.json`, optional in the live session           |
 
-The same 335 minutes run as one workshop, four evenings or six sessions. See `schedules.toml`.
+The same 360 minutes run as one workshop, four evenings or six sessions. See `schedules.toml`.
 
 ## How a step works
 
