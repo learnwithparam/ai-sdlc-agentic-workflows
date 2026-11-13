@@ -3,3 +3,4 @@ node_modules
 /kestrel/
 /.kestrel-backups/
 /.finished-run/
+test-results/
