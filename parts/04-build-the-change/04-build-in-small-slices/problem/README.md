@@ -38,7 +38,7 @@ with its plan id, for example "P-2: ...". Keep every commit under 200 changed li
 tell me if an item needs a file the plan does not list.
 ```
 
-After each commit, read the diff with `git show` in `kestrel/`. Say no if Claude Code changes a file in `test/acceptance/`.
+After each commit, read the diff with `git show` in `kestrel/`. Say no if Claude Code changes a file in `test/acceptance/`. Press Esc to stop it mid-edit. If it already made a change you do not want, type `/rewind` to go back.
 
 ## Done when
 

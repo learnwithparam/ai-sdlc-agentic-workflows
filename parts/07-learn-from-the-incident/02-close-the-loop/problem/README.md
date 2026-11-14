@@ -6,7 +6,7 @@ The postmortem is signed and the retry bug is fixed. But Claude Code has no memo
 
 The postmortem also found a second risk. Two different riders can wrench the same bike, and each report opens its own job. Nobody has asked for that fix yet.
 
-For example, your `CLAUDE.md` has one line under `## Things Claude gets wrong` today: `The 48 hour clock starts at the wrench`. It says nothing about retries.
+For example, your `CLAUDE.md` has one line under "## Things Claude gets wrong" today: "The 48 hour clock starts at the wrench". It says nothing about retries.
 
 ```mermaid
 flowchart LR
@@ -59,7 +59,7 @@ Expect: `Approved work/intent/next-dedupe-wrenches.md as pm`
 
 ## Done when
 
-- `CLAUDE.md` gained exactly one line under `## Things Claude gets wrong`, lost none, and is at most 60 lines.
+- `CLAUDE.md` gained exactly one line under "## Things Claude gets wrong", lost none, and is at most 60 lines.
 - The new line is about retries and `request_id`.
 - `work/intent/next-dedupe-wrenches.md` has the five intent headings, in order, and an open question.
 - Its Problem quotes a number from the postmortem's Impact, for example 212 bikes.

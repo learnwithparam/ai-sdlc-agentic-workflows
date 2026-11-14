@@ -1,6 +1,7 @@
 // find-the-real-problem: work/findings.md reports where the 48 hour misses happen.
 // The check counts every number again from data/, so a guess or a made-up number fails.
 
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileExists, readFile } from "./lib/files";
 import type { Rule } from "./lib/rule";
@@ -115,6 +116,32 @@ function percentRule(name: keyof TrueNumbers, says: string, tryNext: string): Ru
   };
 }
 
+const PROMPT = "work/prompt.md";
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47];
+
+// The prompt you gave, saved as a file. A specific prompt names the files with @.
+function promptNamesFiles(folder: string): boolean {
+  const refs = readFile(folder, PROMPT).match(/@data\/[\w./-]+/g) ?? [];
+  return new Set(refs).size >= 2 && refs.every((ref) => fileExists(folder, ref.slice(1)));
+}
+
+function promptAsksForCommands(folder: string): boolean {
+  const text = readFile(folder, PROMPT);
+  return /\bcommand\b/i.test(text) && /\bnumbers?\b/i.test(text);
+}
+
+// The prompt names a screenshot, and that file is a real PNG image.
+function screenshotIsAnImage(folder: string): boolean {
+  const named = readFile(folder, PROMPT).match(/^Screenshot:\s*(\S+\.png)\s*$/m)?.[1];
+  if (!named || !fileExists(folder, named)) return false;
+  const head = readBytes(folder, named);
+  return PNG_SIGNATURE.every((byte, index) => head[index] === byte);
+}
+
+function readBytes(folder: string, file: string): Uint8Array {
+  return new Uint8Array(readFileSync(join(folder, file)).subarray(0, 8));
+}
+
 export default [
   {
     says: "work/findings.md exists",
@@ -143,5 +170,22 @@ export default [
       return reportsWithCommand(folder, poundsOn, expected, POUNDS_TOLERANCE);
     },
     tryNext: "ask Claude Code to multiply the late bikes by the credit in data/contract/sla.yaml",
+  },
+  {
+    says: "work/prompt.md is your prompt: it names two or more data files with @",
+    test: promptNamesFiles,
+    tryNext:
+      "save the prompt in work/prompt.md and name each file with @, such as @data/wrenches.csv",
+  },
+  {
+    says: "the prompt asks for a command for every number",
+    test: promptAsksForCommands,
+    tryNext: "say what you want in numbers and ask for the command that made each one",
+  },
+  {
+    says: "the prompt names a screenshot, and the file is a real PNG image",
+    test: screenshotIsAnImage,
+    tryNext:
+      "save a screenshot of the chart you gave Claude Code as work/late-bikes.png and name it",
   },
 ] satisfies Rule[];

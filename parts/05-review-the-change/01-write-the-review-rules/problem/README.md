@@ -68,7 +68,7 @@ Expect: `Done. All 8 rules pass.`
 | ---------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | `FAIL REVIEW.md caps nits with a number`             | "Keep nits few" is not a cap. Ask for "at most 3 nits per review".                     |
 | `FAIL the tech lead approved REVIEW.md as it is now` | The file changed after you signed it. Read it again, then approve it again.            |
-| `Only a person can approve`                          | You ran approve inside Claude Code. Run it in your own terminal, in the course folder. |
+| "Only a person can approve"                          | You ran approve inside Claude Code. Run it in your own terminal, in the course folder. |
 
 ## Words you will use
 

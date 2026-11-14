@@ -1,6 +1,6 @@
 # Start here: meet Kestrel
 
-In this part you get Claude Code ready, meet Kestrel's world, run the finished chain and name your goal. It takes about 15 minutes.
+In this part you get Claude Code ready, meet Kestrel's world, run the finished chain and name your goal. It fits in one short sitting.
 
 ```mermaid
 flowchart LR
@@ -26,7 +26,7 @@ Then sign in. Run `claude`, type `/login` and follow the steps. A Claude plan or
 claude --version
 ```
 
-Expect: a version of `2.1.302` or newer, for example `2.1.323 (Claude Code)`.
+Expect: a version line that ends in `(Claude Code)`.
 
 **No terminal habit?** You can use Claude Desktop instead. Download it, sign in, open the **Code** tab and pick the `kestrel` folder. Every prompt in this course works there too. You still type the `bun run` commands in a terminal, and each one has an `Expect:` line.
 
@@ -93,3 +93,13 @@ Now do the step: [meet-kestrel](meet-kestrel/problem/README.md).
 ![Your first verify: every rule fails and says what to try next](images/first-run.png)
 
 When a command prints something you do not expect, look it up in [troubleshooting.md](troubleshooting.md).
+
+## Watch and read
+
+| Kind  | Title                                           | Author                                 | Why                                                                       | Link                                                               |
+| ----- | ----------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| video | Claude Code best practices                      | Anthropic, talk at its developer event | The team shows CLAUDE.md, permissions, tools and planning in one sitting. | <https://www.youtube.com/watch?v=gv0WHhKelSE>                      |
+| video | Claude Code and the evolution of agentic coding | Boris Cherny, who made Claude Code     | The maker explains plan mode and why the tool stays simple.               | <https://www.youtube.com/watch?v=Lue8K2jqfKk>                      |
+| read  | Claude Code overview                            | Anthropic docs                         | The list of features this ladder climbs, from the makers.                 | <https://code.claude.com/docs/en/overview>                         |
+| read  | Best practices for agentic coding               | Anthropic Engineering                  | The team's own advice on prompts, plans and checks.                       | <https://www.anthropic.com/engineering/claude-code-best-practices> |
+| read  | Building effective agents                       | Anthropic Engineering                  | Explains when a plain workflow beats an agent.                            | <https://www.anthropic.com/engineering/building-effective-agents>  |
