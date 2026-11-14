@@ -5,8 +5,8 @@ import { expect, test } from "bun:test";
 import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import rules from "../checks/write-the-spec";
 import { kestrelFolderFor } from "../checks/lib/snapshot";
+import rules from "../checks/write-the-spec";
 import { ROOT } from "../scripts/structure";
 
 const GRACE_RULE = "no criterion keeps a wrenched bike in the feed for 15 minutes";
@@ -14,7 +14,7 @@ const solution = join(ROOT, "parts/03-design-the-change/02-write-the-spec/soluti
 const graceCriterion = [
   "**AC-99: Wrenched bike stays in the feed for a while**",
   "WHEN a bike has been wrenched",
-  "THEN the feed keeps it with `is_disabled: false` for 15 minutes, then shows `is_disabled: true`.",
+  "THEN the feed keeps it available for 15 minutes, then shows `is_disabled: true`.",
   "",
   "",
 ].join("\n");
