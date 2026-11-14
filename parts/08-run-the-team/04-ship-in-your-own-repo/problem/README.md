@@ -6,6 +6,8 @@ You have walked the whole lifecycle on Kestrel. The course world is safe, so it 
 
 A team that only practises on a sample repo often goes back to old habits on Monday. One small real feature, done with a spec, tests and a review, is the proof.
 
+For example, a small shop app might get one change: show the due date on every invoice page.
+
 ```mermaid
 flowchart LR
   R[your own repo] --> C[Claude Code]
@@ -43,11 +45,11 @@ Expect: `Done. All 8 rules pass.`
 
 ## If you get stuck
 
-| What you see                                | Fix                                                                       |
-| ------------------------------------------- | ------------------------------------------------------------------------- |
-| `FAIL the commit is a real id`              | Run `git log --oneline -1` in your repo and paste the short id.           |
-| `FAIL no line comes from the course world`  | Describe your own repo. Take out any bike, wrench, crew or Kestrel words. |
-| `FAIL the test result shows a count`        | Paste the line your test tool prints, such as `14 passed`.                |
+| What you see                               | Fix                                                                       |
+| ------------------------------------------ | ------------------------------------------------------------------------- |
+| `FAIL the commit is a real id`             | Run `git log --oneline -1` in your repo and paste the short id.           |
+| `FAIL no line comes from the course world` | Describe your own repo. Take out any bike, wrench, crew or Kestrel words. |
+| `FAIL the test result shows a count`       | Paste the line your test tool prints, such as `14 passed`.                |
 
 ## Words you will use
 

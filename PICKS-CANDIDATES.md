@@ -1,8 +1,9 @@
 # Picks candidates
 
-For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delete this file. Each line gives the author, the year, the kind, and why it passes the bar in STANDARD-v2 section 5 (made by the people who run the method, about the idea, not a listicle). Links are not added here: the page pass adds them and the nightly link check confirms they are live. Years are the first publication year as best known; confirm when linking.
+For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delete this file. Each line gives the author, the year and the kind. It also says why it passes the bar in STANDARD-v2 section 5. Links are not added here: the page pass adds them and the nightly link check confirms they are live. Years are the first publication year as best known; confirm when linking.
 
 ## Orientation (meet Kestrel, the Claude Code ladder)
+
 1. Anthropic, "Best practices for Claude Code", docs, 2025. Official docs by the makers; stays current.
 2. Anthropic, "Claude Code overview", docs, 2025. Official; names the features the ladder uses.
 3. Anthropic Engineering, "Claude Code: Best practices for agentic coding", blog, 2025. Written by the team that built the tool.
@@ -13,6 +14,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. Simon Willison, "Designing agentic loops", blog, 2025. Long-time practitioner and tool author; about the idea.
 
 ## Part 1: Ready the repo
+
 1. Anthropic, "Memory and CLAUDE.md", docs, 2025. Official docs for the file this step writes.
 2. Anthropic, "Claude Code settings and permissions", docs, 2025. Official; the deny and ask rules.
 3. Anthropic Engineering, "Claude Code best practices", blog, 2025. The CLAUDE.md length and content advice, from the team.
@@ -23,6 +25,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. Google SRE, "Embracing risk" chapter, SRE book, 2016. Original source of the error budget idea Kestrel's contract uses; evergreen.
 
 ## Part 2: Plan the change
+
 1. Teresa Torres, "Continuous Discovery Habits", book and talks, 2021. Author of the method; about the idea.
 2. Marty Cagan, "Inspired" and SVPG articles on product problems, 2017. Method author.
 3. Intercom, "Intercom on Jobs-to-be-Done", Intercom blog, 2016. A company that runs it in production.
@@ -33,6 +36,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. Tom Gilb, "Planguage" and "Competitive Engineering" on measurable requirements, 2005. Original author.
 
 ## Part 3: Design the change
+
 1. Anthropic, "Agent Skills", docs, 2025. Official; the contract skill step.
 2. Michael Nygard, "Documenting architecture decisions", blog, 2011. The original paper for decision records.
 3. MADR project, "Markdown Architectural Decision Records", site, 2022. Maintainers' own docs for the shape used here.
@@ -43,6 +47,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. Gojko Adzic, "Impact Mapping" talk, 2012. Method author (video).
 
 ## Part 4: Build the change
+
 1. Kent Beck, "Test-Driven Development by Example", book, 2002. Original author.
 2. Martin Fowler, "Test Driven Development", bliki, 2023. Short, evergreen.
 3. Anthropic Engineering, "Claude Code best practices", blog, 2025. Names test-first with Claude as a workflow.
@@ -54,6 +59,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 9. Simon Willison, "Red/green TDD with agents", blog, 2025. Practitioner; about the idea.
 
 ## Part 5: Review the change
+
 1. Google Engineering Practices, "How to do a code review", docs, 2019. Run in production at Google.
 2. Google, "The standard of code review", docs, 2019. Names what blocks a change.
 3. Anthropic, "Claude Code subagents", docs, 2025. Official; the reviewer agent.
@@ -64,6 +70,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. SmartBear and Cisco, "Best practices for peer code review" study, 2007. Original data on review size.
 
 ## Part 6: Release the change
+
 1. Jez Humble and David Farley, "Continuous Delivery", book, 2010. Method authors.
 2. Google SRE Workbook, "Canarying releases", 2018. Run in production.
 3. Google SRE book, "Release engineering", 2016. Run in production.
@@ -74,6 +81,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. Charity Majors, talk on deploying on Fridays and ownership, 2019. Runs it in production (video).
 
 ## Part 7: Learn from the incident
+
 1. Google SRE book, "Postmortem culture: learning from failure", 2016. Run in production.
 2. John Allspaw, "Blameless PostMortems and a just culture", Etsy blog, 2012. Original source.
 3. Sidney Dekker, "The Field Guide to Understanding Human Error", book, 2006. Original author.
@@ -84,6 +92,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 8. Anthropic, "A postmortem of three recent issues", engineering post, 2025. A real postmortem by the tool's maker.
 
 ## Part 8: Run the team
+
 1. DORA, "Accelerate State of DevOps report", Google Cloud, 2024. The research team that made the four keys.
 2. Nicole Forsgren, Jez Humble, Gene Kim, "Accelerate", book, 2018. Method authors.
 3. DORA, "Four keys project", GitHub and dora.dev, 2020. Made by the team that runs it.
@@ -96,6 +105,7 @@ For the page pass. Cut each part to 4 to 6 picks (at least 2 videos), then delet
 10. Anthropic, "Claude Code GitHub Actions", docs, 2025. Official; a team playbook can run on schedule.
 
 ## Part 9: Roll out a change slowly
+
 1. OpenFeature, "Introduction" and spec, openfeature.dev, 2022. The standard's own docs (CNCF project).
 2. flagd docs, flagd.dev, 2023. Maintainers' docs.
 3. Pete Hodgson, "Feature Toggles (aka Feature Flags)", martinfowler.com, 2017. Original long-form source.

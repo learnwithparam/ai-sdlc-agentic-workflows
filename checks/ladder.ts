@@ -2,7 +2,7 @@
 // Run it with: bun checks/ladder.ts
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { allSteps, ROOT } from "../scripts/structure";
+import { allSteps, ROOT, type Step } from "../scripts/structure";
 
 type Feature = { level: string; name: string; step: string; status: "taught" | "todo" };
 
@@ -47,45 +47,38 @@ function textOf(folder: string): string {
   return text.toLowerCase();
 }
 
-export function ladderProblems(): string[] {
-  const toml = Bun.TOML.parse(readFileSync(join(ROOT, "ladder.toml"), "utf8")) as {
-    feature: Feature[];
-  };
-  const steps = allSteps();
+function loadFeatures(): Feature[] {
+  const text = readFileSync(join(ROOT, "ladder.toml"), "utf8");
+  return (Bun.TOML.parse(text) as { feature: Feature[] }).feature;
+}
+
+function featureProblems(feature: Feature, steps: Step[]): string[] {
+  const step = steps.find((candidate) => candidate.name === feature.step);
+  if (!step) return [`${feature.name}: step "${feature.step}" does not exist`];
   const problems: string[] = [];
-  for (const name of REQUIRED) {
-    if (!toml.feature.some((feature) => feature.name === name)) {
-      problems.push(`ladder.toml has no step for "${name}"`);
-    }
+  if (!existsSync(join(ROOT, "checks", `${step.name}.ts`))) {
+    problems.push(`${feature.name}: step "${step.name}" has no check`);
   }
-  for (const feature of toml.feature) {
-    const step = steps.find((candidate) => candidate.name === feature.step);
-    if (!step) {
-      problems.push(`${feature.name}: step "${feature.step}" does not exist`);
-      continue;
-    }
-    if (!existsSync(join(ROOT, "checks", `${step.name}.ts`))) {
-      problems.push(`${feature.name}: step "${step.name}" has no check`);
-    }
-    if (feature.status === "taught") {
-      const keyword = feature.name.replace(/ (files|rules)$/, "").toLowerCase();
-      if (!textOf(step.dir).includes(keyword)) {
-        problems.push(`${feature.name}: marked taught but "${step.name}" does not name it`);
-      }
-    }
+  const keyword = feature.name.replace(/ (files|rules)$/, "").toLowerCase();
+  if (feature.status === "taught" && !textOf(step.dir).includes(keyword)) {
+    problems.push(`${feature.name}: marked taught but "${step.name}" does not name it`);
   }
   return problems;
 }
 
+export function ladderProblems(): string[] {
+  const features = loadFeatures();
+  const steps = allSteps();
+  const missing = REQUIRED.filter((name) => !features.some((feature) => feature.name === name));
+  const unmapped = missing.map((name) => `ladder.toml has no step for "${name}"`);
+  return [...unmapped, ...features.flatMap((feature) => featureProblems(feature, steps))];
+}
+
 if (import.meta.main) {
   const problems = ladderProblems();
-  const toml = Bun.TOML.parse(readFileSync(join(ROOT, "ladder.toml"), "utf8")) as {
-    feature: Feature[];
-  };
-  const todo = toml.feature.filter((feature) => feature.status === "todo").length;
+  const features = loadFeatures();
+  const todo = features.filter((feature) => feature.status === "todo").length;
   for (const problem of problems) console.log(`ladder: ${problem}`);
-  console.log(
-    `ladder: ${toml.feature.length} features mapped, ${todo} still to teach in the pages`,
-  );
+  console.log(`ladder: ${features.length} features mapped, ${todo} still to teach in the pages`);
   process.exit(problems.length ? 1 : 0);
 }
