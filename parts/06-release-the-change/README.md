@@ -6,7 +6,7 @@ This part moves the **Objective**: a release a person authorises.
 
 Riders were never told why a bike vanished from the map. The last rollout went to all of Brannock at once.
 
-Novo Nordisk's team cut clinical document work "10+ weeks to 10 minutes", with human reviewers approving every output ([Novo Nordisk](https://claude.com/customers/novo-nordisk)). The faster the agent, the more the gate matters.
+Novo Nordisk's team cut clinical document work "from weeks to minutes", with human reviewers approving every output ([Novo Nordisk](https://claude.com/customers/novo-nordisk)). The faster the agent, the more the gate matters.
 
 For example, a guardrail "stop below 96" for bike availability comes straight from SLA-9 in the contract.
 
@@ -22,7 +22,7 @@ flowchart LR
 | `write-the-release-notes` | 10      | `work/release.md` with a Riders section at reading grade 6 or lower, with no criterion ids, file names or jargon, and a Crews section that names the new queue order and the 48 hour clock. The pm approval matches and comes after `REVIEW.md`'s                 |
 | `gate-the-release`        | 20      | `work/rollout.yaml` parses, has 2 or more stages of real districts, every guardrail number is in `sla.yaml`, and the rollback command runs. The settings still ask before a deploy. A recorded run shows the deploy stopped. The release-manager approval matches |
 
-This part takes 30 minutes.
+This part fits in one sitting.
 
 ## Walkthrough
 
@@ -70,7 +70,7 @@ Then ask Claude Code, headless, to ship. This needs Claude Code signed in:
 bun parts/06-release-the-change/02-gate-the-release/record.ts
 ```
 
-Expect: `Blocked by a permission rule: Bash bun run deploy:production`
+Expect: "Blocked by a permission rule: Bash bun run deploy:production"
 
 Claude Code may also stop on its own, because no code reads the feature flag yet. Then the run prints no Blocked line. Run it again. With no Claude Code, copy the sample end state instead. It holds real recorded runs:
 
@@ -133,3 +133,13 @@ Add a guardrail for e-bike battery faults. Take its threshold from the repair da
 You now have release notes for two audiences and a rollout that goes one district at a time. Its guardrails come from the contract, and its rollback runs. A recorded run proves that Claude Code cannot ship without a person. The release manager types the deploy.
 
 Next, in [Learn from the incident](../07-learn-from-the-incident/README.md), the first district goes live and something goes wrong. A retried wrench report disables 212 bikes in North. Claude Code helps you write a blameless postmortem and turn it into a test.
+
+## Watch and read
+
+| Kind  | Title                                 | Author                                 | Why                                                                       | Link                                                                       |
+| ----- | ------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| video | Claude Code best practices            | Anthropic, talk at its developer event | The team shows CLAUDE.md, permissions, tools and planning in one sitting. | <https://www.youtube.com/watch?v=gv0WHhKelSE>                              |
+| video | Claude Code best practices webinar    | Anthropic                              | Practical habits from the team that runs the tool every day.              | <https://www.anthropic.com/webinars/claude-code-best-practices-lightspeed> |
+| read  | Permissions                           | Anthropic docs                         | How a rule stops a deploy until a person agrees.                          | <https://code.claude.com/docs/en/permissions>                              |
+| read  | Connect Claude Code to tools with MCP | Anthropic docs                         | How outside tools join a session.                                         | <https://code.claude.com/docs/en/mcp>                                      |
+| read  | Hooks                                 | Anthropic docs                         | A hook can gate a risky command.                                          | <https://code.claude.com/docs/en/hooks>                                    |

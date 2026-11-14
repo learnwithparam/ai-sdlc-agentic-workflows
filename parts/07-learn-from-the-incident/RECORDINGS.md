@@ -18,7 +18,7 @@ Each later begin state is the end state of the step before. For example, `02-clo
 
 ## The runs
 
-Every run used Claude Code 2.1.323, signed in, in a clone of the step's begin state. Each one used these flags: `--output-format stream-json --verbose --permission-mode acceptEdits --setting-sources project,local --no-session-persistence`. The prompt is in the step README or in `prompts.md`.
+Every run used a signed-in Claude Code, in a clone of the step's begin state. Each one used these flags: `--output-format stream-json --verbose --permission-mode acceptEdits --setting-sources project,local --no-session-persistence`. The prompt is in the step README or in `prompts.md`.
 
 | Saved as                                                                            | Prompt                                          | Extra flags                                                          |
 | ----------------------------------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------- |

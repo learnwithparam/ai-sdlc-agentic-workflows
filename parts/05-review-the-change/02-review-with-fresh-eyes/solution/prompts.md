@@ -19,7 +19,7 @@ Claude Code wrote `.claude/agents/reviewer.md`. The transcript is `make-the-revi
 
 **Check before you say yes:**
 
-- The line `tools: Read, Grep, Glob, Bash` is there. With no `tools:` line, a subagent gets every tool, Edit and Write too. That mistake is in `wrong/reviewer-can-edit/`.
+- The line "tools: Read, Grep, Glob, Bash" is there. With no `tools:` line, a subagent gets every tool, Edit and Write too. That mistake is in `wrong/reviewer-can-edit/`.
 - The body keeps "Skip style". Anthropic's [best practices](https://code.claude.com/docs/en/best-practices.md) page says: "Don't drop the `skip style` part of that prompt. A reviewer that's asked to find problems will always find _something_."
 - Claude added a line of its own: "Use Bash only to read". Keep it. A tool list cannot stop a shell command, so this line and the permission rules do that job.
 

@@ -4,13 +4,13 @@ For course authors. Every Markdown file in this part's `solution/` and `wrong/` 
 
 ## The begin state
 
-`01-measure-the-lifecycle/problem/history.bundle` is the end of Part 7: the end state of `close-the-loop`, recorded on the `build/part-07` branch. It holds the whole lifecycle in git, from `Kestrel spoke as it was` to `approve: work/intent/next-dedupe-wrenches.md by pm`. Part 7's `make-begin-history.ts` and its runs made it.
+`01-measure-the-lifecycle/problem/history.bundle` is the end of Part 7: the end state of `close-the-loop`, recorded on the `build/part-07` branch. It holds the whole lifecycle in git, from "Kestrel spoke as it was" to `approve: work/intent/next-dedupe-wrenches.md by pm`. Part 7's `make-begin-history.ts` and its runs made it.
 
 Each later begin state is the end state of the step before. For example, `03-ship-the-feature/problem/history.bundle` is the same file as `02-write-the-team-playbook/solution/history.bundle`. After `measure-the-lifecycle`, the learner committed `work/metrics.md` with the message `Add the lifecycle numbers in work/metrics.md`.
 
 ## The runs
 
-Every run used Claude Code 2.1.323, signed in, in a clone of the step's begin state. Each one used these flags: `--output-format stream-json --verbose --permission-mode acceptEdits --setting-sources project,local --no-session-persistence`. The prompt is in the step README or in `prompts.md`.
+Every run used a signed-in Claude Code, in a clone of the step's begin state. Each one used these flags: `--output-format stream-json --verbose --permission-mode acceptEdits --setting-sources project,local --no-session-persistence`. The prompt is in the step README or in `prompts.md`.
 
 | Saved as                                                                                  | Prompt                                  | Extra flags                                                                                 |
 | ----------------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------- |

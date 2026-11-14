@@ -28,7 +28,7 @@ Read the file Claude Code shows you before you say yes. For example, if it adds 
 
 ## Done when
 
-- `notes/doctor.md` shows Claude Code 2.1.302 or newer.
+- `notes/doctor.md` shows a recent enough Claude Code.
 - `notes/doctor.md` shows Claude Code is signed in.
 - `notes/goal.md` has one line that names a stage: Plan, Design, Build, Review, Release or Maintain.
 
@@ -42,11 +42,11 @@ Expect: `Done. All 3 rules pass.` Then `verify` checks every step of the course,
 
 ## If you get stuck
 
-| What you see                                              | Fix                                                                    |
-| --------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `FAIL notes/doctor.md shows Claude Code 2.1.302 or newer` | Run `claude update`, then `bun run doctor` again.                      |
-| `FAIL notes/doctor.md shows Claude Code is signed in`     | Run `claude`, type `/login`, then `bun run doctor` again.              |
-| `FAIL notes/goal.md has one line that names a stage ...`  | Ask Claude Code to keep one line and use one stage name from the list. |
+| What you see                                             | Fix                                                                    |
+| -------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `FAIL notes/doctor.md shows a recent enough Claude Code` | Run `claude update`, then `bun run doctor` again.                      |
+| `FAIL notes/doctor.md shows Claude Code is signed in`    | Run `claude`, type `/login`, then `bun run doctor` again.              |
+| `FAIL notes/goal.md has one line that names a stage ...` | Ask Claude Code to keep one line and use one stage name from the list. |
 
 ## Words you will use
 

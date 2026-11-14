@@ -1,0 +1,42 @@
+# Maps each Claude Code feature a learner must use to the step that teaches it.
+# Each step has a check in checks/<step>.ts, and the rules there test the learner's work.
+# Levels come from standard section 7.
+[features]
+# L0 Ask
+plan-mode = "plan-in-plan-mode"
+at-files = "ready-the-repo"
+screenshots = "meet-kestrel"
+specific-prompt = "find-the-real-problem"
+# L1 Supervise
+permission-modes = "ready-the-repo"
+diff-review = "build-in-small-slices"
+esc = "build-in-small-slices"
+rewind = "build-in-small-slices"
+clear = "find-the-real-problem"
+# L2 Teach the repo
+init = "ready-the-repo"
+claude-md = "ready-the-repo"
+rules = "write-the-review-rules"
+check-to-run = "ready-the-repo"
+# L3 Fence it
+hooks = "write-the-failing-tests"
+deny-rules = "ready-the-repo"
+sandbox = "ready-the-repo"
+skills = "write-the-contract-skill"
+mcp-or-cli-tools = "gate-the-release"
+# L4 Spec and verify
+spec-interview = "write-the-spec"
+goal = "meet-kestrel"
+stop-hook-gate = "write-the-failing-tests"
+code-review-subagent = "review-with-fresh-eyes"
+# L5 Parallel
+subagents = "review-with-fresh-eyes"
+worktrees = "build-in-small-slices"
+batch = "build-in-small-slices"
+reviewer-agent = "review-with-fresh-eyes"
+# L6 Unattended
+headless = "meet-kestrel"
+loop = "measure-the-lifecycle"
+schedule = "measure-the-lifecycle"
+github-action = "write-the-team-playbook"
+run-contract-and-metrics = "measure-the-lifecycle"

@@ -81,7 +81,7 @@ You write no code in this course. You type prompts, read what Claude Code shows 
 | [Run the team](parts/08-run-the-team/README.md)                         | `measure-the-lifecycle`, `write-the-team-playbook`, `ship-the-feature`  | 50      | `metrics.md`, `PLAYBOOK.md` and the Goal check                        |
 | [Roll out a change slowly](parts/09-roll-out-a-change-slowly/README.md) | `roll-out-with-openfeature`                                             | 25      | `assignment/flags/flagd.json`, optional in the live session           |
 
-The same 360 minutes run as one workshop, four evenings or six sessions. See `schedules.toml`.
+The same course runs as one workshop, four evenings or six sessions. See `schedules.toml`.
 
 ## How a step works
 
@@ -100,7 +100,7 @@ You leave with two chains. The first is your Kestrel chain, where `ship-the-feat
 ## Read before you start
 
 - [The AI-native SDLC playbook](https://claude.com/resources/articles/the-ai-native-sdlc-playbook), Anthropic: the first two sections. This course is that playbook, done, with a check at every gate.
-- [Announcing the 2025 DORA report](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report), Google Cloud: why gates matter when AI raises throughput.
+- [Announcing the DORA report](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report), Google Cloud: why gates matter when AI raises throughput.
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices.md), Anthropic: down to "Give Claude something it can run".
 
 The rules this repo follows are in [STANDARD.md](STANDARD.md). The plan for the parts still being written is in [PARTS.md](PARTS.md).

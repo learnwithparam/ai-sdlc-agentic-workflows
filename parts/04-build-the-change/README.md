@@ -25,7 +25,7 @@ flowchart LR
 | `write-the-failing-tests` | 15      | One test per AC id in `test/acceptance/`, named for its id. Every test fails on the begin state. The test commit is earlier in git than any change to `src/`. The qa approval of `test/acceptance` matches                                                                                                                                                      |
 | `build-in-small-slices`   | 25      | All tests pass. At least 2 commits after the test commit, none over 200 changed lines, each naming a plan item. The acceptance tests are byte for byte as approved. The world contract: `POST /wrench` then the feed shows `is_disabled: true` within 60 seconds, and `GET /crew/queue` is due first. `wrong/edited-the-test/` and `wrong/one-big-commit/` fail |
 
-This part takes 60 minutes.
+This part fits in one sitting.
 
 ## Walkthrough
 
@@ -135,3 +135,13 @@ Pass is 5 of 5.
 You now have the build stage of the chain. You have a plan made in plan mode, and tests that were red before the code and are green after. You also have four small commits a reviewer can read one at a time. The running service keeps the contract: a wrenched bike leaves the feed, and the crew queue puts the job due first on top.
 
 In Part 5, a reviewer with read-only tools checks the change with fresh eyes, against the team's own review rules.
+
+## Watch and read
+
+| Kind  | Title                                 | Author         | Why                                                   | Link                                                               |
+| ----- | ------------------------------------- | -------------- | ----------------------------------------------------- | ------------------------------------------------------------------ |
+| video | Claude Code advanced workshop         | Anthropic      | A hands-on session on running several agents at once. | <https://www.anthropic.com/webinars/claude-code-workshop-advanced> |
+| video | Claude Code advanced patterns webinar | Anthropic      | Subagents and hooks for work that runs in many steps. | <https://www.anthropic.com/webinars/claude-code-advanced-patterns> |
+| read  | Hooks                                 | Anthropic docs | How a hook blocks an action with an exit code.        | <https://code.claude.com/docs/en/hooks>                            |
+| read  | Checkpointing                         | Anthropic docs | How to rewind a change you do not want.               | <https://code.claude.com/docs/en/checkpointing>                    |
+| read  | Common workflows                      | Anthropic docs | Parallel sessions with git worktrees.                 | <https://code.claude.com/docs/en/common-workflows>                 |
