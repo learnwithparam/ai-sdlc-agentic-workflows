@@ -30,4 +30,3 @@ jobs:
 ```
 
 Keep the key in a secret, and let the job comment only. It must never push, approve or merge. A person still decides.
-
