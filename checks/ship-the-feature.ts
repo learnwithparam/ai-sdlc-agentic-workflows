@@ -73,13 +73,21 @@ function testsCameBeforeCode(folder: string): boolean {
   const firstTest = commits.findIndex((commit) =>
     commit.files.some((file) => file.startsWith("test/acceptance/")),
   );
-  const firstBuild = commits.findIndex((commit) => /^P-\d+/.test(commit.subject));
+  // P-1 is the acceptance tests themselves, so the first build commit is the first P- commit
+  // that changes code in src/.
+  const firstBuild = commits.findIndex(
+    (commit) => /^P-\d+/.test(commit.subject) && commit.files.some((file) => file.startsWith("src/")),
+  );
   return firstTest >= 0 && firstBuild > firstTest;
 }
 
 function codeCommitsAreSmall(folder: string): boolean {
   const limit = sizeLimitOf(folder);
-  const commits = countedCommits(folder).filter((commit) => /^(P|A)-\d+/.test(commit.subject));
+  // The test commit is judged by write-the-failing-tests, not by this size limit.
+  const onlyTests = (files: string[]) => files.every((file) => file.startsWith("test/"));
+  const commits = countedCommits(folder).filter(
+    (commit) => /^(P|A)-\d+/.test(commit.subject) && !onlyTests(commit.files),
+  );
   return commits.length > 0 && commits.every((commit) => commit.changedLines <= limit);
 }
 

@@ -1,64 +1,47 @@
-# DORA metrics for spoke
+# DORA metrics: spoke, May–October 2026
 
-Sources: `data/deploys.csv` (69 deploys, D-001 to D-069) and `data/incidents.csv` (9 incidents, INC-01 to INC-09).
-Period: first deploy 2026-05-04 to last deploy 2026-10-31, 180 days. All times are UTC.
-The North double wrench incident (D-071, 2026-11-03) is in `data/incidents/north-double-wrench/` and `work/postmortem.md`, not in the CSV files. It is listed on its own at the end and is not counted in the tables below.
+Sources: `data/deploys.csv` (69 production deploys, D-001 to D-069, deployed 2026-05-04 to 2026-10-31) and `data/incidents.csv` (9 incidents, INC-01 to INC-09, each linked to one deploy). All times are UTC. I worked each figure out by hand from the CSVs, so treat them as accurate to about 0.1 h.
 
-## Summary
+## Summary (whole period)
 
-| Metric                  | Value                               | How it was worked out                                             |
-| ----------------------- | ----------------------------------- | ----------------------------------------------------------------- |
-| Deployment frequency    | 2.7 deploys a week (69 in 180 days) | count of rows in `deploys.csv` / (180 / 7)                        |
-| Lead time for changes   | median 66 hours (about 2.75 days)   | `deployed_at` − `committed_at` for each deploy; median of 69      |
-| Change failure rate     | 13% (9 of 69 deploys)               | deploys with an `incident_id` / all deploys                       |
-| Time to restore service | median 3 h 31 min (mean 3 h 17 min) | `resolved_at` − `started_at` for each incident in `incidents.csv` |
+| Metric | Value | How it is measured |
+| --- | --- | --- |
+| Deployment frequency | **69 deploys in 181 days, about 2.7 a week** (7–16 a month) | count of `deployed_at` |
+| Lead time for changes | **median 66 h (about 2.75 days)**, range 5.7 h to 118.6 h | `deployed_at − committed_at` for each deploy |
+| Change failure rate | **9 / 69 = 13.0 %** | deploys with an `incident_id` |
+| Time to restore service | **median 3.5 h**, range 1.5 h to 4.3 h | `resolved_at − started_at` for each incident |
 
-Lead time range: 5.7 hours (D-009) to 118.6 hours (D-006). 11 deploys took under 30 hours, 30 took over 70 hours.
-Restore range: 1 h 32 min (INC-07) to 4 h 16 min (INC-04).
+## By month (month of `deployed_at`)
 
-## Deploys by month
+| Month | Deploys | Median lead time | Failed deploys | Change failure rate | Restore time of incidents that started that month |
+| --- | ---: | ---: | ---: | ---: | --- |
+| May | 11 | 75.4 h | 1 (D-009) | 9 % | 3.9 h |
+| Jun | 7 | 66.0 h | 1 (D-013) | 14 % | 3.5 h |
+| Jul | 12 | 62.4 h | 2 (D-019, D-023) | 17 % | 2.4 h, 4.3 h |
+| Aug | 12 | 77.5 h | 0 | 0 % | none |
+| Sep | 11 | 62.2 h | 2 (D-050, D-053) | 18 % | 3.7 h, 3.1 h |
+| Oct | 16 | 56.5 h | 3 (D-054, D-062, D-063) | 19 % | 1.5 h, 3.8 h, 3.2 h |
 
-| Month (by `deployed_at`) | Deploys | Deploys with an incident |
-| ------------------------ | ------- | ------------------------ |
-| May                      | 11      | 1 (D-009)                |
-| June                     | 8       | 2 (D-013, D-019)         |
-| July                     | 11      | 1 (D-023)                |
-| August                   | 12      | 0                        |
-| September                | 11      | 2 (D-050, D-053)         |
-| October                  | 16      | 3 (D-054, D-062, D-063)  |
-| Total                    | 69      | 9                        |
+## What the trend shows
 
-October had the most deploys and the most failed deploys. Its median lead time was 56.5 hours.
-
-## Incidents
-
-| Incident | Deploy | Time to restore | Summary                                 |
-| -------- | ------ | --------------- | --------------------------------------- |
-| INC-01   | D-009  | 3 h 54 min      | crew queue page timed out               |
-| INC-02   | D-013  | 3 h 31 min      | e-bike battery levels missing from feed |
-| INC-03   | D-019  | 2 h 25 min      | crew queue page timed out               |
-| INC-04   | D-023  | 4 h 16 min      | feed served stale station counts        |
-| INC-05   | D-050  | 3 h 45 min      | e-bike battery levels missing from feed |
-| INC-06   | D-053  | 3 h 07 min      | e-bike battery levels missing from feed |
-| INC-07   | D-054  | 1 h 32 min      | feed served stale station counts        |
-| INC-08   | D-062  | 3 h 50 min      | crew queue page timed out               |
-| INC-09   | D-063  | 3 h 12 min      | docks shown free while full             |
-
-Three causes come back again and again: the crew queue timeout (3 times), missing e-bike battery levels (3 times) and stale station counts (2 times). That is 8 of the 9 incidents.
-
-Not in the CSV: D-071 (2026-11-03), the North double wrench incident, restored in 3 h 10 min (07:40 to 10:50, `work/postmortem.md`).
+- **Throughput went up in October**: 16 deploys against 7–12 in earlier months, and the median lead time was the lowest of the period (56.5 h). Four of the six fastest deploys were in late October (D-064 14.2 h, D-068 21.2 h, D-069 11.5 h, D-063 23.0 h).
+- **Stability did not get better.** The change failure rate rose from 9 % in May to 17–19 % from July onwards (August, at 0 %, is the exception). Five of the 9 incidents came after deploys from September onwards.
+- **The same failures keep coming back**: "e-bike battery levels missing from feed" (INC-02, 05, 06), "crew queue page timed out" (INC-01, 03, 08) and "feed served stale station counts" (INC-04, 07). Feed failures count against SLA-12 (feed accuracy). These repeats are a better place to work than speed.
+- **Restore time is steady** at about 3–4 h and is not trending in either direction.
+- Lead time varies a lot within each month (often 15 h to 115 h). With 7–16 deploys a month, a change of 10–20 h in the monthly median is within normal noise.
 
 ## How much faster did Claude Code make the team?
 
-This data cannot answer that, and no speed-up figure should be quoted from it.
+**This data can't answer that, so this report gives no speed-up figure.**
 
-- **Claude Code arrived at the end of the data.** The team added CLAUDE.md and the Claude Code settings on 2026-10-26 10:30 (commit `d16d783`). `deploys.csv` stops on 2026-10-31. Only 3 deploys come after that time (D-067 to D-069), and D-067 was committed at 08:43, before Claude Code was set up. That leaves 2 deploys (D-068: 21.2 h, D-069: 11.5 h), against 66 before.
-- **Two deploys are too few.** Short lead times are not new: D-063 (22.9 h) and D-064 (14.2 h) came the week before, and 9 of the 66 earlier deploys were under 30 hours. Two short ones in a row fit the old pattern.
-- **We cannot tell which changes Claude Code worked on.** The commits in `deploys.csv` are not in this repository, and nothing in the file marks a change as made with Claude Code. The work done with Claude Code in this repo (P-1 to P-3, A-1) does not appear in `deploys.csv`.
-- **The one later deploy we know about failed.** D-071 shipped the Claude Code-built change to North and caused the double wrench incident. One deploy is not a change failure rate, but it does not support a claim of better delivery.
+- No record says when the team started using Claude Code. `deploys.csv` and `incidents.csv` don't record any tooling, and neither does anything else in `data/`.
+- This repository's git history starts on 2026-11-13. That is two weeks after the last deploy in the data (D-069, 2026-10-31). The commits with Claude attribution all come after every deploy measured here, so none of these 69 deploys can be linked to Claude Code.
+- Even with an adoption date, a before/after comparison would only show correlation. Team size, the mix of work and seasonal ridership also change over these months.
 
-What would let us answer it:
+A defensible answer needs three things:
 
-1. Keep adding rows to `deploys.csv` and `incidents.csv` in the same format for at least a full quarter after 2026-10-26, including D-070 and D-071.
-2. Add a column that says whether each change was made with Claude Code, so the two groups can be compared over the same period, not only before and after.
-3. Compare the same four metrics, with medians and ranges, and look at whether change failure rate holds steady as lead time falls.
+1. **An adoption date** (or a per-deploy flag) from the engineering manager.
+2. **More deploys after that date.** November onwards needs at least 2–3 months, or about 30+ deploys, before medians at this level of noise mean anything.
+3. **All four metrics, not just lead time.** On this data, any gain in speed in October came with a higher change failure rate.
+
+Until then, the honest statement is: *"Over May–October, deploys sped up a little and became more frequent in October, while failures rose. We have no data yet that links either change to Claude Code."*

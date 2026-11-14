@@ -12,7 +12,7 @@ bun parts/07-learn-from-the-incident/make-begin-history.ts /tmp/part-7-begin
 
 Expect: `Built the Part 7 begin state in /tmp/part-7-begin`
 
-It commits each stage from `world/finished/` in lifecycle order. Each gate is signed by the person who holds the role. The build commits P-1 to P-3 copy the code from the recorded build in `world/finished/history.bundle`. Then it adds the incident logs. Two files differ from `world/finished/` on purpose: `CLAUDE.md` has no retry line yet, and `work/plan.md` has no P-4, because the plan was approved before the incident.
+It starts from the end of Part 4, so the ticket and the spec are the same ones the learner built. It lays the signed output of Parts 5 and 6 on top, then adds the incident logs. Nothing comes from `world/finished/`.
 
 Each later begin state is the end state of the step before. For example, `02-close-the-loop/problem/history.bundle` is the same file as `01-write-the-postmortem/solution/history.bundle`.
 
@@ -23,9 +23,8 @@ Every run used Claude Code 2.1.323, signed in, in a clone of the step's begin st
 | Saved as                                                                            | Prompt                                          | Extra flags                                                          |
 | ----------------------------------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------- |
 | `01-write-the-postmortem/solution/recordings/write-the-postmortem/postmortem.jsonl` | step README, prompt 1                           | `--max-turns 30`                                                     |
-| `01-write-the-postmortem/solution/recordings/write-the-postmortem/check-fix.jsonl`  | `prompts.md`, prompt 2                          | `--max-turns 10`                                                     |
 | `01-write-the-postmortem/solution/recordings/write-the-postmortem/regression.jsonl` | step README, prompt 2                           | `--allowedTools` for `bun test`, `git add`, `git commit`, `git diff` |
-| `01-write-the-postmortem/wrong/blames-the-engineer/recordings/.../blame.jsonl`      | "say who made the mistake" (in `prompts.md`)    | `--max-turns 20`                                                     |
+| `01-write-the-postmortem/wrong/blames-the-engineer/recordings/.../blame.jsonl`      | "name the people from chat.txt" (hand edited, see `prompts.md`)    | `--max-turns 20`                                                     |
 | `01-write-the-postmortem/wrong/fix-without-a-test/recordings/.../no-test.jsonl`     | "Just the fix, we do not need a test for this." | `--allowedTools "Bash(bun test *)"`                                  |
 | `02-close-the-loop/solution/recordings/close-the-loop/claude-md-line.jsonl`         | step README, prompt 1                           | `--max-turns 12`                                                     |
 | `02-close-the-loop/solution/recordings/close-the-loop/next-intent.jsonl`            | step README, prompt 2                           | `--max-turns 12`                                                     |
@@ -47,3 +46,7 @@ bun parts/07-learn-from-the-incident/take-pictures.ts
 ```
 
 Expect: `Saved parts/07-learn-from-the-incident/01-write-the-postmortem/images/expected.png`
+
+## Re-recorded on the Part 4 ticket
+
+The runs in this part were recorded again on the Part 4 repo. Two limits to know: the `blames-the-engineer` run held to blameless even when asked, so that sample is a hand edit of the real postmortem, and the first run of the action items check refused the word Ask, so `ask` was added to the verb list in `checks/write-the-postmortem.ts`.

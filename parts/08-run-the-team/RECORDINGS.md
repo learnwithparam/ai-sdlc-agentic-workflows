@@ -4,7 +4,7 @@ For course authors. Every Markdown file in this part's `solution/` and `wrong/` 
 
 ## The begin state
 
-`01-measure-the-lifecycle/problem/history.bundle` is the end of Part 7: the end state of `close-the-loop`, recorded on the `build/part-07` branch. It holds the whole lifecycle in git, from `Kestrel spoke as it was` to `approve: work/intent/next-dedupe-wrenches.md by pm`. Part 7's `make-begin-history.ts` and its runs made it.
+`01-measure-the-lifecycle/problem/history.bundle` is the end of Part 7, on the Part 4 ticket. It holds the whole lifecycle in git, from the Part 4 build to `approve: work/intent/next-dedupe-wrenches.md by pm`. The CLAUDE.md line, the next intent and the approval were committed after the Part 7 runs.
 
 Each later begin state is the end state of the step before. For example, `03-ship-the-feature/problem/history.bundle` is the same file as `02-write-the-team-playbook/solution/history.bundle`. After `measure-the-lifecycle`, the learner committed `work/metrics.md` with the message `Add the lifecycle numbers in work/metrics.md`.
 
@@ -34,3 +34,7 @@ bun parts/08-run-the-team/take-pictures.ts
 ```
 
 Expect: `Saved parts/08-run-the-team/01-measure-the-lifecycle/images/expected.png`
+
+## The new step
+
+`04-ship-in-your-own-repo` was recorded on a small tool called `pantry`, which is not part of Kestrel. The five transcripts are the five moves in its `prompts.md`. The two `wrong/` samples are hand edits of the real evidence file.

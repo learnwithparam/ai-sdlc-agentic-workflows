@@ -1,45 +1,51 @@
-# Playbook: how we work with Claude Code
+# PLAYBOOK.md
+
+How the `spoke` team works with Claude Code. Every line here points at something the repo
+already holds: `work/approvals.jsonl`, `.claude/settings.json`, `CLAUDE.md` and `AGENTS.md`.
 
 ## Our AI stance
 
-Claude Code writes drafts: specs, plans, code and tests. People sign. Every stage file is approved by a named person in a set role, and that approval is recorded in `work/approvals.jsonl`. Claude never records an approval itself (`bun run approve` is denied).
+Claude drafts the work. A person in a named role signs the files that gate it. A sign-off is a
+line in `work/approvals.jsonl` that records the file's `sha256`, the approver's role, their name
+and the time, so each sign-off covers that exact version of the file.
 
 ## Gates
 
-| File                                     | Who approves    | How it is recorded                                                    |
-| ---------------------------------------- | --------------- | --------------------------------------------------------------------- |
-| `work/intent.md`                         | PM              | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/spec.md`                           | PM              | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/decisions/0001-disable-in-feed.md` | Tech lead       | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/plan.md`                           | Tech lead       | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `test/acceptance`                        | QA              | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `REVIEW.md`                              | Tech lead       | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/release.md`                        | PM              | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/rollout.yaml`                      | Release manager | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/postmortem.md`                     | Tech lead       | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
-| `work/intent/next-dedupe-wrenches.md`    | PM              | Line in `work/approvals.jsonl` with file, sha256, role, time and name |
+| File                                    | Who approves    | How it is recorded                                             |
+| --------------------------------------- | --------------- | -------------------------------------------------------------- |
+| `work/intent.md`                        | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/spec.md`                          | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/decisions/0001-disable-in-feed.md` | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/plan.md`                          | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `test/acceptance`                       | qa              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `REVIEW.md`                             | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/release.md`                       | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/rollout.yaml`                     | release-manager | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/postmortem.md`                    | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/intent/next-dedupe-wrenches.md`   | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+
+`work/spec.md` and `work/decisions/0001-disable-in-feed.md` were each signed twice. The latest
+line is the one that counts.
 
 ## Never do
 
-These rules live in `.claude/settings.json`.
-
-- Deny: edit `/data/contract/**`. The city owns the contract.
-- Deny: write `/data/contract/**`.
-- Deny: edit `/test/acceptance/**`. QA approved these tests; change the code instead.
-- Deny: write `/test/acceptance/**`.
-- Deny: run `bun run approve *`. An approval is a person's decision.
-- Ask: run `bun run deploy:production *`. A person confirms every production deploy, and only after the release manager approved `work/rollout.yaml`.
+- `Edit(/data/contract/**)`: denied. Claude cannot edit the city contract (`data/contract/sla.yaml`).
+- `Write(/data/contract/**)`: denied. Claude cannot write files under `data/contract/`.
+- `Bash(bun run deploy:production *)`: ask. A person must say yes before Claude can run it.
 
 ## Size of a change
 
-Keep each commit under 200 changed lines (from `CLAUDE.md`). One commit per plan item, message starting with the item id, for example `P-2: ...`.
+`CLAUDE.md` does not set a limit on changed lines. `work/plan.md` sets a target for the current
+feature only: P-2 to P-5 each go in their own commit, and each stays under 200 changed lines.
+That target is not a rule for the whole repo.
 
 ## When we use the factory
 
-The repo does not yet set up any change to run with no person in the loop. Every stage starts from a file a person approved, and every deploy asks a person first.
+Nothing in the repo sets up runs with no person in the loop, and no kind of change is marked as
+safe to run that way. So no change may run unattended yet.
 
-These never run without a person:
+These may never run without a person:
 
-- Approving any stage file (`bun run approve` is denied).
-- Production deploys (`bun run deploy:production` always asks).
-- Changes to `data/contract/` or `test/acceptance/` (denied outright).
+- Edits or writes to `data/contract/**`. They are denied outright.
+- `bun run deploy:production`. It is an ask rule, so it waits for a person's yes.
+- Any file in the Gates table. Each one needs a sign-off from the role listed there.

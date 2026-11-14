@@ -1,84 +1,244 @@
-# Playbook: how the spoke team works with Claude Code
+# PLAYBOOK.md: how the spoke team works with Claude Code
 
-This is how we want to work, not a record of how we always have. It builds on `AGENTS.md` (rules for every agent), `CLAUDE.md` (rules for Claude Code), `REVIEW.md` (how we review) and what we learned from the first feature through the pipeline, "broken bikes leave the map", and the North double wrench incident (`work/postmortem.md`).
+This is how a change moves through `spoke`, from a problem someone noticed to a release we can
+measure, and which parts Claude does and which parts a person does. It describes what the repo
+already does (`work/`, `REVIEW.md`, `.claude/`), and fills in the one stage we skip today: review.
 
-## Our AI stance
+One rule sits above all the others: **Claude drafts, and people decide.** Claude writes intents,
+specs, plans, tests, code, reviews, postmortems and metrics. A named person approves each one
+before the next stage starts. Claude never approves anything, never edits the city contract and
+never ships.
 
-- **Claude writes drafts. People make decisions.** Claude Code drafts specs, plans, code, tests, release notes, rollouts and postmortems. A named person approves each one, and no stage starts until the stage before it is approved. Claude never approves anything, for itself or for anyone else.
-- **A person owns every line that ships.** The `Co-Authored-By: Claude` trailer says who helped write a commit. It does not move responsibility. The person who merges the change answers for it.
-- **Files, not chat.** Every stage writes one file in `work/`. The next stage, and the next person or agent, reads that file and nothing else. A decision that lives only in a chat window has not been made.
-- **Proof over confidence.** A change is done when `bun test` passes and the plan's own proof steps work, not when Claude says it is done. Claude's mistakes sound exactly like its correct answers, so we check both the same way.
-- **The contract wins.** `data/contract/` is the city's contract. When a spec, plan or code touches wrench reports, the public feed or the crew queue, Claude loads the `city-contract` skill first.
-- **Lessons go where the next agent will read them.** After an incident or a repeated mistake, we add the lesson to "Things Claude gets wrong" in `CLAUDE.md`. The retried wrench lesson is there because of North.
-- **We are honest about what we measure.** `work/metrics.md` shows the process held: 0 files outside the plan, 0 spec changes after the plan. The same feature still shipped a bug that took 212 bikes out of service. Following the process is necessary, not sufficient. A trailer share is not a productivity number.
+---
 
-## Gates
+## 1. The stages
 
-Each gate is a person's approval, recorded as a line in `work/approvals.jsonl` with the file, its sha256, the role, the time and the name. If the file changes after approval, the hash no longer matches and the approval no longer counts: get it approved again.
+| #   | Stage                  | Claude does                                                           | A person signs off                   | Output                                    |
+| --- | ---------------------- | --------------------------------------------------------------------- | ------------------------------------ | ----------------------------------------- |
+| 1   | Intent                 | Drafts the problem and the outcome, with numbers from `data/` and logs | Product manager                      | `work/intent/<name>.md`                   |
+| 2   | Spec                   | Writes acceptance criteria (AC-n) and concerns (C-n)                  | Product manager                      | `work/spec.md`                            |
+| 3   | Plan and decisions     | Lists files, order (P-n) and proof for each step; drafts ADRs         | Tech lead                            | `work/plan.md`, `work/decisions/NNNN-*.md` |
+| 4   | Failing tests          | Writes one acceptance test per AC, **before** any `src/` change       | QA                                   | `test/acceptance/`                        |
+| 5   | Build in small slices  | One commit per plan step, tests green after each                      | (reviewed at stage 6)                | `P-n:` commits                            |
+| 6   | Review                 | The `reviewer` agent reviews the branch against `REVIEW.md`            | Tech lead decides to merge           | `work/review.md`                          |
+| 7   | Release and rollout    | Drafts rider and crew notes and a staged rollout with guardrails      | Product manager, release manager     | `work/release.md`, `work/rollout.yaml`    |
+| 8   | Deploy                 | Nothing. A person runs it, or tells Claude "yes" for one run          | Release manager                      | `logs/deploys.log`                        |
+| 9   | Incident and postmortem | Builds the timeline and impact from the logs; drafts action items    | Tech lead                            | `work/postmortem.md`                      |
+| 10  | Close the loop         | Fixes action items as `A-n:` commits; adds one line to `CLAUDE.md`    | Tech lead                            | regression tests, `CLAUDE.md`             |
+| 11  | Measure                | Computes the numbers, with the command next to each one               | Engineering manager reads them       | `work/metrics.md`                         |
 
-| #   | Stage              | File Claude drafts                     | Who approves    | What they check                                                                                             |
-| --- | ------------------ | -------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------- |
-| 1   | Intent             | `work/intent.md` or `work/intent/*.md` | PM              | The problem is real, the outcome is clear, the open questions are listed, not guessed.                      |
-| 2   | Spec               | `work/spec.md`                         | PM              | Every acceptance criterion has an id (AC-n) and can be tested. Contract numbers come from `data/contract/`. |
-| 3   | Decision           | `work/decisions/NNNN-*.md`             | Tech lead       | The options and the trade-off are written down, with the one chosen.                                        |
-| 4   | Plan               | `work/plan.md`, made in plan mode      | Tech lead       | Every file that will change is named. Every item (P-n) serves an AC id. Risks and proof are listed.         |
-| 5   | Acceptance tests   | `test/acceptance/`                     | QA              | One test per AC id. Every write route is tested with the same request sent twice. Frozen once approved.     |
-| 6   | Review rules       | `REVIEW.md`                            | Tech lead       | What counts as Important for riders, crews and the contract.                                                |
-| 7   | Build and review   | commits `P-n: ...`, then a review      | Tech lead       | The `reviewer` agent's report (Bugs, Security, Compliance) is read and every Important finding is closed.   |
-| 8   | Release notes      | `work/release.md`                      | PM              | Riders and crews can understand it.                                                                         |
-| 9   | Rollout            | `work/rollout.yaml`                    | Release manager | A flag, stages by district, guardrails from the contract, and a rollback that turns off what went wrong.    |
-| 10  | Deploy             | `bun run deploy:production`            | Release manager | Only after gate 9. The release manager is present and watching the guardrails.                              |
-| 11  | Postmortem, if any | `work/postmortem.md`                   | Tech lead       | Blameless, sourced from logs, every action item has an owner and a check that can fail.                     |
+Then the next intent starts at stage 1 (`work/intent/next-dedupe-wrenches.md` is the current one).
 
-How the gates are enforced:
+### Gates
 
-- `.claude/settings.json` denies edits to `data/contract/` and `test/acceptance/`, denies `bun run approve`, and asks before `bun run deploy:production`. These are hard stops for Claude Code.
-- Other agents do not read `.claude/settings.json`. For them, `AGENTS.md` is the rule and review is the check.
-- "Read the approved file before the next stage" is a habit, not a lock. The reviewer checks it at gate 7: every changed file must be in the plan, every AC id must have a test.
+A stage starts only when the stage before it is approved. Approval is a line in
+`work/approvals.jsonl`, written by the person approving:
 
-## Never do
+```json
+{"file":"work/spec.md","sha256":"…","role":"pm","at":"2026-11-13T05:37:50Z","by":"<name>"}
+```
 
-For Claude and for people working with Claude:
+- The `sha256` pins the exact text that was approved. If the file changes after that, the
+  approval no longer counts and the file goes back for sign-off. (`work/spec.md` has two lines
+  for this reason.)
+- Commit the approval on its own: `approve: <file> by <role>`.
+- **Claude never writes to `work/approvals.jsonl`.** If you ask Claude to "approve" something,
+  it should refuse and tell you the command to run yourself.
+- Start each stage with an empty commit, `Begin <stage>`, so the history shows where each stage
+  began and the metrics in stage 11 can find it.
 
-- **Never edit `data/contract/`.** The city owns it. If the contract looks wrong, raise it with the PM.
-- **Never change a file in `test/acceptance/` after QA approved it.** If a test fails, change the code. If the test itself is wrong, that is a new spec and a new QA approval, not a quiet fix.
-- **Never run `bun run approve`, and never write a line into `work/approvals.jsonl` by hand for someone else.** An approval is a person's decision.
-- **Never run `bun run deploy:production` before the release manager approved `work/rollout.yaml`.** Approving the deploy prompt is not the same as that approval.
-- **Never start a stage from a draft.** Start from the approved file of the stage before: intent, spec, decision, plan.
-- **Never edit an approved file and carry on.** A changed file has a new hash. Send it back to its approver.
-- **Never change a file the plan does not name.** If the build needs another file, stop, update the plan, and get it approved again.
-- **Never start the 48 hour clock when the dispatch desk opens the job.** It starts at the wrench `reported_at` (SLA-4).
-- **Never ship a write route that is not idempotent.** The rider app retries. A repeat `request_id` returns the existing job and opens no new job or disable. Test it by sending the same request twice.
-- **Never rename feed fields away from GBFS v3** (`is_disabled`, `num_vehicles_disabled`). Rider apps depend on them.
-- **Never let Claude review its own build.** Use the `reviewer` agent in a fresh context, then a person decides.
-- **Never paste rider data, incident logs or contract terms into outside tools or services** to get help with them.
+---
 
-## Size of a change
+## 2. Stage by stage
 
-- **One plan item, one commit.** The message starts with the item id: `P-2: start the deadline clock at reported_at`. Postmortem fixes use the action id: `A-1: ...`.
-- **Under 200 changed lines per commit.** If an item will not fit, the plan item is too big. Split it in the plan and get the plan approved again. Do not split the commit to dodge the limit.
-- **Test first when fixing a bug.** Commit the failing test, then the fix, as two commits: `e161f69` then `7dcb13b` for A-1. The first commit shows the bug; the second shows the fix.
-- **Run `bun test` after every change**, not only before the push.
-- **One feature per branch, one plan per feature.** The next feature (`work/intent/next-dedupe-wrenches.md`) gets its own spec and plan; it does not ride along on a fix.
-- **For reference:** the first feature changed 2 files in 3 plan commits, and the median commit was 16 lines. That median includes many one-line `approve:` commits, so it is not a target for code.
-- **Small for Claude means small for the reviewer too.** A diff a person cannot read in one sitting is a diff nobody really reviewed.
+### 1. Intent: say what should change, not how
 
-## When we use the factory
+Ask Claude for a problem with numbers and an outcome a product manager can say yes or no to.
+Good intents quote their sources (the North intent cites the 600-job queue, the 212 bikes and
+the 3 duplicates per bike from the postmortem). No file names, no schema, no code.
 
-"The factory" is the full pipeline in Gates: intent, spec, decision, plan, frozen acceptance tests, build, independent review, release notes, flagged rollout by district, and a postmortem if it goes wrong. It is slow on purpose: the first feature took 27.5 hours from intent to spec alone, and that elapsed time includes a night and an approval wait.
+> Prompt: "Draft `work/intent/<name>.md` for the problem below. Use only numbers you can find in
+> `data/` or `work/`, and cite the file for each. Don't propose a design."
 
-**Use the full factory when the change:**
+### 2. Spec: criteria a test can check
 
-- changes what riders see, in the public feed or the rider app's responses,
-- changes the crew queue, its order or its deadlines,
-- touches anything named in `data/contract/` (availability, feed age, the 48 and 96 hour clocks),
-- adds or changes a write route such as `POST /wrench`,
-- changes the database schema or how `src/database.ts` loads `data/`,
-- needs a feature flag or a district-by-district rollout,
-- or leaves an open question that a person must answer. The dedupe intent has three; the factory is where they get answered.
+Every acceptance criterion must name something a rider, crew or the city would see, and must be
+checkable by one test. Concerns (C-n) are the things we know might go wrong and want watched.
 
-**Use the short path for a postmortem action item:** the action already has an owner and a check in an approved postmortem. Write the regression test in `test/regression/` (`A-n: regression test ...`), then the fix (`A-n: ...`), run `bun test`, and send the branch to the `reviewer` agent and the tech lead. It still deploys through gates 9 and 10.
+- Claude loads the `city-contract` skill for anything touching wrenches, the feed or the queue.
+- **If the request clashes with `data/contract/sla.yaml`, Claude does not paper over it.** It
+  writes down which SLA, what was asked, and why they clash, then the product manager decides.
+- Every write endpoint gets a retry criterion: the same request sent three times. (This is the
+  one we missed before 2026-11-03.)
 
-**Skip the factory** for changes no rider, crew or contract would notice: typos, comments, docs like this one, internal refactors with no behaviour change and `bun test` green, dev tooling. These still follow Never do and Size of a change, and still get a person's review before merge.
+### 3. Plan: files, order, proof
 
-**When unsure, use the factory.** Its cost is hours of waiting. The North incident cost 212 bikes for over three hours of a morning peak, from a change that had been through every gate but missing one test. When the factory misses something, we add the missing check to it: a new line in `CLAUDE.md`, a regression test, a guardrail in `rollout.yaml`.
+The plan lists, for each step P-n, the files it touches, the order, and the command that proves
+it (`bun test test/acceptance/ac-3-…`). Use plan mode or the `Plan` agent for the draft, then
+edit it by hand. Anything that's a real choice (for example, disabling in the feed versus at
+the station) goes in a short decision record under `work/decisions/`, signed by the tech lead.
+
+Spell out every file path in the plan. Short names make the "files outside plan.md" metric
+noisy (see `work/metrics.md`: 12 files counted as unplanned that were actually planned).
+
+### 4. Failing tests first
+
+Claude writes `test/acceptance/ac-<n>-<what>.test.ts` for each AC and commits them as P-1, with
+no `src/` change. Run them and **watch them fail for the right reason** before QA signs off. A
+test that passes before the code exists is testing nothing.
+
+Test rules Claude must follow (from `AGENTS.md` and `CLAUDE.md`):
+
+- Set `SPOKE_DB` and `SPOKE_LOG` to temp files, then import `src/database`.
+- For write endpoints, send the same request three times and assert one row, one disable and
+  the first `reported_at` kept.
+- No new packages.
+
+### 5. Build in small slices
+
+- One plan step per commit, subject `P-n: <what a rider or crew now sees>`.
+- `bun test` green after every commit. Claude runs it; it doesn't say "should pass".
+- Keep commits small. Our median is about 21 lines. If a step grows past a few hundred lines,
+  stop and split the plan step rather than the commit.
+- If Claude finds the plan is wrong, it stops and says so. It doesn't quietly do something else.
+  Fix the plan, get it re-approved, carry on.
+- Delete `spoke.db` after changing tables or seed CSVs, then `bun run world` and look at the
+  map and feed with your own eyes (or use the `run` skill).
+- Last step updates `CLAUDE.md` so the next session knows the new behaviour.
+
+### 6. Review: don't skip it
+
+Today we merge Claude's pull requests after a quick look. That is how the 2026-11-03 North
+double wrench shipped: nobody asked what happens when the app retries `POST /wrench`, and it
+took 212 bikes out of service for over three hours. Review is where that question gets asked.
+
+**How to run it**
+
+1. The author (person or Claude) opens the PR with a description that links the spec and plan
+   ids it covers and pastes the `bun test` output.
+2. Run the `reviewer` agent on the branch in a **fresh session**, not the one that wrote the
+   code. The writer's session already believes its own work. The reviewer reads `REVIEW.md`,
+   `work/spec.md` and `work/plan.md` first, then does the three passes: Bugs, Security,
+   Compliance.
+   > "Use the reviewer agent on branch `<branch>`. Write its table to `work/review.md`."
+3. For a second, independent read, run `/code-review` or `/security-review` too. Different
+   reviewers miss different things.
+4. **The tech lead reads the diff and the findings and decides.** "No Important findings" means
+   the reviewer found nothing, not that the change is right. The tech lead still checks:
+   - Does each AC in the spec have a test, and did that test fail before the change?
+   - What does each write endpoint do when it's called twice, or three times?
+   - Does anything touch `data/contract/sla.yaml`, `scripts/deploy.ts` or `.claude/`?
+   - Would I be able to explain this change to the on-call engineer at 08:20?
+5. Fix Important findings before merge. Nits (at most 3) are optional.
+
+**What makes a finding Important** is set in `REVIEW.md`: riders, crews or the city contract
+would feel it. Keep that file short and add a rule only after a real miss.
+
+**Timebox, don't skip.** If review feels slow, make the PRs smaller. Do not make the review
+lighter.
+
+### 7. Release and rollout
+
+Claude drafts `work/release.md` (what riders and crews will notice, in their words) and
+`work/rollout.yaml` (stages by district, guardrails, rollback rule).
+
+- Every guardrail threshold comes from `data/contract/sla.yaml`, with the SLA id in a comment.
+- New behaviour goes behind a flag and rolls out one district at a time.
+- The release checklist asks about **client retries** for any change to what a write endpoint
+  does (postmortem A-7).
+
+### 8. Deploy: people only
+
+`bun run deploy:production` and `bun run rollback` need a person's "yes", every time. A yes for
+one deploy is not a yes for the next one, or for a rollback. `scripts/deploy.ts` only writes to
+`logs/deploys.log`, but we treat it as a real release, because the habit is what matters.
+
+### 9. Incidents and postmortems
+
+During an incident, Claude is useful for reading: grepping `logs/`, lining up the chat against
+the incident log, counting bikes and jobs. A person makes every change to production.
+
+Afterwards, Claude drafts the postmortem from the logs in `data/incidents/<name>/`:
+
+- Blameless. Systems and gaps, not people.
+- Every number in the impact table names its source file and time.
+- Write down the discrepancies between sources rather than smoothing them over.
+- Action items each have an owner role and a **check**: a command that shows it's done.
+- Map the impact to each SLA, and say plainly what the logs can't show.
+
+### 10. Close the loop
+
+Each action item becomes commits with an `A-n:` prefix, test first (`A-1` was the regression
+test, then the fix). Then add **one line** to the "Things Claude gets wrong" section of
+`CLAUDE.md`, with the date and incident name, so no future session repeats the mistake. Keep
+those lines short and specific; a long `CLAUDE.md` gets skimmed by people and by Claude.
+
+### 11. Measure
+
+Claude computes the DORA keys from `data/deploys.csv` and `data/incidents.csv`, and the feature
+numbers from git, and puts the **exact command next to every number** so anyone can rerun it.
+Every metrics page ends with what the numbers don't prove. One feature is one sample, and our
+trailers show who was credited, not who did the work.
+
+Keep the data honest: add every incident to `data/incidents.csv`, including D-071. Leaving one
+out makes the change failure rate look better than it is.
+
+---
+
+## 3. Working with Claude day to day
+
+**Give it the context it needs, in the prompt.** Name the spec ids, plan step and files. "Do
+P-3 from `work/plan.md`; the proof is `ac-8` and `ac-9`" beats "fix the queue".
+
+**Ask for proof, not promises.** Claude should run `bun test` and paste the result. If it says
+"this should work", ask it to show you.
+
+**One session per job.** Write in one session, review in another. Use `/clear` between
+unrelated tasks so old context doesn't leak into new work.
+
+**Let it say no.** If Claude refuses because of the contract, `AGENTS.md` or a missing
+approval, that is the system working. Read the reason; don't reword the prompt to get around it.
+
+**When it gets something wrong twice, write it down.** Add it to `CLAUDE.md`, `REVIEW.md` or
+the `city-contract` skill, whichever reads it at the right moment. Don't rely on remembering to
+say it next time.
+
+**Credit honestly.** Commits Claude wrote carry a `Co-Authored-By: Claude …` trailer, with the
+model name. The metrics depend on it (two commits in this feature missed it).
+
+---
+
+## 4. Guardrails already in the repo
+
+| Guardrail                                     | Where                                    | What it stops                                   |
+| --------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
+| Deny edits to the city contract               | `.claude/settings.json` `deny`            | Claude changing `data/contract/sla.yaml`        |
+| Ask before deploying                          | `.claude/settings.json` `ask`             | `bun run deploy:production` without a person   |
+| Contract rules on every wrench, feed or queue task | `.claude/skills/city-contract/`      | Deadlines from `opened_at`, slow feeds, edits to the contract |
+| Review that can't change code                 | `.claude/agents/reviewer.md`             | A reviewer "fixing" what it should report      |
+| Review rules and severity                     | `REVIEW.md`                              | Reviews full of style nits, missing real risks  |
+| Rules for every agent                         | `AGENTS.md` (loaded by `CLAUDE.md`)       | New packages, unsafe tests, deploys without a yes |
+| Signed, hashed approvals                      | `work/approvals.jsonl`                    | Building on a spec that changed after sign-off  |
+
+**Gaps to close** (each needs the tech lead's yes, since it changes `.claude/`):
+
+- `bun run rollback` is not in the `ask` list, so only `AGENTS.md` stands between Claude and a
+  rollback. Add `"Bash(bun run rollback*)"` to `ask`.
+- Check that the deploy rule also catches the bare command with no arguments; if it doesn't,
+  use `"Bash(bun run deploy:production*)"`.
+- Nothing stops a write to `work/approvals.jsonl`. Add `Edit` and `Write` rules for it to
+  `deny`.
+
+---
+
+## 5. Roles
+
+| Role                 | Owns                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| Product manager      | Intents, specs, release notes, conflicts with the city contract |
+| Tech lead            | Plans, decision records, `REVIEW.md`, the merge decision, postmortems |
+| QA                   | Acceptance and regression tests, and that they failed first  |
+| Release manager      | Rollout plans, deploys, rollbacks                            |
+| Engineering manager  | The release checklist and the metrics                        |
+| Contract owner       | All contact with Brannock City Transport about `sla.yaml`     |
+| Claude               | Drafts at every stage; never approves, never deploys, never edits the contract |

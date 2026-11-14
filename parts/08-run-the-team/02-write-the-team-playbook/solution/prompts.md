@@ -9,8 +9,8 @@ The prompt in the step README. Claude Code read `work/approvals.jsonl` and `.cla
 What it got right:
 
 - The Gates table has 10 rows, one per approval, including `REVIEW.md` and `work/postmortem.md`.
-- Never do has one bullet per rule: 5 deny rules and 1 ask rule, each in backticks.
-- The size limit is 200 changed lines, copied from `CLAUDE.md`.
+- Never do has one bullet per rule, each in backticks, including the ask rule for the deploy.
+- Size of a change is honest: `CLAUDE.md` sets no limit, and the plan asks for 200 changed lines at most for each item. Claude said so instead of inventing a rule.
 - When we use the factory says the truth: nothing runs with no person yet.
 
 **Check before you sign:** put the Gates table next to `work/approvals.jsonl`. Each row must be a real line there.

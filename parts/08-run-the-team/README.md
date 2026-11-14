@@ -25,8 +25,9 @@ flowchart LR
 | `measure-the-lifecycle`   | 20      | `work/metrics.md`: the four DORA keys from `deploys.csv` and `incidents.csv` (within 5%), and from git: intent to spec time, spec commits after the first plan commit, files changed outside `plan.md`, share of commits with the Claude Code trailer, median commit size (exact). Each number names its command. One sentence says what the numbers do not prove |
 | `write-the-team-playbook` | 20      | `PLAYBOOK.md`: every gates row matches a role in `approvals.jsonl`, every never-do item matches a deny or ask rule, the size limit equals the one `build-in-small-slices` enforced. The em approval matches                                                                                                                                                       |
 | `ship-the-feature`        | 10      | The Goal. Every AC id maps to a test, a green run, a commit, `plan.md` and the release note. Every approval hash matches and the gates came in order. The world contract passes. Every postmortem action item has a passing check. It walks `checks/lib/chain.ts`, like `bun run finished`                                                                        |
+| `ship-in-your-own-repo`   | 40      | `work/own-repo.md`, the evidence for a real feature in your own repo: six headings, 3 or more criteria with WHEN and THEN, tests red before and green after, 2 or more `P-` commits under 200 lines, a review, and the tech lead's signature |
 
-This part takes 50 minutes.
+This part takes 90 minutes.
 
 ## Walkthrough
 
@@ -68,13 +69,21 @@ bun run verify ship-the-feature
 
 Expect: `Done. All 10 rules pass.`
 
+Last, take the habit to your own work. Follow the README of `ship-in-your-own-repo`. It asks for a small real feature in a repo of yours, and one file of evidence:
+
+```bash
+bun run verify ship-in-your-own-repo
+```
+
+Expect: `Done. All 9 rules pass.`
+
 Check the whole part:
 
 ```bash
 bun run verify part run-the-team
 ```
 
-Expect: `Part run-the-team is done: 3/3 steps pass.`
+Expect: `Part run-the-team is done: 4/4 steps pass.`
 
 For example, a passing part prints these lines:
 
@@ -83,14 +92,15 @@ Part run-the-team:
   PASS   measure-the-lifecycle  (10/10 rules)
   PASS   write-the-team-playbook  (7/7 rules)
   PASS   ship-the-feature  (10/10 rules)
-Part run-the-team is done: 3/3 steps pass.
+  PASS   ship-in-your-own-repo  (9/9 rules)
+Part run-the-team is done: 4/4 steps pass.
 ```
 
 To see the sample end state without a live Claude Code, run `bun run catch-up ship-the-feature`. Your old `kestrel/` moves to `.kestrel-backups/`.
 
 ## Assignment
 
-"Did the seats pay off?" Hand in a pushed branch with `work/metrics.md`, `PLAYBOOK.md` with the em approval, and `CHAIN.md`.
+"Did the seats pay off?" Hand in a pushed branch with `work/metrics.md`, `PLAYBOOK.md` with the em approval, `CHAIN.md` and `work/own-repo.md`.
 
 | #   | Question                                                                        | Answered by                              |
 | --- | ------------------------------------------------------------------------------- | ---------------------------------------- |
@@ -100,8 +110,9 @@ To see the sample end state without a live Claude Code, run `bun run catch-up sh
 | 4   | Is every Never do item a real deny or ask rule?                                 | `bun run verify write-the-team-playbook` |
 | 5   | Does the whole chain hold: gates in order, AC to test to commit, small commits? | `bun run verify ship-the-feature`        |
 | 6   | Does `CHAIN.md` state one thing the numbers do not prove?                       | a reader                                 |
+| 7   | Does `work/own-repo.md` show a real feature in your own repo, red then green?   | `bun run verify ship-in-your-own-repo`   |
 
-Pass is 6 of 6.
+Pass is 7 of 7.
 
 **If you already know this:** turn on Claude Code's OpenTelemetry metrics. Put `claude_code.commit.count` next to the trailer share from git, and explain any gap.
 
