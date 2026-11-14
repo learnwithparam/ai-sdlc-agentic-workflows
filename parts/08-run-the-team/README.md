@@ -25,8 +25,9 @@ flowchart LR
 | `measure-the-lifecycle`   | 20      | `work/metrics.md`: the four DORA keys from `deploys.csv` and `incidents.csv` (within 5%), and from git: intent to spec time, spec commits after the first plan commit, files changed outside `plan.md`, share of commits with the Claude Code trailer, median commit size (exact). Each number names its command. One sentence says what the numbers do not prove |
 | `write-the-team-playbook` | 20      | `PLAYBOOK.md`: every gates row matches a role in `approvals.jsonl`, every never-do item matches a deny or ask rule, the size limit equals the one `build-in-small-slices` enforced. The em approval matches                                                                                                                                                       |
 | `ship-the-feature`        | 10      | The Goal. Every AC id maps to a test, a green run, a commit, `plan.md` and the release note. Every approval hash matches and the gates came in order. The world contract passes. Every postmortem action item has a passing check. It walks `checks/lib/chain.ts`, like `bun run finished`                                                                        |
+| `ship-in-your-own-repo`   | 25      | `work/own-feature.md`, filled from your own repo: a ticket, two WHEN and THEN lines, a real commit id, a test command and a result with a count. It never reads the course world. |
 
-This part takes 50 minutes.
+This part takes 75 minutes.
 
 ## Walkthrough
 
