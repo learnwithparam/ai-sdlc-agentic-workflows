@@ -50,10 +50,13 @@ and the exact command you ran to get it. Under the table, say in a few short lin
 numbers mean for the request for more crews.
 ```
 
+Save the prompt you gave in `work/prompt.md`. Name each file with an `@`, such as `@data/wrenches.csv`, so Claude Code reads the file and does not guess. A short prompt that names its files beats a long one that does not. Take a screenshot of any chart or table you want it to read, save it as `work/late-bikes.png`, and add the line `Screenshot: work/late-bikes.png` to the prompt file. Claude Code can read an image you drop into the session.
+
 Claude Code asks before each command. Read it, then say yes. Say no to anything that changes `data/`.
 
 ## Done when
 
+- `work/prompt.md` names two data files with `@`, asks for a command per number, and names a screenshot that is a real PNG.
 - `work/findings.md` exists.
 - It gives the miss rate, the North battery share and the re-rent rate, each within 0.5 points of the check's own count.
 - It gives the credit cost in pounds, within 50 pounds of the check's own count.
@@ -63,7 +66,7 @@ Claude Code asks before each command. Read it, then say yes. Say no to anything 
 bun run verify find-the-real-problem
 ```
 
-Expect: `Done. All 5 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 ![What a pass looks like](../images/expected.png)
 

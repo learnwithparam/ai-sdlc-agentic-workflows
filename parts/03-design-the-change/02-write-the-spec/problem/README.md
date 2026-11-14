@@ -32,7 +32,7 @@ Open Claude Code in `kestrel/`. You play the product manager. First ask it to in
 Read work/intent.md. Interview me, one question at a time, until you could write the spec.
 ```
 
-Answer from the intent's open questions. Operations still wants the 15-minute grace period. Station counts must change too. Crews want the job due first on top. Open jobs should follow the contract from launch. Then ask for the spec:
+Save the questions and your answers in `work/interview.md`, as a line starting `Q:` and then a line starting `A:`. Answer from the intent's open questions. Operations still wants the 15-minute grace period. Station counts must change too. Crews want the job due first on top. Open jobs should follow the contract from launch. Then ask for the spec:
 
 ```text
 Write work/spec.md from the approved work/intent.md and my answers. Use the city-contract
@@ -52,6 +52,7 @@ Expect: `Approved work/spec.md as pm`
 
 ## Done when
 
+- `work/interview.md` keeps three or more questions, each followed by your answer.
 - At least 3 criteria, each with an id like `AC-1`, a WHEN and a THEN.
 - One criterion: the feed shows `is_disabled: true` within 60 seconds.
 - One criterion: the queue is ordered by deadline. One: the deadline is `reported_at` plus 48 hours.
@@ -62,7 +63,7 @@ Expect: `Approved work/spec.md as pm`
 bun run verify write-the-spec
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ![What a pass looks like](../images/expected.png)
 

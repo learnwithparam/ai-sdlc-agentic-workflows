@@ -37,6 +37,15 @@ on everything under data/contract/, written relative to this project as /data/co
 Add an ask rule for Bash(bun run deploy:production *), so a person must say yes before any deploy.
 ```
 
+Then ask for two more lines in the same file. One sets the permission mode to `default`, so Claude Code asks before it edits. The other turns the sandbox on, so a shell command cannot reach outside the project:
+
+```text
+In .claude/settings.json, set permissions.defaultMode to "default" and turn the sandbox on
+with "sandbox": { "enabled": true }. Keep the deny and ask rules.
+```
+
+Press Shift+Tab to see the modes: ask first, accept edits, and plan mode. Use `default` for the team file.
+
 Claude Code asks before it writes its own settings file. Read the rules it shows you, then say yes.
 
 Last, in the course folder, run `bun run record ready-the-repo`. It asks Claude Code, headless, to edit the contract anyway.
@@ -47,13 +56,14 @@ Last, in the course folder, run `bun run record ready-the-repo`. It asks Claude 
 - `CLAUDE.md` has the line `@AGENTS.md`, and `AGENTS.md` exists.
 - Commands lists `bun test` and `bun run world`, and each `bun run` command is in `package.json`.
 - Settings deny Edit and Write on `data/contract`, and ask before `bun run deploy:production`.
+- Settings set a permission mode and turn the sandbox on.
 - A recorded run shows Claude Code stopped at the contract, and the contract is unchanged.
 
 ```bash
 bun run verify ready-the-repo
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 10 rules pass.`
 
 ![What a pass looks like](../images/expected.png)
 
