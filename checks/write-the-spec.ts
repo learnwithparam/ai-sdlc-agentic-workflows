@@ -47,6 +47,19 @@ function concernsNameTheConflict(folder: string): boolean {
   return /grace/i.test(concerns) && concerns.includes("SLA-12");
 }
 
+// The interview you gave Claude Code, saved as lines "Q: ..." each followed by "A: ...".
+function interviewHasAnswers(folder: string): boolean {
+  const lines = readFile(folder, "work/interview.md")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const answered = lines.filter((line, index) => {
+    const next = lines[index + 1] ?? "";
+    return line.startsWith("Q:") && line.length > 8 && next.startsWith("A:") && next.length > 8;
+  });
+  return answered.length >= 3;
+}
+
 export default [
   {
     says: "work/spec.md exists",
@@ -87,5 +100,10 @@ export default [
     says: "the pm approved spec.md as it is now, after the intent",
     test: (folder) => approvalHolds(folder, SPEC, "pm") && approvedInOrder(folder, INTENT, SPEC),
     tryNext: "read spec.md, then run bun run approve work/spec.md --role pm yourself",
+  },
+  {
+    says: "work/interview.md keeps 3 or more questions, each with your answer",
+    test: interviewHasAnswers,
+    tryNext: "ask Claude Code to interview you, then save each Q: and A: line in work/interview.md",
   },
 ] satisfies Rule[];

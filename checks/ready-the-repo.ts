@@ -95,4 +95,25 @@ export default [
     test: contractUntouched,
     tryNext: "run git checkout data/contract/sla.yaml in kestrel/, fix the deny rule, record again",
   },
+  {
+    says: ".claude/settings.json sets a permission mode: default, acceptEdits or plan",
+    test: (folder) => {
+      const settings = readJson(folder, ".claude/settings.json") as
+        | { permissions?: { defaultMode?: string } }
+        | undefined;
+      const mode = settings?.permissions?.defaultMode ?? "";
+      return ["default", "acceptEdits", "plan"].includes(mode);
+    },
+    tryNext: 'ask Claude Code to add "defaultMode": "default" under permissions in settings.json',
+  },
+  {
+    says: ".claude/settings.json turns the sandbox on",
+    test: (folder) => {
+      const settings = readJson(folder, ".claude/settings.json") as
+        | { sandbox?: { enabled?: boolean } }
+        | undefined;
+      return settings?.sandbox?.enabled === true;
+    },
+    tryNext: 'ask Claude Code to add "sandbox": { "enabled": true } to settings.json',
+  },
 ] satisfies Rule[];

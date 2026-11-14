@@ -6,7 +6,7 @@ The North rollout went live. Then the rider app retried failed wrench reports, a
 
 A **postmortem** is a short report after an incident: what happened, what it cost, why, and what changes now. Without one, the same bug comes back.
 
-For example, `data/incidents/north-double-wrench/incident.log` has the line `2026-11-03T07:40:00Z retry storm begins`.
+For example, `data/incidents/north-double-wrench/incident.log` has the line "2026-11-03T07:40:00Z retry storm begins".
 
 ```mermaid
 flowchart LR
@@ -64,7 +64,7 @@ Expect: `Approved work/postmortem.md as tech-lead`
 ## Done when
 
 - `work/postmortem.md` has the six sections in order.
-- Every Timeline time is in the logs. Impact gives 212 bikes, 3 hours 10 minutes, 97.8% and 89.0%.
+- Every Timeline time is in the logs. Impact gives 212 bikes, just over 3 hours, 97.8% and 89.0%.
 - Contributing factors name no person. Each action item has a verb, an Owner role and a Check.
 - A test in `test/regression/` fails on the incident build and passes on your fix.
 - The acceptance tests are unchanged, and the tech lead approved the postmortem.

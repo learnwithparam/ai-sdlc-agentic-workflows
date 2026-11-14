@@ -7,7 +7,7 @@ A headless run cannot interview you. So the recorded prompt gave the product man
 ```text
 Write work/spec.md from the approved work/intent.md. Our product manager already answered
 your interview questions:
-- Operations still wants a 15 minute grace period before a wrenched bike leaves the feed,
+- Operations still wants a 15-minute grace period before a wrenched bike leaves the feed,
   to stop false reports.
 - The station counts in station_status.json must change too, not only the bike.
 - Crews want the queue ordered so the job due first is on top.
@@ -43,4 +43,10 @@ requirement. Use ids AC-1, AC-2 and so on, each with a WHEN line and a THEN line
 
 Claude Code refused to make the grace period a requirement, because the skill told it so. That part is good. But "keep it short" cost two things. AC-6 sorts the queue "oldest first by `reported_at`", which puts a 96 hour crew job above a 48 hour wrench job due sooner. And the conflict sits under "Blocked", not `## Concerns`, so the next stages will not find it.
 
-We also tried to get a spec that builds the grace period. Without the skill, and even with "the city agreed on the phone", Claude Code still refused. Those transcripts are kept too. Your gate is still the backstop: a person reads each criterion before signing.
+`wrong/grace-period-built/` is the spec you must not sign. It came from a real run of the same weak prompt, in a repo where `data/contract/` and the skill had been removed. With no contract to read, Claude Code did what it was told: AC-6 is a 15-minute grace period, and the conflict sits under "Blocked". The check fails it on the grace period rule, and on the Concerns rule that goes with it. A model that cannot see the contract cannot protect it.
+
+We also tried to get a spec that builds the grace period with the contract in place. Without the skill, and even with "the city agreed on the phone", Claude Code still refused. Those transcripts are kept too. Your gate is still the backstop: a person reads each criterion before signing.
+
+## The interview file
+
+`solution/work/interview.md` was written by hand from the answers in the step page. The check reads it for three questions that each have an answer, so keep what Claude Code asked and what you said.

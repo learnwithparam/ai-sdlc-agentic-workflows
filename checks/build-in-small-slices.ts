@@ -17,7 +17,7 @@ const touches = (commit: Commit, path: string) =>
   commit.files.some((file) => file.startsWith(path));
 
 // The commits that changed the code, after the acceptance tests were committed.
-function buildCommits(folder: string): Commit[] {
+export function buildCommits(folder: string): Commit[] {
   const commits = commitsOf(folder).slice(1);
   const testCommit = commits.findIndex((commit) => touches(commit, TESTS));
   const afterTests = testCommit < 0 ? commits : commits.slice(testCommit + 1);
@@ -25,7 +25,7 @@ function buildCommits(folder: string): Commit[] {
 }
 
 // Lines added plus lines removed, as git show --numstat counts them.
-function changedLines(folder: string, commit: Commit): number {
+export function changedLines(folder: string, commit: Commit): number {
   const numbers = git(folder, ["show", "--numstat", "--format=", commit.hash]);
   const rows = numbers.trim().split("\n").filter(Boolean);
   const perFile = rows.map((row) => row.split("\t"));
@@ -49,13 +49,13 @@ function slicesAreSmallAndNamed(folder: string): boolean {
 }
 
 // A build commit may only change files the plan names.
-function stayedInsideThePlan(folder: string): boolean {
+export function stayedInsideThePlan(folder: string): boolean {
   const plan = readFile(folder, PLAN);
   const changed = buildCommits(folder).flatMap((commit) => commit.files);
   return changed.length > 0 && changed.every((file) => plan.includes(file));
 }
 
-function allTestsPass(folder: string): boolean {
+export function allTestsPass(folder: string): boolean {
   const run = Bun.spawnSync(["bun", "test"], { cwd: folder, env: process.env });
   return run.exitCode === 0;
 }

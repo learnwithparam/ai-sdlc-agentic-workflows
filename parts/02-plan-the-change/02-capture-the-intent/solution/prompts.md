@@ -6,7 +6,7 @@
 
 The prompt in the step's README.
 
-Claude Code read `work/findings.md`, `CLAUDE.md` and the contract. It wrote the five headings in order. Under Problem it quoted "193 of 2,160" and "8.9%" for re-rents, and "118 of 2,160", "5.5%" and "£5,900" for late bikes. Under Open questions it put the 15 minute grace period, and asked if it fits SLA-12, "accurate at all times".
+Claude Code read `work/findings.md`, `CLAUDE.md` and the contract. It wrote the five headings in order. Under Problem it quoted "193 of 2,160" and "8.9%" for re-rents, and "118 of 2,160", "5.5%" and "£5,900" for late bikes. Under Open questions it put the 15-minute grace period, and asked if it fits SLA-12, "accurate at all times".
 
 **Check before you sign:**
 

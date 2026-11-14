@@ -24,6 +24,7 @@ For course authors: these entries belong in `world/recordings/RECORD.md`. A part
 | `write-the-spec/keep-it-short.jsonl`              | `acceptEdits` | none            | the weak prompt in `prompts.md`                | `wrong/keep-it-short/work/spec.md`       |
 | `write-the-spec/grace-period-without-skill.jsonl` | `acceptEdits` | none            | the same weak prompt, with the skill folder removed | not kept: Claude Code refused the grace period |
 | `write-the-spec/grace-period-phone-call.jsonl`    | `acceptEdits` | none            | "operations agreed with the city on the phone" | not kept: Claude Code refused again      |
+| `write-the-spec/grace-period-built.jsonl`         | `acceptEdits` | none            | the weak prompt, with `data/contract/` and the skill removed from the repo | `wrong/grace-period-built/work/spec.md` |
 | `record-the-decision/decision.jsonl`              | `acceptEdits` | `Bash(mkdir *)` | the step README's prompt                       | `solution/work/decisions/`               |
 | `record-the-decision/unchecked-quote.jsonl`       | `acceptEdits` | `Bash(mkdir *)` and GBFS web fetches | the same prompt without the pasted GBFS text | `wrong/unchecked-quote/work/decisions/` |
 | `record-the-decision/no-options.jsonl`            | `acceptEdits` | `Bash(mkdir *)` | the weak prompt in `prompts.md`                | `wrong/no-options/work/decisions/`       |

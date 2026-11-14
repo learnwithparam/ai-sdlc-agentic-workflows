@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": ["Edit(/data/contract/**)", "Write(/data/contract/**)"],
+    "ask": ["Bash(bun run deploy:production *)"]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [{ "type": "command", "command": "bun .claude/hooks/lock-signed-tests.ts" }]
+      }
+    ],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "bun .claude/hooks/stop-gate.ts" }] }]
+  }
+}

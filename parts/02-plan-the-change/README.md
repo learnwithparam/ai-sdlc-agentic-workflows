@@ -25,7 +25,7 @@ flowchart LR
 | `find-the-real-problem` | 20      | `work/findings.md`: the miss rate, the share of misses that are BATT e-bikes at North depot stations, the re-rent rate and the credit cost, each recomputed by the check from `data/` (within 0.5 points, or 50 pounds), each with the command Claude ran. `wrong/more-crews/` recommends hiring with no breakdown |
 | `capture-the-intent`    | 15      | `work/intent.md` with Problem, Proposed outcome, Affected users and systems, Constraints, Open questions, in that order. Problem quotes two numbers from findings.md. Constraints names the contract file. `approvals.jsonl` has a `pm` line whose hash matches                                                    |
 
-This part takes 35 minutes.
+This part fits in one sitting.
 
 ## Walkthrough
 
@@ -106,4 +106,14 @@ Pass is 4 of 4.
 
 You now have the first stage of the chain: findings with a command for every number, and an intent the product manager signed. The answer is not "more crews". It is "take wrenched bikes out of the feed, and sort the queue by deadline".
 
-In Part 3, Claude Code turns this intent into a spec. The open question about the 15 minute grace period comes back there, and the contract decides it.
+In Part 3, Claude Code turns this intent into a spec. The open question about the 15-minute grace period comes back there, and the contract decides it.
+
+## Watch and read
+
+| Kind  | Title                                           | Author                             | Why                                                          | Link                                                                                |
+| ----- | ----------------------------------------------- | ---------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| video | Claude Code and the evolution of agentic coding | Boris Cherny, who made Claude Code | The maker explains plan mode and why the tool stays simple.  | <https://www.youtube.com/watch?v=Lue8K2jqfKk>                                       |
+| video | Claude Code best practices webinar              | Anthropic                          | Practical habits from the team that runs the tool every day. | <https://www.anthropic.com/webinars/claude-code-best-practices-lightspeed>          |
+| read  | Common workflows                                | Anthropic docs                     | Plan mode, screenshots and files, step by step.              | <https://code.claude.com/docs/en/common-workflows>                                  |
+| read  | Best practices for agentic coding               | Anthropic Engineering              | Explore, plan, then code, from the team.                     | <https://www.anthropic.com/engineering/claude-code-best-practices>                  |
+| read  | Effective context engineering for AI agents     | Anthropic Engineering              | How to keep a fresh, small context.                          | <https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents> |

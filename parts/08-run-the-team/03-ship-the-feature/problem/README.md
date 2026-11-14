@@ -4,7 +4,7 @@
 
 You carried one feature from a raw problem to production and back through an incident. Every stage left a file, and every gate left a signature. Now prove the chain holds end to end, and write it up for someone who reads one file.
 
-For example, `AC-1` in `work/spec.md` must lead to `test/acceptance/ac-1-wrench-disables-bike.test.ts`, to the commit `P-1: disable the bike when a wrench arrives`, to the `P-1` line in `work/plan.md`.
+For example, `AC-1` in `work/spec.md` must lead to `test/acceptance/ac-1-wrench-disables-bike.test.ts`, to the commit "P-1: disable the bike when a wrench arrives", to the `P-1` line in `work/plan.md`.
 
 ```mermaid
 flowchart LR

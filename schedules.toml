@@ -5,18 +5,18 @@
 sessions = [
   { parts = ["orientation", "ready-the-repo", "plan-the-change"], minutes = 70 },
   { parts = ["design-the-change"], minutes = 55 },
-  { parts = ["build-the-change", "review-the-change"], minutes = 90 },
-  { parts = ["release-the-change", "learn-from-the-incident", "run-the-team"], minutes = 150 },
-  { parts = ["roll-out-a-change-slowly"], minutes = 30 },
+  { parts = ["build-the-change", "review-the-change"], minutes = 125 },
+  { parts = ["release-the-change", "learn-from-the-incident", "run-the-team"], minutes = 120 },
+  { parts = ["roll-out-a-change-slowly"], minutes = 55 },
 ]
 
 [four-evenings]
 sessions = [
   { parts = ["orientation", "ready-the-repo", "plan-the-change"], minutes = 70 },
   { parts = ["design-the-change"], minutes = 55 },
-  { parts = ["build-the-change", "review-the-change"], minutes = 90 },
-  { parts = ["release-the-change", "learn-from-the-incident", "run-the-team"], minutes = 150 },
-  { parts = ["roll-out-a-change-slowly"], minutes = 30 },
+  { parts = ["build-the-change", "review-the-change"], minutes = 125 },
+  { parts = ["release-the-change", "learn-from-the-incident", "run-the-team"], minutes = 120 },
+  { parts = ["roll-out-a-change-slowly"], minutes = 55 },
 ]
 
 [six-sessions]
@@ -24,8 +24,8 @@ sessions = [
   { parts = ["orientation", "ready-the-repo"], minutes = 35 },
   { parts = ["plan-the-change"], minutes = 35 },
   { parts = ["design-the-change"], minutes = 55 },
-  { parts = ["build-the-change"], minutes = 60 },
+  { parts = ["build-the-change"], minutes = 95 },
   { parts = ["review-the-change", "release-the-change"], minutes = 60 },
-  { parts = ["learn-from-the-incident", "run-the-team"], minutes = 120 },
-  { parts = ["roll-out-a-change-slowly"], minutes = 30 },
+  { parts = ["learn-from-the-incident", "run-the-team"], minutes = 90 },
+  { parts = ["roll-out-a-change-slowly"], minutes = 55 },
 ]
