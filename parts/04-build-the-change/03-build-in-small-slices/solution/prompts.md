@@ -8,9 +8,9 @@ The prompt in the step's README. Claude Code built four items, ran `bun test` af
 
 | Commit                                                          | Changed lines | File                |
 | --------------------------------------------------------------- | ------------- | ------------------- |
-| `P-2: a wrench disables the bike, atomically`                   | 27            | `src/wrenches.ts`   |
-| `P-3: crew queue deadlines and order follow SLA-4`              | 15            | `src/crew-queue.ts` |
-| `P-4: map shows each station's available and disabled counts`   | 16            | `src/map-page.ts`   |
+| "P-2: a wrench disables the bike, atomically"                   | 27            | `src/wrenches.ts`   |
+| "P-3: crew queue deadlines and order follow SLA-4"              | 15            | `src/crew-queue.ts` |
+| "P-4: map shows each station's available and disabled counts"   | 16            | `src/map-page.ts`   |
 | `P-5: CLAUDE.md describes the fixed wrench and queue behaviour` | 6             | `CLAUDE.md`         |
 
 At the end, all 28 tests passed. Nothing in `test/acceptance/` or `data/` changed.

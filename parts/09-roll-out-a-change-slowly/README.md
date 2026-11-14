@@ -32,7 +32,7 @@ flowchart LR
 | --------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `roll-out-with-openfeature` | 25      | `assignment/flags/flagd.json`: the flag is enabled and off by default, a user in North reads on, a user outside reads off. `assignment/CHOICE.md` and `assignment/prompts.md` exist |
 
-This part takes 25 minutes. It is optional in the live session and expected as homework.
+This part fits in one sitting. It is optional in the live session and expected as homework.
 
 ## Walkthrough
 
@@ -72,3 +72,13 @@ Your code does not change if you switch. OpenFeature is the API, and the server 
 ## Finished
 
 One flag, served by flagd, now does what the first stage of your rollout plan did by hand. The earlier parts are unchanged.
+
+## Watch and read
+
+| Kind  | Title                                     | Author                                 | Why                                                                       | Link                                                     |
+| ----- | ----------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------- |
+| video | Type-safe feature flagging in OpenFeature | Google engineers, at KubeCon           | Lessons from running flags at a large company.                            | <https://youtu.be/mewXGSwDCE4>                           |
+| video | Claude Code best practices                | Anthropic, talk at its developer event | The team shows CLAUDE.md, permissions, tools and planning in one sitting. | <https://www.youtube.com/watch?v=gv0WHhKelSE>            |
+| read  | OpenFeature documentation                 | OpenFeature project                    | The standard this step uses.                                              | <https://openfeature.dev/docs/reference/intro>           |
+| read  | Feature toggles                           | Martin Fowler                          | The classic guide to the kinds of flag.                                   | <https://martinfowler.com/articles/feature-toggles.html> |
+| read  | Embracing risk                            | Google SRE Book                        | Why a small, slow rollout spends less error budget.                       | <https://sre.google/sre-book/embracing-risk/>            |

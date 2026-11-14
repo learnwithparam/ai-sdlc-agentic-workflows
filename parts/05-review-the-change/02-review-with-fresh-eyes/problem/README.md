@@ -73,7 +73,7 @@ Expect: `Done. All 9 rules pass.`
 
 ## If you get stuck
 
-- `FAIL the reviewer's tools are read-only`: no `tools:` line means every tool. Ask for `tools: Read, Grep, Glob, Bash`.
+- `FAIL the reviewer's tools are read-only`: no `tools:` line means every tool. Ask for "tools: Read, Grep, Glob, Bash".
 - `FAIL ... the reviewer subagent ran`: Claude Code did the review itself. Name the subagent `reviewer`.
 - `FAIL on the clean branch`: the reviewer calls everything Important. Point it at What Important means here.
 

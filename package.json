@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "bun@1.4.4",
   "scripts": {
-    "check": "bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all && bun scripts/audit.ts && bun checks/ladder.ts && bun scripts/text-audit.ts",
+    "check": "bun scripts/workfiles.ts && bun scripts/readable.ts && bun scripts/plain-english.ts && bun scripts/check.ts && bun scripts/verify.ts --all && bun scripts/audit.ts && bun scripts/text-audit.ts && bun test --root . scripts/prose.test.ts && bun test --root . scripts/dates.test.ts && bun scripts/capstone.ts && bun test --root . scripts/shape.test.ts && bun scripts/picks.ts && bun scripts/ladder.ts && bun test --root . scripts/workfiles.test.ts scripts/picks.test.ts scripts/ladder.test.ts scripts/changed.test.ts",
     "readable": "bun scripts/readable.ts",
     "plain-english": "bun scripts/plain-english.ts",
     "format": "biome check --write .",
@@ -17,10 +17,20 @@
     "record": "bun scripts/record.ts",
     "finished": "bun world/finished.ts",
     "scorecard": "bun scripts/scorecard.ts",
-    "text-audit": "bun scripts/text-audit.ts"
+    "text-audit": "bun scripts/text-audit.ts",
+    "check:changed": "bun scripts/changed.ts",
+    "picks": "bun scripts/picks.ts",
+    "ladder": "bun scripts/ladder.ts",
+    "capstone": "bun scripts/capstone.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.5",
     "@playwright/test": "1.63.0"
-  }
+  },
+  "plainEnglish": {
+    "grade": 6
+  },
+  "ladder": true,
+  "capstone": true,
+  "picks": true
 }

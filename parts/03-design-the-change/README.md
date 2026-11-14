@@ -4,9 +4,9 @@ This part moves the **Objective**: a spec Claude Code can build from and a perso
 
 ## The problem
 
-The operations lead wants a 15 minute grace period before a wrenched bike leaves the feed, to stop false reports. The contract says the feed must be accurate "at all times". A spec that misses this gets built, shipped and fined.
+The operations lead wants a 15-minute grace period before a wrenched bike leaves the feed, to stop false reports. The contract says the feed must be accurate "at all times". A spec that misses this gets built, shipped and fined.
 
-The contract shape comes from a real one. Citi Bike's April 2026 report to New York City shows bike defects fixed in time 92.33% of the time ([Citi Bike monthly report](https://mot-marketing-whitelabel-prod.s3.us-east-1.amazonaws.com/nyc/April-2026-Citi-Bike-Monthly-Report.pdf)).
+The contract shape comes from a real one. A Citi Bike monthly report to New York City shows bike defects fixed in time 92.33% of the time ([Citi Bike monthly report](https://mot-marketing-whitelabel-prod.s3.us-east-1.amazonaws.com/nyc/April-2026-Citi-Bike-Monthly-Report.pdf)).
 
 For example, the spec line "WHEN a rider sends POST /wrench THEN vehicle_status.json shows is_disabled: true within 60 seconds" is one a test can check.
 
@@ -24,7 +24,7 @@ flowchart LR
 | `write-the-spec`           | 25      | `work/spec.md`: every criterion has an id, a WHEN line and a THEN line. One says `is_disabled: true` within 60 seconds, one says the queue is ordered by deadline. Concerns names the grace period and SLA-12. The pm approval matches and comes after the intent. `wrong/keep-it-short/` sorts the queue oldest first and fails |
 | `record-the-decision`      | 15      | `work/decisions/0001-disable-in-feed.md` in MADR shape with two options, one chosen, a reason that cites the GBFS `is_disabled` text, and one "Bad, because". The tech-lead approval comes after the spec approval                                                                                                               |
 
-This part takes 55 minutes.
+This part fits in one sitting.
 
 ## Walkthrough
 
@@ -134,3 +134,13 @@ Pass is 5 of 5.
 You now have the design stage of the chain: a contract skill that loads when it should, a spec of checkable criteria that says no to the grace period, and a signed decision record. The product manager and the tech lead have each signed.
 
 In Part 4, Claude Code plans the build from this spec in plan mode. Then it writes one failing test per criterion, and builds the change in small slices.
+
+## Watch and read
+
+| Kind  | Title                                 | Author                                 | Why                                                                       | Link                                                                                          |
+| ----- | ------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| video | Claude Code advanced patterns webinar | Anthropic                              | Subagents and hooks for work that runs in many steps.                     | <https://www.anthropic.com/webinars/claude-code-advanced-patterns>                            |
+| video | Claude Code best practices            | Anthropic, talk at its developer event | The team shows CLAUDE.md, permissions, tools and planning in one sitting. | <https://www.youtube.com/watch?v=gv0WHhKelSE>                                                 |
+| read  | Agent Skills                          | Anthropic docs                         | How a skill is written, found and used.                                   | <https://code.claude.com/docs/en/skills>                                                      |
+| read  | Equipping agents with Agent Skills    | Anthropic Engineering                  | Why a skill beats a long prompt.                                          | <https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills> |
+| read  | Writing tools for agents              | Anthropic Engineering                  | What makes a tool easy for a model to use.                                | <https://www.anthropic.com/engineering/writing-tools-for-agents>                              |

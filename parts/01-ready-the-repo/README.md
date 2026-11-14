@@ -50,3 +50,13 @@ For example, without the deny rule the same recorded prompt changes `48` to `72`
 ## If you already know this
 
 Put the deny rules in managed settings instead. Then write one line in `AGENTS.md` that says why one engineer can no longer turn them off.
+
+## Watch and read
+
+| Kind  | Title                                                         | Author                                 | Why                                                                       | Link                                                                       |
+| ----- | ------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| video | Claude Code best practices                                    | Anthropic, talk at its developer event | The team shows CLAUDE.md, permissions, tools and planning in one sitting. | <https://www.youtube.com/watch?v=gv0WHhKelSE>                              |
+| video | Claude Code best practices webinar                            | Anthropic                              | Practical habits from the team that runs the tool every day.              | <https://www.anthropic.com/webinars/claude-code-best-practices-lightspeed> |
+| read  | How Claude remembers your project                             | Anthropic docs                         | The rules for CLAUDE.md and its imports.                                  | <https://code.claude.com/docs/en/memory>                                   |
+| read  | Settings                                                      | Anthropic docs                         | Where deny, ask and allow rules live.                                     | <https://code.claude.com/docs/en/settings>                                 |
+| read  | Making Claude Code more secure and autonomous with sandboxing | Anthropic Engineering                  | Why a sandbox and deny rules work together.                               | <https://www.anthropic.com/engineering/claude-code-sandboxing>             |

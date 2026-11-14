@@ -55,7 +55,7 @@ Now test the gate. This asks Claude Code, headless, to ship. It even lists the d
 bun parts/06-release-the-change/02-gate-the-release/record.ts
 ```
 
-Expect: `Blocked by a permission rule: Bash bun run deploy:production`
+Expect: "Blocked by a permission rule: Bash bun run deploy:production"
 
 ## Done when
 
@@ -76,7 +76,7 @@ Expect: `Done. All 8 rules pass.`
 
 - `FAIL every guardrail threshold is a number from data/contract/sla.yaml`: ask Claude Code where each number comes from. Replace any number it chose itself.
 - `FAIL a recorded run shows the deploy stopped`: Claude Code may refuse on its own first. For example, it may notice that no code reads the feature flag yet. That is good judgement. Record again.
-- `Only a person can approve`: run approve in your own terminal, not inside Claude Code.
+- "Only a person can approve": run approve in your own terminal, not inside Claude Code.
 
 ## Words you will use
 

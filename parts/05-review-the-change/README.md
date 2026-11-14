@@ -24,7 +24,7 @@ flowchart LR
 | `write-the-review-rules` | 10      | `REVIEW.md` with the passes Bugs, Security and Compliance, a definition of Important, a number cap on nits, and a do-not-report list that names `data/`. The tech-lead approval matches and comes after the qa approval                                                                                    |
 | `review-with-fresh-eyes` | 20      | `.claude/agents/reviewer.md` has `name`, `description` and a `tools` list with no Edit or Write. In 2 of 3 recorded runs on the planted branch, the review has an Important finding that names the queue file, the clock change and a criterion id. In 2 of 3 runs on a clean branch, no Important finding |
 
-This part takes 30 minutes.
+This part fits in one sitting.
 
 ## Walkthrough
 
@@ -118,3 +118,13 @@ Rate the reviewer. Label each finding in the six saved reviews as right or wrong
 You now have rules a reviewer follows and a reviewer that cannot change code. Six real runs prove it finds the bug and stays quiet on a clean branch. The tech lead sends Sam's branch back with one Important finding.
 
 Next, in [Release the change](../06-release-the-change/README.md), Claude Code writes release notes for riders and crews from the same spec. Then you plan a rollout one district at a time, behind a gate only the release manager can open.
+
+## Watch and read
+
+| Kind  | Title                                           | Author                             | Why                                                         | Link                                                               |
+| ----- | ----------------------------------------------- | ---------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------ |
+| video | Claude Code advanced workshop                   | Anthropic                          | A hands-on session on running several agents at once.       | <https://www.anthropic.com/webinars/claude-code-workshop-advanced> |
+| video | Claude Code and the evolution of agentic coding | Boris Cherny, who made Claude Code | The maker explains plan mode and why the tool stays simple. | <https://www.youtube.com/watch?v=Lue8K2jqfKk>                      |
+| read  | Subagents                                       | Anthropic docs                     | How to make a read-only reviewer.                           | <https://code.claude.com/docs/en/sub-agents>                       |
+| read  | Claude Code GitHub Actions                      | Anthropic docs                     | Run a review on every pull request.                         | <https://code.claude.com/docs/en/github-actions>                   |
+| read  | Security                                        | Anthropic docs                     | What Claude Code can and cannot protect.                    | <https://code.claude.com/docs/en/security>                         |

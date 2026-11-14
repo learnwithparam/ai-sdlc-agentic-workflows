@@ -27,7 +27,7 @@ function namesOneStage(line: string): boolean {
 
 export default [
   {
-    says: `notes/doctor.md shows Claude Code ${OLDEST_TESTED_VERSION} or newer`,
+    says: "notes/doctor.md shows a recent enough Claude Code",
     test: (folder) => {
       const version = claudeCodeVersion(folder);
       return version !== "" && isAtLeast(version, OLDEST_TESTED_VERSION);

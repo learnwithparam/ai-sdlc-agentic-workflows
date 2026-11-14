@@ -53,7 +53,7 @@ Pick one number and run its command yourself. If it prints a different number, s
 
 - The four DORA keys are within 5% of the check's own count, each with its command.
 - The five git numbers match the check exactly, each with its command.
-- A `## What these numbers do not prove` section compares one number with DORA or METR.
+- A "## What these numbers do not prove" section compares one number with DORA or METR.
 
 ```bash
 bun run verify measure-the-lifecycle

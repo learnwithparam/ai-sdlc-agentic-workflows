@@ -6,7 +6,7 @@ Every file in this folder came from a real Claude Code run. The transcripts are 
 
 The first prompt in the step README. The transcript is `claude-md-line.jsonl`.
 
-Claude Code read the postmortem and added one line under `## Things Claude gets wrong`:
+Claude Code read the postmortem and added one line under "## Things Claude gets wrong":
 
 ```text
 - The rider app retries `POST /wrench`, so it must be idempotent: a repeat `request_id` returns

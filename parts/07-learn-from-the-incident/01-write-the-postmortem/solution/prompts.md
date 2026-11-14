@@ -8,7 +8,7 @@ The first prompt in the step README. Claude Code read the four log files, `work/
 
 What it got right, so you can check yours the same way:
 
-- Impact says 212 bikes, 3 hours 10 minutes, 97.8% and 89.0%. It names the log line for each number.
+- Impact says 212 bikes, just over 3 hours, 97.8% and 89.0%. It names the log line for each number.
 - Every Timeline time is in `incident.log` or `deploys.log`.
 - Contributing factors name `POST /wrench`, the missing test and the guardrail. No person.
 
@@ -29,7 +29,7 @@ Claude Code changed only the A-7 row. The new check is a test that replays `avai
 The second prompt in the step README. The transcript is `regression.jsonl`.
 
 1. Claude Code wrote `test/regression/a-1-retried-wrench.test.ts` and ran it. It showed `1 fail`: the incident build opened 3 jobs for one bike.
-2. It committed the test alone: `A-1: regression test for a wrench retried with the same request_id`.
+2. It committed the test alone: "A-1: regression test for a wrench retried with the same request_id".
 3. It changed `src/wrenches.ts` and `src/database.ts`. A wrench now stores its `request_id`, and a retry gets the first job back.
 4. It ran `bun test`: 8 pass, 0 fail. It committed the fix alone.
 

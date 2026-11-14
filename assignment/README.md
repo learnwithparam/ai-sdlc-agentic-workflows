@@ -25,7 +25,7 @@ Start the two containers from the repo root:
 docker compose -f assignment/compose.yml up -d
 ```
 
-Expect: `Container assignment-reader-1  Started`
+Expect: "Container assignment-reader-1 Started"
 
 Ask the reader about a rider in North. The answer starts as `false`:
 
@@ -55,7 +55,7 @@ Expect: `PASS` on both Done-when lines, and `assignment/result.json` written.
 docker compose -f assignment/compose.yml down -v
 ```
 
-Expect: `Container assignment-reader-1  Removed`
+Expect: "Container assignment-reader-1 Removed"
 
 ## Done when
 

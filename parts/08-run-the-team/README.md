@@ -6,7 +6,7 @@ This part moves the **Outcome** and the **Goal**: the team's playbook, and the p
 
 The director asks whether the Claude Code seats paid off. Only the team's own numbers can answer that, read from its own git history and deploy log.
 
-Doctolib reports "47% more pull requests per engineer" and "25% shorter change lead time" between January and September 2026 ([Doctolib](https://claude.com/customers/doctolib)). That is their number. This part measures yours.
+Doctolib reports "47% more pull requests per engineer" and "25% shorter change lead time" ([Doctolib](https://claude.com/customers/doctolib)). That is their number. This part measures yours.
 
 For example, Kestrel's deploy log gives a change failure rate of 9 of 69 deploys, which is 13%.
 
@@ -25,9 +25,10 @@ flowchart LR
 | `measure-the-lifecycle`   | 20      | `work/metrics.md`: the four DORA keys from `deploys.csv` and `incidents.csv` (within 5%), and from git: intent to spec time, spec commits after the first plan commit, files changed outside `plan.md`, share of commits with the Claude Code trailer, median commit size (exact). Each number names its command. One sentence says what the numbers do not prove |
 | `write-the-team-playbook` | 20      | `PLAYBOOK.md`: every gates row matches a role in `approvals.jsonl`, every never-do item matches a deny or ask rule, the size limit equals the one `build-in-small-slices` enforced. The em approval matches                                                                                                                                                       |
 | `ship-the-feature`        | 10      | The Goal. Every AC id maps to a test, a green run, a commit, `plan.md` and the release note. Every approval hash matches and the gates came in order. The world contract passes. Every postmortem action item has a passing check. It walks `checks/lib/chain.ts`, like `bun run finished`                                                                        |
-| `ship-in-your-own-repo`   | 25      | `work/own-feature.md`, filled from your own repo: a ticket, two WHEN and THEN lines, a real commit id, a test command and a result with a count. It never reads the course world.                                                                                                                                                                                 |
 
-This part takes 75 minutes.
+After the steps, do the capstone on your own repo. Fill in `capstone/template/own-feature.md` with a real feature, its tests and a review, then run `bun capstone/check.ts <your folder>`. The check reads only your file, and a real commit if the folder is a git repo.
+
+This part fits in one sitting.
 
 ## Walkthrough
 
@@ -111,3 +112,13 @@ Pass is 6 of 6.
 You now have the lifecycle chain. One feature went from a raw problem to production and back through an incident. Every stage left a file, and every file was signed. `work/metrics.md` shows your team's own numbers, each with its command. `PLAYBOOK.md` says how your team works, and the repo proves each line.
 
 What comes next is your own backlog. Run the same chain on one real feature. Then `bun run verify ship-the-feature` asks the same questions of your work.
+
+## Watch and read
+
+| Kind  | Title                                           | Author                             | Why                                                         | Link                                                                |
+| ----- | ----------------------------------------------- | ---------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------- |
+| video | Claude Code and the evolution of agentic coding | Boris Cherny, who made Claude Code | The maker explains plan mode and why the tool stays simple. | <https://www.youtube.com/watch?v=Lue8K2jqfKk>                       |
+| video | Claude Code advanced patterns webinar           | Anthropic                          | Subagents and hooks for work that runs in many steps.       | <https://www.anthropic.com/webinars/claude-code-advanced-patterns>  |
+| read  | Run Claude Code without a person                | Anthropic docs                     | The claude -p command for scripts and schedules.            | <https://code.claude.com/docs/en/headless>                          |
+| read  | CLI reference                                   | Anthropic docs                     | Every flag, including worktrees.                            | <https://code.claude.com/docs/en/cli-reference>                     |
+| read  | How we built our multi-agent research system    | Anthropic Engineering              | What a team of agents costs and gains.                      | <https://www.anthropic.com/engineering/multi-agent-research-system> |
