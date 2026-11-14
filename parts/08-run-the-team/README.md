@@ -25,9 +25,9 @@ flowchart LR
 | `measure-the-lifecycle`   | 20      | `work/metrics.md`: the four DORA keys from `deploys.csv` and `incidents.csv` (within 5%), and from git: intent to spec time, spec commits after the first plan commit, files changed outside `plan.md`, share of commits with the Claude Code trailer, median commit size (exact). Each number names its command. One sentence says what the numbers do not prove |
 | `write-the-team-playbook` | 20      | `PLAYBOOK.md`: every gates row matches a role in `approvals.jsonl`, every never-do item matches a deny or ask rule, the size limit equals the one `build-in-small-slices` enforced. The em approval matches                                                                                                                                                       |
 | `ship-the-feature`        | 10      | The Goal. Every AC id maps to a test, a green run, a commit, `plan.md` and the release note. Every approval hash matches and the gates came in order. The world contract passes. Every postmortem action item has a passing check. It walks `checks/lib/chain.ts`, like `bun run finished`                                                                        |
-| `ship-in-your-own-repo`   | 40      | `work/own-repo.md`, the evidence for a real feature in your own repo: six headings, 3 or more criteria with WHEN and THEN, tests red before and green after, 2 or more `P-` commits under 200 lines, a review, and the tech lead's signature                                                                                                                      |
+| `ship-in-your-own-repo`   | 30      | `work/own-repo.md`, the evidence for a real feature in your own repo: six headings, 3 or more criteria with WHEN and THEN, tests red before and green after, 2 or more `P-` commits under 200 lines, a review, and the tech lead's signature                                                                                                                      |
 
-This part takes 90 minutes.
+This part takes 80 minutes.
 
 ## Walkthrough
 

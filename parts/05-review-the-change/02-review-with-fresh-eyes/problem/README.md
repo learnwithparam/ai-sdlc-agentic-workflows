@@ -4,11 +4,11 @@
 
 Sam's branch `teammate/local-deadlines` builds on the wrench ticket you built in Part 4. It shows crews each deadline in Brannock time. Every test passes. But it adds the 48 hours on the wall clock, not in real time.
 
-For example, a bike is wrenched at noon, one night before the clocks go back. The branch gives it a deadline 49 real hours later. The bike is late, and the city charges 50 pounds.
+For example, a bike is wrenched one night before the clocks go back. The branch gives it a deadline 49 real hours later. The bike is late, and the city charges 50 pounds.
 
-The session that wrote a change is a poor judge of it. A **subagent** starts fresh, with only the diff, spec, plan and `REVIEW.md`. A second branch, `teammate/deadline-labels`, does the same job safely. A good reviewer finds the bug on the first and stays quiet on the second.
+The session that wrote a change is a poor judge of it. A **subagent** starts fresh, with only the diff, spec, plan and `REVIEW.md`. A good reviewer finds the bug here, and stays quiet on `teammate/deadline-labels`, which does the job safely.
 
-A third branch, `teammate/queue-search`, lets crews search the queue by a fault word. It has a hole of a different kind: it builds the SQL from the search word. Claude Code has a built-in `/security-review` command for this. You will run it and see it find the hole.
+A third branch, `teammate/queue-search`, builds SQL from a search word. Claude Code's built-in `/security-review` command should find that hole.
 
 ```mermaid
 flowchart LR
@@ -31,16 +31,7 @@ Expect: `kestrel/ is ready at the start of review-with-fresh-eyes.`
 
 First, ask Claude Code for the reviewer:
 
-```text
-Create a project subagent in .claude/agents/reviewer.md. In its frontmatter: name reviewer;
-a description that says to use it to review a branch against work/spec.md, work/plan.md and
-REVIEW.md before the tech lead decides; and tools: Read, Grep, Glob, Bash. Give it no Edit and
-no Write tool, because a reviewer never changes the code. In the body, tell it: you review a
-change you did not write. Read REVIEW.md, work/spec.md and work/plan.md first. Read the diff
-with git diff main...<branch>. Run the three passes in REVIEW.md. Return each finding as a
-table row in the format REVIEW.md asks for, with the criterion id it breaks. Skip style. Keep
-nits under the cap in REVIEW.md. If there is no Important finding, say so plainly.
-```
+The prompt is in [reviewer-prompt.md](../../reviewer-prompt.md).
 
 Check the `tools:` line. Start a new session, so Claude Code loads the subagent, and ask:
 
@@ -58,7 +49,7 @@ bun parts/05-review-the-change/02-review-with-fresh-eyes/record.ts
 
 Expect: `Saved 9 runs to kestrel/recordings/review-with-fresh-eyes/`
 
-The last 3 runs call `/security-review` on `teammate/queue-search`. To try it by hand, check out that branch and type `/security-review` in Claude Code. The report names the SQL injection in `src/crew-queue.ts` and says to bind the search word as a parameter.
+The last 3 runs call `/security-review` on the third branch.
 
 ## Done when
 
