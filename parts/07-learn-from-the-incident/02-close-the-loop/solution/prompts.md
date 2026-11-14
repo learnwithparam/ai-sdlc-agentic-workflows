@@ -6,7 +6,7 @@ Every file in this folder came from a real Claude Code run. The transcripts are 
 
 The first prompt in the step README. The transcript is `claude-md-line.jsonl`.
 
-Claude Code read the postmortem and added one line under `## Things Claude gets wrong`. It says to treat every write route as retried: the app resends `POST /wrench` up to 3 times, so a repeated `request_id` must return the existing job with no new row and no second disable, and tests must send the same request more than once.
+Claude Code read the postmortem and added one line under `## Things Claude gets wrong`. It says to treat every write route as retried. The app resends `POST /wrench` up to 3 times. So a repeated `request_id` must return the existing job, with no new row and no second disable. Tests must send the same request more than once.
 
 It then tried `git add` and `git commit`. In the recorded headless run those were not allowed, so the learner made the commit. In your own session, Claude Code asks, and you say yes after you read the diff.
 

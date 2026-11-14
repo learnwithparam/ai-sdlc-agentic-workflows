@@ -49,4 +49,4 @@ Expect: `Saved parts/07-learn-from-the-incident/01-write-the-postmortem/images/e
 
 ## Re-recorded on the Part 4 ticket
 
-The runs in this part were recorded again on the Part 4 repo. Two limits to know: the `blames-the-engineer` run held to blameless even when asked, so that sample is a hand edit of the real postmortem, and the first run of the action items check refused the word Ask, so `ask` was added to the verb list in `checks/write-the-postmortem.ts`.
+The runs in this part were recorded again on the Part 4 repo. Two limits to know. The `blames-the-engineer` run held to blameless even when asked, so that sample is a hand edit of the real postmortem. The action items check refused the word Ask at first, so `ask` was added to its verb list in `checks/write-the-postmortem.ts`.

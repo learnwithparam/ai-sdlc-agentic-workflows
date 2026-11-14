@@ -49,6 +49,6 @@ Claude Code handed the job to the reviewer. The reviewer read `REVIEW.md`, the s
 
 On the clean branch, the reviewer still noticed that the label hides GMT or BST. It called that a nit, because the real deadline stays right. That is the meaning of Important in `REVIEW.md` at work.
 
-The last row is a different tool. `/security-review` is a command that comes with Claude Code. It reads the changes on your branch and looks only for ways to attack the code. In all 3 runs it flagged the search word that goes straight into the SQL text of `src/crew-queue.ts`, and told us to bind it as a parameter. The reports are in `recordings/review-with-fresh-eyes/security/`.
+The last row is a different tool. `/security-review` is a command that comes with Claude Code. It reads the changes on your branch and looks only for ways to attack the code. In all 3 runs it flagged the search word. That word goes straight into the SQL text of `src/crew-queue.ts`. The fix it gave was to bind the word as a parameter. The reports are in `recordings/review-with-fresh-eyes/security/`.
 
 **What to reject:** a review of only the planted branch. It shows that the reviewer finds bugs, but not that it stays quiet when there are none. That mistake is in `wrong/no-clean-run/`.
