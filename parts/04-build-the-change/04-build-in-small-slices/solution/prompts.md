@@ -31,7 +31,3 @@ bun test pass before you finish.
 ```
 
 Claude Code did it, in its own commit, "P-4 deferred: skip the AC-5 acceptance test". Every test is green. But the signed test changed, so the qa approval no longer holds. A signed test changes only with a new signature from qa.
-
-## Side by side
-
-The four commits above are the recorded run. The solution history is not the order they were made in. A script took the P-2, P-3 and P-4 commits from the recording, put each on its own `slice/` branch, and merged the three into main. That is the shape `claude -w` leaves when you run the slices in parallel. The code is exactly the recorded code. The check proves the shape: merge commits named for `slice/` branches, and files that do not overlap. `work/slices.md` was written by hand from `git show --numstat`.

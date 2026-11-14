@@ -37,14 +37,14 @@ on everything under data/contract/, written relative to this project as /data/co
 Add an ask rule for Bash(bun run deploy:production *), so a person must say yes before any deploy.
 ```
 
-Then ask for two more lines in the same file. One sets the permission mode to `default`, so Claude Code asks before it edits. The other turns the sandbox on, so a shell command cannot reach outside the project:
+Ask for two more lines in the same file: a permission mode, and the sandbox, which keeps shell commands inside the project:
 
 ```text
 In .claude/settings.json, set permissions.defaultMode to "default" and turn the sandbox on
 with "sandbox": { "enabled": true }. Keep the deny and ask rules.
 ```
 
-Press Shift+Tab to see the modes: ask first, accept edits, and plan mode. Use `default` for the team file.
+Shift+Tab shows the modes. Use `default` for the team file.
 
 Claude Code asks before it writes its own settings file. Read the rules it shows you, then say yes.
 

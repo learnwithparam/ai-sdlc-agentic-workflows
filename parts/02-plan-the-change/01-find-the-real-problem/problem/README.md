@@ -4,7 +4,7 @@
 
 Kestrel misses the 48 hour repair limit in the city contract. The operations lead wants two more crews. They cost money every month, and nobody knows where the misses happen.
 
-The answer is already in `data/`. It holds 90 days of wrench reports and repair jobs. A **wrench** is a rider pressing the wrench button in the app to report a broken bike.
+The answer is in `data/`: 90 days of wrench reports and repair jobs. A **wrench** is a rider reporting a broken bike.
 
 For example, one row of `data/wrenches.csv` reads `W-00001,B-2597,classic,S-036,2026-07-01T17:26:41Z,BRAKE,`. Bike `B-2597` had a brake fault at station `S-036`.
 
@@ -41,26 +41,22 @@ Work out four numbers:
 3. The re-rent rate: the share of wrenched bikes rented again before a crew reached them.
 4. What the late bikes cost in contract credits, in pounds.
 
-Run a command for every number. Do not guess and do not estimate. Put the counting in one
-small script, work/misses.ts, that a beginner can read: whole words for every name (never
-r, w or pct), one idea per line, short functions, lines under 100 characters.
+Run a command for every number. Do not guess. Put the counting in one small script,
+work/misses.ts, that a beginner can read: whole words for every name, one idea per line.
 
 Write work/findings.md with a table: each number, its value as a count and a percentage,
 and the exact command you ran to get it. Under the table, say in a few short lines what the
 numbers mean for the request for more crews.
 ```
 
-Save the prompt you gave in `work/prompt.md`. Name each file with an `@`, such as `@data/wrenches.csv`, so Claude Code reads the file and does not guess. A short prompt that names its files beats a long one that does not. Take a screenshot of any chart or table you want it to read, save it as `work/late-bikes.png`, and add the line `Screenshot: work/late-bikes.png` to the prompt file. Claude Code can read an image you drop into the session.
+Save your prompt in `work/prompt.md`. Name each file with an `@`, such as `@data/wrenches.csv`, so Claude Code reads it and does not guess. Add a screenshot of a chart you want read, saved as `work/late-bikes.png`, with the line `Screenshot: work/late-bikes.png`.
 
 Claude Code asks before each command. Read it, then say yes. Say no to anything that changes `data/`.
 
 ## Done when
 
 - `work/prompt.md` names two data files with `@`, asks for a command per number, and names a screenshot that is a real PNG.
-- `work/findings.md` exists.
-- It gives the miss rate, the North battery share and the re-rent rate, each within 0.5 points of the check's own count.
-- It gives the credit cost in pounds, within 50 pounds of the check's own count.
-- Each of those numbers sits on a line with the command that made it, in backticks.
+- `work/findings.md` gives all four numbers, close to the check's own count, each with its command in backticks.
 
 ```bash
 bun run verify find-the-real-problem
@@ -82,5 +78,5 @@ Expect: `Done. All 8 rules pass.`
 
 - **Wrench**: a rider's report that a bike is broken. The contract clock starts here.
 - **Miss rate**: the share of wrenched bikes fixed after the 48 hour limit.
-- **Re-rent**: a rider took out a bike someone already reported as broken.
-- **Credit**: 50 pounds Kestrel pays the city for each bike fixed late.
+- **Re-rent**: a rider took out a bike already reported as broken.
+- **Credit**: 50 pounds paid to the city for each bike fixed late.

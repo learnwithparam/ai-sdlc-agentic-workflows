@@ -2,6 +2,12 @@
 # Each step has a check in checks/<step>.ts, and the rules there test the learner's work.
 # Levels come from standard section 7.
 [features]
+# Checked by a rule that reads your work: plan-mode, at-files, specific-prompt, screenshots,
+# permission-modes, sandbox, claude-md, init, check-to-run, deny-rules, rules, skills,
+# spec-interview, hooks, stop-hook-gate, diff-review, worktrees, code-review-subagent,
+# subagents, reviewer-agent, headless, loop, schedule, github-action, run-contract-and-metrics.
+# Taught on the step page, with no rule that can see the keystroke: esc, rewind, clear, batch,
+# mcp-or-cli-tools, goal.
 # L0 Ask
 plan-mode = "plan-in-plan-mode"
 at-files = "ready-the-repo"
@@ -9,7 +15,7 @@ screenshots = "meet-kestrel"
 specific-prompt = "find-the-real-problem"
 # L1 Supervise
 permission-modes = "ready-the-repo"
-diff-review = "build-in-small-slices"
+diff-review = "build-in-parallel"
 esc = "build-in-small-slices"
 rewind = "build-in-small-slices"
 clear = "find-the-real-problem"
@@ -19,7 +25,7 @@ claude-md = "ready-the-repo"
 rules = "write-the-review-rules"
 check-to-run = "ready-the-repo"
 # L3 Fence it
-hooks = "write-the-failing-tests"
+hooks = "fence-the-signed-tests"
 deny-rules = "ready-the-repo"
 sandbox = "ready-the-repo"
 skills = "write-the-contract-skill"
@@ -27,16 +33,16 @@ mcp-or-cli-tools = "gate-the-release"
 # L4 Spec and verify
 spec-interview = "write-the-spec"
 goal = "meet-kestrel"
-stop-hook-gate = "write-the-failing-tests"
+stop-hook-gate = "fence-the-signed-tests"
 code-review-subagent = "review-with-fresh-eyes"
 # L5 Parallel
 subagents = "review-with-fresh-eyes"
-worktrees = "build-in-small-slices"
-batch = "build-in-small-slices"
+worktrees = "build-in-parallel"
+batch = "build-in-parallel"
 reviewer-agent = "review-with-fresh-eyes"
 # L6 Unattended
-headless = "meet-kestrel"
-loop = "measure-the-lifecycle"
-schedule = "measure-the-lifecycle"
-github-action = "write-the-team-playbook"
-run-contract-and-metrics = "measure-the-lifecycle"
+headless = "run-it-without-you"
+loop = "run-it-without-you"
+schedule = "run-it-without-you"
+github-action = "run-it-without-you"
+run-contract-and-metrics = "run-it-without-you"

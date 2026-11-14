@@ -38,25 +38,7 @@ with its plan id, for example "P-2: ...". Keep every commit under 200 changed li
 tell me if an item needs a file the plan does not list.
 ```
 
-After each commit, read the diff with `git show` in `kestrel/`. Say no if Claude Code changes a file in `test/acceptance/`. If Claude Code starts down a wrong road, press Esc to stop it. If it already made a change you do not want, type `/rewind` to go back to an earlier point.
-
-Items that touch different files do not have to wait for each other. Build P-2, P-3 and P-4 side by side. Each gets its own copy of the repo, called a worktree, so the three Claude Code sessions cannot collide:
-
-```bash
-claude -w slice/p-2
-```
-
-Expect: Claude Code opens in a new worktree on the branch `slice/p-2`.
-
-Give each session one plan item, in its own terminal. When a slice is done and its tests pass, merge its branch into `main` from `kestrel/`:
-
-```bash
-git merge --no-ff slice/p-2 -m "Merge slice/p-2"
-```
-
-Expect: git names the merge and the file the slice changed.
-
-Last, write `work/slices.md`. For each build commit, write one line such as `- P-2: 27 lines`, using the number from `git show --numstat`. The number proves you read the diff.
+After each commit, read the diff with `git show` in `kestrel/`. Say no if Claude Code changes a file in `test/acceptance/`. Press Esc to stop it mid-edit. If it already made a change you do not want, type `/rewind` to go back.
 
 ## Done when
 
@@ -64,15 +46,13 @@ Last, write `work/slices.md`. For each build commit, write one line such as `- P
 - The acceptance tests are byte for byte as the qa role signed them.
 - 2 or more code commits after the tests, each naming a plan item and under 200 changed lines.
 - Every file a build commit changed is named in `plan.md`.
-- Two or more slices were merged from `slice/` branches that touch different files.
-- `work/slices.md` gives the changed lines of each build commit, and git agrees.
 - The running service shows a wrenched bike as `is_disabled: true` within 60 seconds, and the North queue is due first.
 
 ```bash
 bun run verify build-in-small-slices
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 6 rules pass.`
 
 ![What a pass looks like](../images/expected.png)
 
@@ -89,8 +69,6 @@ After one wrench on bike `B-2207`, the map counts 41 broken bikes out of service
 | `FAIL bun test passes ...`                                    | Ask Claude Code which plan item is not built yet.                                                                                         |
 
 ## Words you will use
-
-- **Worktree**: a second copy of the repo on its own branch, so two sessions can work at once.
 
 - **Slice**: one plan item, built and committed on its own.
 - **Diff**: the lines a commit adds and removes. `git show` prints it.

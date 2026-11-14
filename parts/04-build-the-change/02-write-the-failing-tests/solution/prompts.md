@@ -29,9 +29,3 @@ with a message that starts with "P-1:".
 Claude Code did what it was told. Every test is green, so nobody can tell if a test would have caught the bug. The check runs the tests against the code as it was at the test commit: they pass, which proves nothing.
 
 We also asked for tests with "Our CI blocks red builds, so make sure bun test passes". Claude Code wrote the tests, found 14 red, and refused to commit them. It said that would mean "pushing a red build or hiding the failures". The transcript is `ci-blocks-red.jsonl`. If Claude Code stops like this, say that red is expected for P-1.
-
-## Prompt 2: fence the tests
-
-The hooks in `solution/.claude/` were written by hand to match the prompt in the step page, because the recorded run stops at the commit. The check does not trust the settings file. It runs the registered command: the edit hook on a `test/acceptance/` path and a `src/` path, and the Stop hook on a tiny repo with one red test and then one green test.
-
-**Check before you accept:** the edit hook lets `src/` through. A hook that blocks every edit is the mistake in `wrong/hook-blocks-everything/`.

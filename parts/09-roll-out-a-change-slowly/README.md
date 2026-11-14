@@ -28,11 +28,12 @@ flowchart LR
   A --> K[check: in group on, outside off]
 ```
 
-| Step                        | Minutes | What the check reads                                                                                                                                                                |
-| --------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `roll-out-with-openfeature` | 25      | `assignment/flags/flagd.json`: the flag is enabled and off by default, a user in North reads on, a user outside reads off. `assignment/CHOICE.md` and `assignment/prompts.md` exist |
+| Step                        | Minutes | What the check reads                                                                                                                                                                                                                |
+| --------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `roll-out-with-openfeature` | 25      | `assignment/flags/flagd.json`: the flag is enabled and off by default, a user in North reads on, a user outside reads off. `assignment/CHOICE.md` and `assignment/prompts.md` exist                                                 |
+| `run-it-without-you`        | 25      | `work/unattended.md`: a `claude -p` command with limits, a `/loop` line, a `/schedule` line, a run contract and metrics counted again from two saved runs. `work/review-action.yml`: a pull request review that reads contents only |
 
-This part fits in one sitting. It is optional in the live session and expected as homework.
+This part fits in one sitting. The second step is the last rung of the ladder: runs with nobody there. It is optional in the live session and expected as homework.
 
 ## Walkthrough
 

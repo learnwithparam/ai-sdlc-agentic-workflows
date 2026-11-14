@@ -23,7 +23,9 @@ flowchart LR
 | ------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `plan-in-plan-mode`       | 20      | `work/plan.md` with Files that change, Order of work, Risks, Proof. Every AC id appears in a work item. No item touches `data/contract/`. The recorded session's init line has `permissionMode` `plan`. The tech-lead approval comes after the decision approval                                                                                                |
 | `write-the-failing-tests` | 15      | One test per AC id in `test/acceptance/`, named for its id. Every test fails on the begin state. The test commit is earlier in git than any change to `src/`. The qa approval of `test/acceptance` matches                                                                                                                                                      |
+| `fence-the-signed-tests`  | 15      | `.claude/settings.json` registers an edit hook and a Stop hook. The check runs them: the edit hook exits 2 for a path in `test/acceptance/` and 0 for `src/`, and the Stop hook exits 2 on a red test and 0 on a green one                                                                                                                                      |
 | `build-in-small-slices`   | 25      | All tests pass. At least 2 commits after the test commit, none over 200 changed lines, each naming a plan item. The acceptance tests are byte for byte as approved. The world contract: `POST /wrench` then the feed shows `is_disabled: true` within 60 seconds, and `GET /crew/queue` is due first. `wrong/edited-the-test/` and `wrong/one-big-commit/` fail |
+| `build-in-parallel`       | 20      | The same plan items on `slice/` branches, merged. The merges touch different files. `work/slices.md` gives each build commit's changed lines, and git agrees                                                                                                                                                                                                    |
 
 This part fits in one sitting.
 
@@ -79,7 +81,23 @@ bun run verify write-the-failing-tests
 
 Expect: `Done. All 5 rules pass.`
 
-Last, the build:
+Next, fence the signed tests with two hooks:
+
+```bash
+bun run start fence-the-signed-tests
+```
+
+Expect: `kestrel/ is ready at the start of fence-the-signed-tests.`
+
+Ask Claude Code for the hooks in the step's README, then check:
+
+```bash
+bun run verify fence-the-signed-tests
+```
+
+Expect: `Done. All 4 rules pass.`
+
+Then the build:
 
 ```bash
 bun run start build-in-small-slices
@@ -95,13 +113,29 @@ bun run verify build-in-small-slices
 
 Expect: `Done. All 6 rules pass.`
 
+Last, build the same items side by side in worktrees:
+
+```bash
+bun run start build-in-parallel
+```
+
+Expect: `kestrel/ is ready at the start of build-in-parallel.`
+
+Follow the step's README, then check:
+
+```bash
+bun run verify build-in-parallel
+```
+
+Expect: `Done. All 5 rules pass.`
+
 Check the whole part:
 
 ```bash
 bun run verify part build-the-change
 ```
 
-Expect: `Part build-the-change is done: 3/3 steps pass.`
+Expect: `Part build-the-change is done: 5/5 steps pass.`
 
 For example, the passing table reads:
 
@@ -109,7 +143,9 @@ For example, the passing table reads:
 Part build-the-change:
   PASS   plan-in-plan-mode  (7/7 rules)
   PASS   write-the-failing-tests  (5/5 rules)
+  PASS   fence-the-signed-tests  (4/4 rules)
   PASS   build-in-small-slices  (6/6 rules)
+  PASS   build-in-parallel  (5/5 rules)
 ```
 
 The checks run the tests and start the real service, so `verify part` takes about half a minute. To see a sample end state instead, run `bun run catch-up build-in-small-slices`.
