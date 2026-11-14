@@ -76,7 +76,8 @@ function testsCameBeforeCode(folder: string): boolean {
   // P-1 is the acceptance tests themselves, so the first build commit is the first P- commit
   // that changes code in src/.
   const firstBuild = commits.findIndex(
-    (commit) => /^P-\d+/.test(commit.subject) && commit.files.some((file) => file.startsWith("src/")),
+    (commit) =>
+      /^P-\d+/.test(commit.subject) && commit.files.some((file) => file.startsWith("src/")),
   );
   return firstTest >= 0 && firstBuild > firstTest;
 }
