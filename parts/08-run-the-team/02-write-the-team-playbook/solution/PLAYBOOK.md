@@ -11,18 +11,18 @@ and the time, so each sign-off covers that exact version of the file.
 
 ## Gates
 
-| File                                    | Who approves    | How it is recorded                                             |
-| --------------------------------------- | --------------- | -------------------------------------------------------------- |
-| `work/intent.md`                        | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `work/spec.md`                          | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| File                                     | Who approves    | How it is recorded                                               |
+| ---------------------------------------- | --------------- | ---------------------------------------------------------------- |
+| `work/intent.md`                         | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/spec.md`                           | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
 | `work/decisions/0001-disable-in-feed.md` | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `work/plan.md`                          | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `test/acceptance`                       | qa              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `REVIEW.md`                             | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `work/release.md`                       | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `work/rollout.yaml`                     | release-manager | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `work/postmortem.md`                    | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
-| `work/intent/next-dedupe-wrenches.md`   | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/plan.md`                           | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `test/acceptance`                        | qa              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `REVIEW.md`                              | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/release.md`                        | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/rollout.yaml`                      | release-manager | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/postmortem.md`                     | tech-lead       | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
+| `work/intent/next-dedupe-wrenches.md`    | pm              | Line in `work/approvals.jsonl` with `sha256`, `role`, `by`, `at` |
 
 `work/spec.md` and `work/decisions/0001-disable-in-feed.md` were each signed twice. The latest
 line is the one that counts.

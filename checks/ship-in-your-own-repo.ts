@@ -30,7 +30,9 @@ function everyCriterionHasWhenAndThen(folder: string): boolean {
   const ids = new Set(criteria.map((criterion) => criterion.id));
   return (
     ids.size >= SMALLEST_NUMBER_OF_CRITERIA &&
-    criteria.every((criterion) => /\bWHEN\b/.test(criterion.line) && /\bTHEN\b/.test(criterion.line))
+    criteria.every(
+      (criterion) => /\bWHEN\b/.test(criterion.line) && /\bTHEN\b/.test(criterion.line),
+    )
   );
 }
 
@@ -67,7 +69,9 @@ export default [
     test: (folder) => {
       const found = headingsOf(text(folder)).map((heading) => heading.toLowerCase());
       const positions = HEADINGS.map((name) => found.indexOf(name.toLowerCase()));
-      return positions.every((at, index) => at >= 0 && (index === 0 || at > positions[index - 1]));
+      const inOrder = (place: number, index: number) =>
+        place >= 0 && (index === 0 || place > positions[index - 1]);
+      return positions.every(inOrder);
     },
     tryNext: "ask Claude Code for the six ## headings, in that order",
   },
@@ -110,7 +114,9 @@ export default [
       const review = section(folder, "Review");
       const found = /\b(found|finding|no important|nothing important)\b/i.test(review);
       const acted = /\b(will|fixed|fix|changed|left)\b/i.test(review);
-      return review.split(/[.!?]/).filter((sentence) => sentence.trim()).length >= 2 && found && acted;
+      return (
+        review.split(/[.!?]/).filter((sentence) => sentence.trim()).length >= 2 && found && acted
+      );
     },
     tryNext: "write two sentences: what the review found, and what you will do about it",
   },

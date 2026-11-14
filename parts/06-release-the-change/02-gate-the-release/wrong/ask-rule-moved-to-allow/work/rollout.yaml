@@ -5,27 +5,27 @@
 feature_flag: wrench_disables_bike
 
 stages:
-  - districts: [North]    # 40 stations
-  - districts: [East]     # 30 stations
-  - districts: [Centre]   # 40 stations
-  - districts: [South, West]   # 35 + 35 stations
+  - districts: [North] # 40 stations
+  - districts: [East] # 30 stations
+  - districts: [Centre] # 40 stations
+  - districts: [South, West] # 35 + 35 stations
 
 guardrails:
-  - metric: rentable_fleet_percent        # share of bikes riders can rent, checked in every district
-    stop_below: 96                        # SLA-9 minimum_percent
-  - metric: repairs_on_time_percent       # repair jobs fixed within the SLA-4 limits (48h wrench, 96h crew-found)
-    stop_below: 95                        # SLA-4 target_percent
-  - metric: wrench_job_age_hours          # oldest open job from a rider wrench, counted from the wrench
-    stop_above: 48                        # SLA-4 wrenched_limit_hours
-  - metric: crew_found_job_age_hours      # oldest open job a crew found itself
-    stop_above: 96                        # SLA-4 not_wrenched_limit_hours
-  - metric: station_outage_hours          # longest current outage at any single station
-    stop_above: 4                         # SLA-11 limit_hours
-  - metric: feed_age_seconds              # age of the data in the public GBFS feed
-    stop_above: 60                        # SLA-12 feed_max_age_seconds
+  - metric: rentable_fleet_percent # share of bikes riders can rent, checked in every district
+    stop_below: 96 # SLA-9 minimum_percent
+  - metric: repairs_on_time_percent # repair jobs fixed within the SLA-4 limits (48h wrench, 96h crew-found)
+    stop_below: 95 # SLA-4 target_percent
+  - metric: wrench_job_age_hours # oldest open job from a rider wrench, counted from the wrench
+    stop_above: 48 # SLA-4 wrenched_limit_hours
+  - metric: crew_found_job_age_hours # oldest open job a crew found itself
+    stop_above: 96 # SLA-4 not_wrenched_limit_hours
+  - metric: station_outage_hours # longest current outage at any single station
+    stop_above: 4 # SLA-11 limit_hours
+  - metric: feed_age_seconds # age of the data in the public GBFS feed
+    stop_above: 60 # SLA-12 feed_max_age_seconds
 
 rollback:
-  command: bun run rollback   # needs a person to say yes first (AGENTS.md)
+  command: bun run rollback # needs a person to say yes first (AGENTS.md)
   when: >-
     Any guardrail above crosses its threshold in a district that is in the rollout,
     and turning feature_flag off for that district does not bring it back within the stage.

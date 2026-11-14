@@ -31,7 +31,8 @@ export function recordWrench(database: Database, report: WrenchReport) {
     }
     const wrench = database
       .query(
-        "INSERT INTO wrenches (bike_id, station_id, fault, reported_at, request_id) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO wrenches (bike_id, station_id, fault, reported_at, request_id) " +
+          "VALUES (?, ?, ?, ?, ?)",
       )
       .run(bike_id, station_id, fault, reportedAt, requestId);
     // The wrench row id makes the job id unique, even for two wrenches in the same millisecond.

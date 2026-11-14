@@ -10,15 +10,15 @@ Deploy D-071 turned on the `wrench_disables_bike` flag for North district at 06:
 
 ## Impact
 
-| Measure | Value | Source |
-| --- | --- | --- |
-| Bikes taken out of service by duplicate jobs | **212** (the bikes re-enabled by script) | `incident.log` 10:20, `chat.txt` 10:18 |
-| North availability before | **97.8%** (every sample 06:00 to 07:30) | `availability.csv` |
-| North availability at lowest | **89.0%** (09:00 to 09:30, four samples), a drop of 8.8 points | `availability.csv` |
-| Time below 96% | **2 h 40 min**: first sample below at 08:00 (95.6%), first back above at 10:40 (96.7%) | `availability.csv` |
-| Time from first drop to resolution | **3 h 10 min**: 07:40 (storm begins, availability 97.0%) to 10:50 (resolved) | `incident.log`, `availability.csv` |
-| North crew queue | about **600** open jobs, normally about 40 | `chat.txt` 08:34 |
-| Duplicates per bike | each affected bike ID showed up **3** times, a few seconds apart | `chat.txt` 08:47 |
+| Measure                                      | Value                                                                                  | Source                                 |
+| -------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------- |
+| Bikes taken out of service by duplicate jobs | **212** (the bikes re-enabled by script)                                               | `incident.log` 10:20, `chat.txt` 10:18 |
+| North availability before                    | **97.8%** (every sample 06:00 to 07:30)                                                | `availability.csv`                     |
+| North availability at lowest                 | **89.0%** (09:00 to 09:30, four samples), a drop of 8.8 points                         | `availability.csv`                     |
+| Time below 96%                               | **2 h 40 min**: first sample below at 08:00 (95.6%), first back above at 10:40 (96.7%) | `availability.csv`                     |
+| Time from first drop to resolution           | **3 h 10 min**: 07:40 (storm begins, availability 97.0%) to 10:50 (resolved)           | `incident.log`, `availability.csv`     |
+| North crew queue                             | about **600** open jobs, normally about 40                                             | `chat.txt` 08:34                       |
+| Duplicates per bike                          | each affected bike ID showed up **3** times, a few seconds apart                       | `chat.txt` 08:47                       |
 
 Service levels (`data/contract/sla.yaml`):
 
@@ -35,26 +35,26 @@ Log discrepancies, recorded as found:
 
 ## Timeline
 
-| Time | Event | Source |
-| --- | --- | --- |
-| 06:10 | Release pipeline starts deploy D-071: district rollout of `wrench_disables_bike` to North | `deploys.log`, `incident.log` |
-| 06:14 | D-071 finishes; `wrench_disables_bike` is on for North | `deploys.log`, `incident.log` |
-| 07:40 | Retry storm begins: the rider app retries failed `POST /wrench` up to 3 times; North availability is 97.0% | `incident.log`, `availability.csv` |
-| 07:52 | Each retry opens a new repair job and disables the bike again | `incident.log` |
-| 08:00 | North availability is 95.6%, the first sample below 96% | `availability.csv` |
-| 08:05 | Alert: North bike availability under 96% | `incident.log` |
-| 08:20 | On-call engineer acknowledges the alert | `incident.log`, `chat.txt` 08:21 |
-| 08:34 | North crew queue has about 600 jobs, normally about 40 | `chat.txt` |
-| 08:47 | The same bike IDs appear three times each, a few seconds apart | `chat.txt` |
-| 09:00 | North availability reaches its lowest, 89.0% (it stays there until 09:30) | `availability.csv` |
-| 09:02 | Team notes that the app retries a wrench when the network drops, and that retries were never tested | `chat.txt` |
-| 09:05 | Cause found: `POST /wrench` has no duplicate check, so retries count as new reports | `incident.log`, `chat.txt` |
-| 09:28 | Release manager announces the flag is being turned off for North | `chat.txt` |
-| 09:30 | `wrench_disables_bike` turned off for North | `deploys.log`, `incident.log` |
-| 09:40 | Availability starts recovering (90.1%) | `availability.csv` |
-| 10:20 | Script re-enables the 212 bikes that only have duplicate jobs | `incident.log`, `chat.txt` 10:18 |
-| 10:40 | North availability is 96.7%, the first sample back above 96% | `availability.csv` |
-| 10:50 | North availability back at 97.8%; incident resolved | `incident.log`, `availability.csv`, `chat.txt` 10:51 |
+| Time  | Event                                                                                                      | Source                                               |
+| ----- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| 06:10 | Release pipeline starts deploy D-071: district rollout of `wrench_disables_bike` to North                  | `deploys.log`, `incident.log`                        |
+| 06:14 | D-071 finishes; `wrench_disables_bike` is on for North                                                     | `deploys.log`, `incident.log`                        |
+| 07:40 | Retry storm begins: the rider app retries failed `POST /wrench` up to 3 times; North availability is 97.0% | `incident.log`, `availability.csv`                   |
+| 07:52 | Each retry opens a new repair job and disables the bike again                                              | `incident.log`                                       |
+| 08:00 | North availability is 95.6%, the first sample below 96%                                                    | `availability.csv`                                   |
+| 08:05 | Alert: North bike availability under 96%                                                                   | `incident.log`                                       |
+| 08:20 | On-call engineer acknowledges the alert                                                                    | `incident.log`, `chat.txt` 08:21                     |
+| 08:34 | North crew queue has about 600 jobs, normally about 40                                                     | `chat.txt`                                           |
+| 08:47 | The same bike IDs appear three times each, a few seconds apart                                             | `chat.txt`                                           |
+| 09:00 | North availability reaches its lowest, 89.0% (it stays there until 09:30)                                  | `availability.csv`                                   |
+| 09:02 | Team notes that the app retries a wrench when the network drops, and that retries were never tested        | `chat.txt`                                           |
+| 09:05 | Cause found: `POST /wrench` has no duplicate check, so retries count as new reports                        | `incident.log`, `chat.txt`                           |
+| 09:28 | Release manager announces the flag is being turned off for North                                           | `chat.txt`                                           |
+| 09:30 | `wrench_disables_bike` turned off for North                                                                | `deploys.log`, `incident.log`                        |
+| 09:40 | Availability starts recovering (90.1%)                                                                     | `availability.csv`                                   |
+| 10:20 | Script re-enables the 212 bikes that only have duplicate jobs                                              | `incident.log`, `chat.txt` 10:18                     |
+| 10:40 | North availability is 96.7%, the first sample back above 96%                                               | `availability.csv`                                   |
+| 10:50 | North availability back at 97.8%; incident resolved                                                        | `incident.log`, `availability.csv`, `chat.txt` 10:51 |
 
 ## Contributing factors
 
@@ -77,13 +77,13 @@ Log discrepancies, recorded as found:
 
 ## Action items
 
-| ID | Action | Owner | Check |
-| --- | --- | --- | --- |
-| A-1 | Add a regression test that sends the same wrench (same `bike_id` and `fault`) to `POST /wrench` three times. It should assert exactly one `wrenches` row and one open `repair_jobs` row for that bike, `is_disabled = 1`, and a non-201 or same-`job_id` reply to each retry. | QA engineer | `bun test -t "same wrench three times"` |
-| A-2 | Make `POST /wrench` idempotent: when a report matches an open wrench job for the same bike, return the existing `job_id` and don't insert or disable again. Accept an idempotency key from the app too. Check `data/contract/sla.yaml` first: under SLA-4 the clock starts at the first wrench, so the existing job's `reported_at` must stay as it is. | Engineer | `bun test -t "same wrench three times"` passes against the change |
-| A-3 | Send an idempotency key with every wrench report, keep it the same across the app's retries, and back off between retries. | Tech lead | `bun test test/acceptance` includes a retried wrench with one key |
-| A-4 | Add an automatic pause to district flag rollouts: turn `wrench_disables_bike` off if district availability falls by more than 2 points or the crew queue more than doubles within 30 min of turning it on. | Release manager | `grep pause scripts/deploy.ts` |
-| A-5 | Add alerts for crew queue size per depot and for more than one open wrench job per bike, so a spike like this pages someone before availability drops below 96%. | Operations lead | `curl -s 'localhost:4100/crew/queue?depot=North'` shows no bike with more than one open wrench job |
-| A-6 | Write a runbook step and a script that closes duplicate wrench jobs and re-enables bikes that have no other open job, so cleanup isn't improvised next time. | Engineer | `bun test -t "duplicate cleanup"` |
-| A-7 | Add "client retries" to the release checklist for any flag that changes what a write endpoint does. | Engineering manager | `grep -i retr work/release.md` |
-| A-8 | Ask Brannock City Transport, through the contract owner, how the duplicate-driven drop counts against SLA-9 and SLA-12 for 2026-11-03, and record the answer here. | Product manager | `grep -n "SLA-9" work/postmortem.md` shows the city's ruling |
+| ID  | Action                                                                                                                                                                                                                                                                                                                                                  | Owner               | Check                                                                                              |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------- |
+| A-1 | Add a regression test that sends the same wrench (same `bike_id` and `fault`) to `POST /wrench` three times. It should assert exactly one `wrenches` row and one open `repair_jobs` row for that bike, `is_disabled = 1`, and a non-201 or same-`job_id` reply to each retry.                                                                           | QA engineer         | `bun test -t "same wrench three times"`                                                            |
+| A-2 | Make `POST /wrench` idempotent: when a report matches an open wrench job for the same bike, return the existing `job_id` and don't insert or disable again. Accept an idempotency key from the app too. Check `data/contract/sla.yaml` first: under SLA-4 the clock starts at the first wrench, so the existing job's `reported_at` must stay as it is. | Engineer            | `bun test -t "same wrench three times"` passes against the change                                  |
+| A-3 | Send an idempotency key with every wrench report, keep it the same across the app's retries, and back off between retries.                                                                                                                                                                                                                              | Tech lead           | `bun test test/acceptance` includes a retried wrench with one key                                  |
+| A-4 | Add an automatic pause to district flag rollouts: turn `wrench_disables_bike` off if district availability falls by more than 2 points or the crew queue more than doubles within 30 min of turning it on.                                                                                                                                              | Release manager     | `grep pause scripts/deploy.ts`                                                                     |
+| A-5 | Add alerts for crew queue size per depot and for more than one open wrench job per bike, so a spike like this pages someone before availability drops below 96%.                                                                                                                                                                                        | Operations lead     | `curl -s 'localhost:4100/crew/queue?depot=North'` shows no bike with more than one open wrench job |
+| A-6 | Write a runbook step and a script that closes duplicate wrench jobs and re-enables bikes that have no other open job, so cleanup isn't improvised next time.                                                                                                                                                                                            | Engineer            | `bun test -t "duplicate cleanup"`                                                                  |
+| A-7 | Add "client retries" to the release checklist for any flag that changes what a write endpoint does.                                                                                                                                                                                                                                                     | Engineering manager | `grep -i retr work/release.md`                                                                     |
+| A-8 | Ask Brannock City Transport, through the contract owner, how the duplicate-driven drop counts against SLA-9 and SLA-12 for 2026-11-03, and record the answer here.                                                                                                                                                                                      | Product manager     | `grep -n "SLA-9" work/postmortem.md` shows the city's ruling                                       |

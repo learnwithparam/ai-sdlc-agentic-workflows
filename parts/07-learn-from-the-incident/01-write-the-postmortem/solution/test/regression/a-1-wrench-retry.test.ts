@@ -5,7 +5,8 @@ import { expect, test } from "bun:test";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const runId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+const randomPart = Math.random().toString(36).slice(2, 8);
+const runId = `${Date.now()}-${randomPart}`;
 process.env.SPOKE_DB = join(tmpdir(), `spoke-regression-${runId}.db`);
 process.env.SPOKE_LOG = join(tmpdir(), `spoke-regression-${runId}.log`);
 
@@ -14,11 +15,14 @@ const { recordWrench } = await import("../../src/wrenches");
 
 const db = openDatabase();
 
-const count = (sql: string, bikeId: string) => (db.query(sql).get(bikeId) as { n: number }).n;
+function count(sql: string, bikeId: string): number {
+  const row = db.query(sql).get(bikeId) as { n: number };
+  return row.n;
+}
 
 test("A-1: the same wrench three times with one request_id gives one repair job", () => {
-  const BIKE = "B-1040"; // no seed job, so it starts rentable with no wrenches or jobs
-  const report = { bike_id: BIKE, fault: "BRAKE", request_id: "app-retry-7f3c" };
+  const Bike = "B-1040"; // no seed job, so it starts rentable with no wrenches or jobs
+  const report = { bike_id: Bike, fault: "BRAKE", request_id: "app-retry-7f3c" };
 
   const replies = [recordWrench(db, report), recordWrench(db, report), recordWrench(db, report)];
 
@@ -30,14 +34,15 @@ test("A-1: the same wrench three times with one request_id gives one repair job"
   }
   for (const retry of replies.slice(1)) expect(retry.status).not.toBe(201);
 
-  expect(count("SELECT COUNT(*) AS n FROM wrenches WHERE bike_id = ?", BIKE)).toBe(1);
+  expect(count("SELECT COUNT(*) AS n FROM wrenches WHERE bike_id = ?", Bike)).toBe(1);
   expect(
     count(
-      "SELECT COUNT(*) AS n FROM repair_jobs WHERE bike_id = ? AND source = 'wrench' AND closed_at IS NULL",
-      BIKE,
+      "SELECT COUNT(*) AS n FROM repair_jobs " +
+        "WHERE bike_id = ? AND source = 'wrench' AND closed_at IS NULL",
+      Bike,
     ),
   ).toBe(1);
-  const bike = db.query("SELECT is_disabled FROM bikes WHERE bike_id = ?").get(BIKE) as {
+  const bike = db.query("SELECT is_disabled FROM bikes WHERE bike_id = ?").get(Bike) as {
     is_disabled: number;
   };
   expect(bike.is_disabled).toBe(1);

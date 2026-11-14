@@ -57,14 +57,14 @@ Contract: `data/contract/sla.yaml`, unchanged.
 
 ## Before release: open items
 
-| #   | Item                                                                                                                                                                        | Owner                          |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| C-1 | The 15 minute grace period Operations asked for is **not built**. It conflicts with SLA-12. Only the city can allow it. The PM decides whether to drop it or take it to the city. | PM / Brannock City Transport   |
-| C-2 | Fleet availability drops as wrenched bikes are disabled. The 40 seed jobs already take 1.9% of bikes out of service. Check how close each district (North especially) is to the SLA-9 minimum of 96%. | Operations                     |
-| C-3 | **No way to put a bike back in service yet.** No route closes a job or clears a false report, so a disabled bike stays disabled unless someone edits the DB. Needs a follow-up change. | PM                             |
-| C-4 | Brief North and South crews on the new queue order and earlier deadlines. Tell the city and third-party feed users that disabled counts will go up.                         | PM, Operations, city contact   |
-| —   | Tell log and dashboard owners about the `J-W-<n>` job id format.                                                                                                           | Tech lead                      |
-| —   | Decision 0001 still says `Status: proposed`, but the tech lead has approved it in `work/approvals.jsonl`. Set it to accepted.                                              | Tech lead                      |
+| #   | Item                                                                                                                                                                                                  | Owner                        |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| C-1 | The 15 minute grace period Operations asked for is **not built**. It conflicts with SLA-12. Only the city can allow it. The PM decides whether to drop it or take it to the city.                     | PM / Brannock City Transport |
+| C-2 | Fleet availability drops as wrenched bikes are disabled. The 40 seed jobs already take 1.9% of bikes out of service. Check how close each district (North especially) is to the SLA-9 minimum of 96%. | Operations                   |
+| C-3 | **No way to put a bike back in service yet.** No route closes a job or clears a false report, so a disabled bike stays disabled unless someone edits the DB. Needs a follow-up change.                | PM                           |
+| C-4 | Brief North and South crews on the new queue order and earlier deadlines. Tell the city and third-party feed users that disabled counts will go up.                                                   | PM, Operations, city contact |
+| —   | Tell log and dashboard owners about the `J-W-<n>` job id format.                                                                                                                                      | Tech lead                    |
+| —   | Decision 0001 still says `Status: proposed`, but the tech lead has approved it in `work/approvals.jsonl`. Set it to accepted.                                                                         | Tech lead                    |
 
 ## Not in this release
 

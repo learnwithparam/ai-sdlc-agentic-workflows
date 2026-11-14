@@ -1,4 +1,5 @@
 ---
+
 name: reviewer
 description: Use to review a branch against work/spec.md, work/plan.md and REVIEW.md before the tech lead decides. Give it the branch name. Returns findings as a table; never changes code.
 tools: Read, Grep, Glob, Bash

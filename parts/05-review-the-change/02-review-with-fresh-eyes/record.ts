@@ -139,7 +139,5 @@ if (import.meta.main) {
     runs.push(securityReviewOnce(runNumber));
   }
   for (const outcome of await Promise.all(runs)) console.log(outcome);
-  console.log(
-    `Saved ${runs.length} runs to kestrel/recordings/review-with-fresh-eyes/`,
-  );
+  console.log(`Saved ${runs.length} runs to kestrel/recordings/review-with-fresh-eyes/`);
 }

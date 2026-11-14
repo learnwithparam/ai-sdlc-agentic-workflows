@@ -183,9 +183,9 @@ export default [
     tryNext: "point the reviewer at What Important means here in REVIEW.md, then record again",
   },
   {
-    says: "on the branch with a planted hole, 2 of 3 /security-review reports find the SQL injection",
+    says: "on the planted-hole branch, 2 of 3 /security-review reports find the SQL injection",
     test: (folder) => securityReports(folder).filter(findsTheSqlHole).length >= RUNS_THAT_MUST_HOLD,
-    tryNext: `run ${RECORD_COMMAND} again. It runs /security-review on origin/teammate/queue-search`,
+    tryNext: `run ${RECORD_COMMAND} again. It runs /security-review on the hole branch`,
   },
   {
     says: "every recorded review keeps nits at or under the cap in REVIEW.md",

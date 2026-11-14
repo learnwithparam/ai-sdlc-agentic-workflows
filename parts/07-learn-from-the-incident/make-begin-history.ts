@@ -22,7 +22,13 @@ const STEP_SOLUTIONS = [
   "parts/06-release-the-change/01-write-the-release-notes/solution",
   "parts/06-release-the-change/02-gate-the-release/solution",
 ];
-const NOT_PART_OF_THE_REPO = new Set(["history.bundle", "prompts.md", "README.md", "images", "recordings"]);
+const NOT_PART_OF_THE_REPO = new Set([
+  "history.bundle",
+  "prompts.md",
+  "README.md",
+  "images",
+  "recordings",
+]);
 const CLAUDE_TRAILER = "Co-Authored-By: Claude <noreply@anthropic.com>";
 
 function git(folder: string, words: string[]) {
@@ -45,7 +51,12 @@ git(ROOT, ["clone", "--quiet", PART_FOUR_END, outputFolder]);
 rmSync(join(outputFolder, "recordings"), { recursive: true, force: true });
 for (const solution of STEP_SOLUTIONS) lay(join(ROOT, solution), outputFolder);
 git(outputFolder, ["add", "--all"]);
-git(outputFolder, ["commit", "--quiet", "-m", `Review and release: rules, notes and rollout, signed\n\n${CLAUDE_TRAILER}`]);
+git(outputFolder, [
+  "commit",
+  "--quiet",
+  "-m",
+  `Review and release: rules, notes and rollout, signed\n\n${CLAUDE_TRAILER}`,
+]);
 cpSync(INCIDENT_LOGS, join(outputFolder, "data", "incidents", "north-double-wrench"), {
   recursive: true,
 });

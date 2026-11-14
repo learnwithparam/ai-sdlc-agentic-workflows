@@ -4,23 +4,23 @@ Sources: `data/deploys.csv` (69 production deploys, D-001 to D-069, deployed 202
 
 ## Summary (whole period)
 
-| Metric | Value | How it is measured |
-| --- | --- | --- |
-| Deployment frequency | **69 deploys in 181 days, about 2.7 a week** (7–16 a month) | count of `deployed_at` |
-| Lead time for changes | **median 66 h (about 2.75 days)**, range 5.7 h to 118.6 h | `deployed_at − committed_at` for each deploy |
-| Change failure rate | **9 / 69 = 13.0 %** | deploys with an `incident_id` |
-| Time to restore service | **median 3.5 h**, range 1.5 h to 4.3 h | `resolved_at − started_at` for each incident |
+| Metric                  | Value                                                       | How it is measured                           |
+| ----------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| Deployment frequency    | **69 deploys in 181 days, about 2.7 a week** (7–16 a month) | count of `deployed_at`                       |
+| Lead time for changes   | **median 66 h (about 2.75 days)**, range 5.7 h to 118.6 h   | `deployed_at − committed_at` for each deploy |
+| Change failure rate     | **9 / 69 = 13.0 %**                                         | deploys with an `incident_id`                |
+| Time to restore service | **median 3.5 h**, range 1.5 h to 4.3 h                      | `resolved_at − started_at` for each incident |
 
 ## By month (month of `deployed_at`)
 
-| Month | Deploys | Median lead time | Failed deploys | Change failure rate | Restore time of incidents that started that month |
-| --- | ---: | ---: | ---: | ---: | --- |
-| May | 11 | 75.4 h | 1 (D-009) | 9 % | 3.9 h |
-| Jun | 7 | 66.0 h | 1 (D-013) | 14 % | 3.5 h |
-| Jul | 12 | 62.4 h | 2 (D-019, D-023) | 17 % | 2.4 h, 4.3 h |
-| Aug | 12 | 77.5 h | 0 | 0 % | none |
-| Sep | 11 | 62.2 h | 2 (D-050, D-053) | 18 % | 3.7 h, 3.1 h |
-| Oct | 16 | 56.5 h | 3 (D-054, D-062, D-063) | 19 % | 1.5 h, 3.8 h, 3.2 h |
+| Month | Deploys | Median lead time |          Failed deploys | Change failure rate | Restore time of incidents that started that month |
+| ----- | ------: | ---------------: | ----------------------: | ------------------: | ------------------------------------------------- |
+| May   |      11 |           75.4 h |               1 (D-009) |                 9 % | 3.9 h                                             |
+| Jun   |       7 |           66.0 h |               1 (D-013) |                14 % | 3.5 h                                             |
+| Jul   |      12 |           62.4 h |        2 (D-019, D-023) |                17 % | 2.4 h, 4.3 h                                      |
+| Aug   |      12 |           77.5 h |                       0 |                 0 % | none                                              |
+| Sep   |      11 |           62.2 h |        2 (D-050, D-053) |                18 % | 3.7 h, 3.1 h                                      |
+| Oct   |      16 |           56.5 h | 3 (D-054, D-062, D-063) |                19 % | 1.5 h, 3.8 h, 3.2 h                               |
 
 ## What the trend shows
 
@@ -44,4 +44,4 @@ A defensible answer needs three things:
 2. **More deploys after that date.** November onwards needs at least 2–3 months, or about 30+ deploys, before medians at this level of noise mean anything.
 3. **All four metrics, not just lead time.** On this data, any gain in speed in October came with a higher change failure rate.
 
-Until then, the honest statement is: *"Over May–October, deploys sped up a little and became more frequent in October, while failures rose. We have no data yet that links either change to Claude Code."*
+Until then, the honest statement is: _"Over May–October, deploys sped up a little and became more frequent in October, while failures rose. We have no data yet that links either change to Claude Code."_

@@ -20,11 +20,15 @@ function findRetry(database: Database, requestId: string | undefined) {
 }
 
 export function recordWrench(database: Database, report: WrenchReport) {
-  const requestId = typeof report.request_id === "string" && report.request_id ? report.request_id : undefined;
+  const requestId =
+    typeof report.request_id === "string" && report.request_id ? report.request_id : undefined;
   const retry = findRetry(database, requestId);
   if (retry) {
     if (retry.bike_id !== report.bike_id) {
-      return { status: 409, body: { error: `request_id ${requestId} was used for ${retry.bike_id}` } };
+      return {
+        status: 409,
+        body: { error: `request_id ${requestId} was used for ${retry.bike_id}` },
+      };
     }
     return { status: 200, body: retry };
   }
@@ -42,7 +46,8 @@ export function recordWrench(database: Database, report: WrenchReport) {
   const record = database.transaction(() => {
     const wrench = database
       .query(
-        "INSERT INTO wrenches (bike_id, station_id, fault, reported_at, request_id) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO wrenches (bike_id, station_id, fault, reported_at, request_id) " +
+          "VALUES (?, ?, ?, ?, ?)",
       )
       .run(bike_id, station_id, fault, reportedAt, requestId ?? null);
     // The wrench row id makes the job id unique, even for two wrenches in the same millisecond.

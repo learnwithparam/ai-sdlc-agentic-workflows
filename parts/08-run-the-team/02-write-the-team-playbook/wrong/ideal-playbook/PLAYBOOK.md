@@ -13,19 +13,19 @@ never ships.
 
 ## 1. The stages
 
-| #   | Stage                  | Claude does                                                           | A person signs off                   | Output                                    |
-| --- | ---------------------- | --------------------------------------------------------------------- | ------------------------------------ | ----------------------------------------- |
-| 1   | Intent                 | Drafts the problem and the outcome, with numbers from `data/` and logs | Product manager                      | `work/intent/<name>.md`                   |
-| 2   | Spec                   | Writes acceptance criteria (AC-n) and concerns (C-n)                  | Product manager                      | `work/spec.md`                            |
-| 3   | Plan and decisions     | Lists files, order (P-n) and proof for each step; drafts ADRs         | Tech lead                            | `work/plan.md`, `work/decisions/NNNN-*.md` |
-| 4   | Failing tests          | Writes one acceptance test per AC, **before** any `src/` change       | QA                                   | `test/acceptance/`                        |
-| 5   | Build in small slices  | One commit per plan step, tests green after each                      | (reviewed at stage 6)                | `P-n:` commits                            |
-| 6   | Review                 | The `reviewer` agent reviews the branch against `REVIEW.md`            | Tech lead decides to merge           | `work/review.md`                          |
-| 7   | Release and rollout    | Drafts rider and crew notes and a staged rollout with guardrails      | Product manager, release manager     | `work/release.md`, `work/rollout.yaml`    |
-| 8   | Deploy                 | Nothing. A person runs it, or tells Claude "yes" for one run          | Release manager                      | `logs/deploys.log`                        |
-| 9   | Incident and postmortem | Builds the timeline and impact from the logs; drafts action items    | Tech lead                            | `work/postmortem.md`                      |
-| 10  | Close the loop         | Fixes action items as `A-n:` commits; adds one line to `CLAUDE.md`    | Tech lead                            | regression tests, `CLAUDE.md`             |
-| 11  | Measure                | Computes the numbers, with the command next to each one               | Engineering manager reads them       | `work/metrics.md`                         |
+| #   | Stage                   | Claude does                                                            | A person signs off               | Output                                     |
+| --- | ----------------------- | ---------------------------------------------------------------------- | -------------------------------- | ------------------------------------------ |
+| 1   | Intent                  | Drafts the problem and the outcome, with numbers from `data/` and logs | Product manager                  | `work/intent/<name>.md`                    |
+| 2   | Spec                    | Writes acceptance criteria (AC-n) and concerns (C-n)                   | Product manager                  | `work/spec.md`                             |
+| 3   | Plan and decisions      | Lists files, order (P-n) and proof for each step; drafts ADRs          | Tech lead                        | `work/plan.md`, `work/decisions/NNNN-*.md` |
+| 4   | Failing tests           | Writes one acceptance test per AC, **before** any `src/` change        | QA                               | `test/acceptance/`                         |
+| 5   | Build in small slices   | One commit per plan step, tests green after each                       | (reviewed at stage 6)            | `P-n:` commits                             |
+| 6   | Review                  | The `reviewer` agent reviews the branch against `REVIEW.md`            | Tech lead decides to merge       | `work/review.md`                           |
+| 7   | Release and rollout     | Drafts rider and crew notes and a staged rollout with guardrails       | Product manager, release manager | `work/release.md`, `work/rollout.yaml`     |
+| 8   | Deploy                  | Nothing. A person runs it, or tells Claude "yes" for one run           | Release manager                  | `logs/deploys.log`                         |
+| 9   | Incident and postmortem | Builds the timeline and impact from the logs; drafts action items      | Tech lead                        | `work/postmortem.md`                       |
+| 10  | Close the loop          | Fixes action items as `A-n:` commits; adds one line to `CLAUDE.md`     | Tech lead                        | regression tests, `CLAUDE.md`              |
+| 11  | Measure                 | Computes the numbers, with the command next to each one                | Engineering manager reads them   | `work/metrics.md`                          |
 
 Then the next intent starts at stage 1 (`work/intent/next-dedupe-wrenches.md` is the current one).
 
@@ -35,7 +35,13 @@ A stage starts only when the stage before it is approved. Approval is a line in
 `work/approvals.jsonl`, written by the person approving:
 
 ```json
-{"file":"work/spec.md","sha256":"…","role":"pm","at":"2026-11-13T05:37:50Z","by":"<name>"}
+{
+  "file": "work/spec.md",
+  "sha256": "…",
+  "role": "pm",
+  "at": "2026-11-13T05:37:50Z",
+  "by": "<name>"
+}
 ```
 
 - The `sha256` pins the exact text that was approved. If the file changes after that, the
@@ -210,15 +216,15 @@ model name. The metrics depend on it (two commits in this feature missed it).
 
 ## 4. Guardrails already in the repo
 
-| Guardrail                                     | Where                                    | What it stops                                   |
-| --------------------------------------------- | ---------------------------------------- | ----------------------------------------------- |
-| Deny edits to the city contract               | `.claude/settings.json` `deny`            | Claude changing `data/contract/sla.yaml`        |
-| Ask before deploying                          | `.claude/settings.json` `ask`             | `bun run deploy:production` without a person   |
-| Contract rules on every wrench, feed or queue task | `.claude/skills/city-contract/`      | Deadlines from `opened_at`, slow feeds, edits to the contract |
-| Review that can't change code                 | `.claude/agents/reviewer.md`             | A reviewer "fixing" what it should report      |
-| Review rules and severity                     | `REVIEW.md`                              | Reviews full of style nits, missing real risks  |
-| Rules for every agent                         | `AGENTS.md` (loaded by `CLAUDE.md`)       | New packages, unsafe tests, deploys without a yes |
-| Signed, hashed approvals                      | `work/approvals.jsonl`                    | Building on a spec that changed after sign-off  |
+| Guardrail                                          | Where                               | What it stops                                                 |
+| -------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------- |
+| Deny edits to the city contract                    | `.claude/settings.json` `deny`      | Claude changing `data/contract/sla.yaml`                      |
+| Ask before deploying                               | `.claude/settings.json` `ask`       | `bun run deploy:production` without a person                  |
+| Contract rules on every wrench, feed or queue task | `.claude/skills/city-contract/`     | Deadlines from `opened_at`, slow feeds, edits to the contract |
+| Review that can't change code                      | `.claude/agents/reviewer.md`        | A reviewer "fixing" what it should report                     |
+| Review rules and severity                          | `REVIEW.md`                         | Reviews full of style nits, missing real risks                |
+| Rules for every agent                              | `AGENTS.md` (loaded by `CLAUDE.md`) | New packages, unsafe tests, deploys without a yes             |
+| Signed, hashed approvals                           | `work/approvals.jsonl`              | Building on a spec that changed after sign-off                |
 
 **Gaps to close** (each needs the tech lead's yes, since it changes `.claude/`):
 
@@ -233,12 +239,12 @@ model name. The metrics depend on it (two commits in this feature missed it).
 
 ## 5. Roles
 
-| Role                 | Owns                                                         |
-| -------------------- | ------------------------------------------------------------ |
-| Product manager      | Intents, specs, release notes, conflicts with the city contract |
-| Tech lead            | Plans, decision records, `REVIEW.md`, the merge decision, postmortems |
-| QA                   | Acceptance and regression tests, and that they failed first  |
-| Release manager      | Rollout plans, deploys, rollbacks                            |
-| Engineering manager  | The release checklist and the metrics                        |
-| Contract owner       | All contact with Brannock City Transport about `sla.yaml`     |
-| Claude               | Drafts at every stage; never approves, never deploys, never edits the contract |
+| Role                | Owns                                                                           |
+| ------------------- | ------------------------------------------------------------------------------ |
+| Product manager     | Intents, specs, release notes, conflicts with the city contract                |
+| Tech lead           | Plans, decision records, `REVIEW.md`, the merge decision, postmortems          |
+| QA                  | Acceptance and regression tests, and that they failed first                    |
+| Release manager     | Rollout plans, deploys, rollbacks                                              |
+| Engineering manager | The release checklist and the metrics                                          |
+| Contract owner      | All contact with Brannock City Transport about `sla.yaml`                      |
+| Claude              | Drafts at every stage; never approves, never deploys, never edits the contract |

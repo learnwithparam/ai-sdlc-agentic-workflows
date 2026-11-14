@@ -76,9 +76,9 @@ history_that_shapes_this_plan: # data/incidents.csv. Each one touches something 
   - incidents: [INC-02, INC-05, INC-06]
     summary: e-bike battery levels missing from feed
     relevance: vehicle_status.json changes. Check that the battery fields are still there.
-  time_to_resolve: >-
-    1.5h to 3.9h. SLA-11 limits a station outage to 4 hours, so this plan rolls back early
-    instead of fixing forward.
+    time_to_resolve: >-
+      1.5h to 3.9h. SLA-11 limits a station outage to 4 hours, so this plan rolls back early
+      instead of fixing forward.
 
 gates_before_deploy: # every one must be "yes" before Mei Tanaka is asked to approve
   - id: G-1

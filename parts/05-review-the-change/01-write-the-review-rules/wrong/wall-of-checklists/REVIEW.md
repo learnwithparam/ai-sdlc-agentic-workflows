@@ -98,7 +98,7 @@ Ask these whenever a diff touches `src/wrenches.ts`, `src/feed.ts`, `src/crew-qu
 ## 4. Code and docs
 
 - Keep the existing style: small modules, plain SQL with `?` parameters (never string-built
-  SQL from request input), short comments that explain *why*, often naming the SLA.
+  SQL from request input), short comments that explain _why_, often naming the SLA.
 - Validate request bodies at the edge (`src/server.ts`). A bad JSON body must give a 4xx, not
   an exception.
 - If a change makes `CLAUDE.md`, `README.md` or a code comment wrong (routes, SLA references,

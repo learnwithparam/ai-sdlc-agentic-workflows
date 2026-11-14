@@ -4,13 +4,13 @@ Every file in this folder came from real Claude Code runs. We used a small tool,
 
 ## The moves
 
-| Move             | Transcript    | What Claude Code did                                                                                                    |
-| ---------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Ticket and spec  | `spec.jsonl`  | Wrote `SPEC.md` with AC-1 to AC-3, each with a WHEN and a THEN. It wrote no code.                                        |
-| Failing tests    | `tests.jsonl` | Wrote one test for each criterion and ran them: 2 tests failed. It committed the spec and tests as `P-1:`.              |
-| Small commits    | `build.jsonl` | Made two commits, `P-2:` and `P-3:`, and ran the tests after each. All 4 tests passed at the end.                        |
-| Review           | `review.jsonl`| Read the commits in plan mode as a reviewer. It found one Important problem, described below.                            |
-| The evidence file| `write-up.jsonl` | Wrote `work/own-repo.md` from `SPEC.md`, `git log` and a test run.                                                   |
+| Move              | Transcript       | What Claude Code did                                                                                       |
+| ----------------- | ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| Ticket and spec   | `spec.jsonl`     | Wrote `SPEC.md` with AC-1 to AC-3, each with a WHEN and a THEN. It wrote no code.                          |
+| Failing tests     | `tests.jsonl`    | Wrote one test for each criterion and ran them: 2 tests failed. It committed the spec and tests as `P-1:`. |
+| Small commits     | `build.jsonl`    | Made two commits, `P-2:` and `P-3:`, and ran the tests after each. All 4 tests passed at the end.          |
+| Review            | `review.jsonl`   | Read the commits in plan mode as a reviewer. It found one Important problem, described below.              |
+| The evidence file | `write-up.jsonl` | Wrote `work/own-repo.md` from `SPEC.md`, `git log` and a test run.                                         |
 
 ## What the review found
 

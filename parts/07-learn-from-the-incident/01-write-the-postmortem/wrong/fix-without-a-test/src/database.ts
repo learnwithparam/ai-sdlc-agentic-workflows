@@ -49,7 +49,7 @@ function fillOpenJobs(database: Database) {
   }
 }
 
-// A wrench's request_id is the app's idempotency key: one key, one report, however often it is sent.
+// A wrench's request_id is the app's idempotency key: one key, one report, however often sent.
 // Older spoke.db files get the column here. Reports without a key (NULL) never match each other.
 function addRequestIds(database: Database) {
   const columns = database.query("PRAGMA table_info(wrenches)").all() as { name: string }[];
