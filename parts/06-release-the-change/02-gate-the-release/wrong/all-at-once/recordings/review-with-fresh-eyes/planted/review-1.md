@@ -1,0 +1,10 @@
+# Review: origin/teammate/local-deadlines (3b6dc24) against main
+
+| Pass | Severity | Where | What goes wrong | Criterion |
+| ---- | -------- | ----- | --------------- | --------- |
+| Bugs | Important | `src/crew-queue.ts:20-23` (with `src/brannock-time.ts:36-40`) | `contractDeadline` adds the 48h or 96h on the Brannock (Europe/London) wall clock instead of to the real time of the report. When a clock change falls inside the window, the deadline is an hour off. Autumn: a report at 2026-10-23T12:00Z gets a deadline of 2026-10-25T13:00Z, which is 49 real hours, so crews think they have an hour the contract doesn't give. Spring: a report at 2026-03-27T12:00Z gets 2026-03-29T11:00Z, which is 47 hours. This hits every job reported in the 48h or 96h before each clock change. Left open. | SLA-4, AC-8, AC-10 |
+| Bugs | Important | `test/acceptance/ac-8-deadline-from-report.test.ts:28`, `test/acceptance/helpers.ts` (`expectContractDeadlines`); not changed by the branch | The tests set report times relative to "now", so they pass today and don't catch the bug above. They would only fail if run in the 48 to 96 hours before a clock change, the first of which is 2027-03-28. The branch adds no test with a fixed report time either side of a clock change. Left open. | Spec Test notes (each AC needs a test), plan "Proof" |
+| Compliance | Nit | `src/brannock-time.ts` (new), `src/crew-queue.ts:31-33` | The new file and the new `deadline_local` field in `/crew/queue` aren't in `work/plan.md` "Files that change", and the spec doesn't ask for them. The change to the crew-facing response isn't in CLAUDE.md Architecture either. | `work/plan.md` "Files that change", P-5 |
+| Bugs | Nit | `src/brannock-time.ts:16-23, 43-45` | The `deadline_local` label (for example "Sun 25 Oct, 01:30") shows neither the zone (GMT or BST) nor the year. In the repeated hour on the night the clocks go back, it could mean either of two times an hour apart. | SLA-4 (crews read the deadline) |
+
+Important findings left open: 2

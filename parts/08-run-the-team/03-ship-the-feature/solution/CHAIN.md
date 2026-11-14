@@ -1,45 +1,80 @@
-# The chain: from intent to playbook
+# CHAIN.md: from intent to playbook
 
-This file follows one feature for spoke, Kestrel's bike-share service, from the first problem statement to the team playbook that came out of it. The feature makes a wrenched (reported broken) bike leave the public feed and reach the right repair crew within 48 hours. The rule behind it: Claude Code writes each draft, and a named person in a set role signs it. Each signature is one row in `work/approvals.jsonl`, holding the file path, its SHA-256 hash, the signer's role and name, and a timestamp. Every stage starts from the approved file of the stage before.
+This page follows one feature in `spoke`, Kestrel Bike Share's service for Brannock, from the
+first statement of the problem to the team's written way of working. The feature: when a rider
+reports a broken bike with the wrench button (`POST /wrench`), the bike leaves service at once
+in the public GBFS feed and on the map, and crew queue deadlines count from the rider's report.
+
+Every stage below is a file. A sign-off is a line in `work/approvals.jsonl` that records the
+file's `sha256`, the signer's role, their name and the time. When a file was signed twice, the
+later line is the one that counts. On 2026-11-14 the current contents of each signed file
+matched the hash in its latest line. `test/acceptance` is a folder, so its hash was not
+re-checked.
 
 ## The stages
 
-**1. Intent: `work/intent.md`.** States the problem: 5.46% of wrenched bikes are fixed late, against a 95% on-time target, and 8.94% are rented again before a crew reaches them. Signed by Theo Lindqvist (pm) on 2026-10-27T14:00:00Z.
+**1. Intent: `work/intent.md`.** This states the problem without saying how to fix it.
+193 of 2,160 wrenched bikes (8.9%) were rented again before a crew reached them, and the queue
+counted deadlines from when a job was opened, not from the rider's report. It lists open
+questions, the main one being a 15 minute grace period that operations asked for. Signed by
+**Theo Lindqvist (pm)** on 2026-11-13 at 05:27 UTC.
 
-**2. Spec: `work/spec.md`.** Claude Code interviewed the product manager and turned the intent into acceptance criteria: a wrench disables the bike, and the crew queue sorts by deadline. Signed by Theo Lindqvist (pm) on 2026-10-28T16:00:00Z.
+**2. Spec: `work/spec.md`.** This turns the intent into acceptance criteria AC-1 to AC-13 and
+concerns C-1 to C-4, and records the PM's answers. The grace period is not built because it
+conflicts with SLA-12 (feed accuracy). Signed by **Theo Lindqvist (pm)** twice, at 05:37 and
+again at 05:38 after a revision.
 
-**3. Decision: `work/decisions/0001-disable-in-feed.md`.** Chooses how the GBFS feed marks a wrenched bike as disabled (AC-1). Signed by Ines Moreau (tech-lead) on 2026-10-29T10:30:00Z.
+**3. Decision: `work/decisions/0001-disable-in-feed.md`.** This chooses to keep a wrenched bike
+in `vehicle_status.json` with `is_disabled: true` rather than drop it from the feed, because
+that is what GBFS v3 defines the field for. Signed by **Ines Moreau (tech-lead)** at 05:40 and
+again at 05:44.
 
-**4. Plan: `work/plan.md`.** Written in plan mode from the spec, listing the files that change. Nothing was edited before approval. Signed by Ines Moreau (tech-lead) on 2026-10-29T14:00:00Z.
+**4. Plan: `work/plan.md`.** This names the files that change and the order of work (P-1 to
+P-5). It also lists today's faults: the wrench writes are not in a transaction, the bike is
+never disabled, and the queue sorts by `opened_at`. Signed by **Ines Moreau (tech-lead)** at
+05:52.
 
-**5. Acceptance tests: `test/acceptance/`.** One test file per acceptance criterion (AC-1 to AC-4), plus a helper. After this approval nobody may change these files, so the code has to change instead. Signed by Raj Patel (qa) on 2026-10-30T10:00:00Z.
+**5. Acceptance tests: `test/acceptance/`.** One test file per criterion, `ac-1` to `ac-13`,
+plus `helpers.ts`. Signed by **Raj Patel (qa)** at 05:58.
 
-**6. Review rules: `REVIEW.md`.** What a reviewer looks for, such as a clock that starts at the wrong time or a queue in the wrong order. Signed by Ines Moreau (tech-lead) on 2026-10-31T10:00:00Z. The reviewer subagent's report, `work/review.md`, has no row in the log.
+**6. Review rules: `REVIEW.md`.** Three passes in order: bugs, security, compliance against the
+spec, the plan and `data/contract/sla.yaml`. Signed by **Ines Moreau (tech-lead)** at 09:00.
+(`work/review.md`, one review written against these rules, has no sign-off line.)
 
-**7. Release notes: `work/release.md`.** What riders and crews are told. Signed by Theo Lindqvist (pm) on 2026-11-01T11:00:00Z.
+**7. Release notes: `work/release.md`.** Plain-language notes for riders and crews. Signed by
+**Theo Lindqvist (pm)** at 10:00.
 
-**8. Rollout: `work/rollout.yaml`.** Turns on the feature flag `wrench_disables_bike` one district at a time: North, then East, then Centre, South and West. Nobody may deploy to production until this file is approved. Signed by Mei Tanaka (release-manager) on 2026-11-01T15:00:00Z.
+**8. Rollout: `work/rollout.yaml`.** A district-by-district rollout behind the
+`wrench_disables_bike` flag (North, then East, then Centre, then South and West). Its stop
+limits come only from the contract: 96% rentable fleet (SLA-9), and 95% of repairs on time
+within 48 hours (SLA-4). Signed by **Mei Tanaka (release-manager)** at 11:00.
 
-**9. Postmortem: `work/postmortem.md`.** On 2026-11-03 the rider app's retries of `POST /wrench` opened duplicate jobs in North, the first rollout district. The postmortem is blameless and led to the `A-1` fix. Signed by Ines Moreau (tech-lead) on 2026-11-04T11:00:00Z.
+**9. Postmortem: `work/postmortem.md`.** A blameless account of the 2026-11-03 North double
+wrench. Deploy D-071 turned the flag on in North, the rider app retried `POST /wrench` up to 3
+times, and each retry opened a new job. 212 bikes had to be re-enabled by a script, and North
+availability fell from 97.8% to 89.0%. Signed by **Ines Moreau (tech-lead)** at 15:00.
 
-**10. Next intent: `work/intent/next-dedupe-wrenches.md`.** A follow-up problem from the postmortem: two different riders wrench the same bike and get two jobs. This starts the next chain. Signed by Theo Lindqvist (pm) on 2026-11-04T13:30:00Z.
+**10. Next intent: `work/intent/next-dedupe-wrenches.md`.** The postmortem leads to the next
+piece of work: one open repair job per wrenched bike, even when two different riders report it.
+Signed by **Theo Lindqvist (pm)** on 2026-11-14 at 09:00.
 
-**11. Playbook: `PLAYBOOK.md`.** Writes down how the team works with Claude Code. Signed by Dana Okafor (em) on 2026-11-05T11:00:00Z.
+**11. Playbook: `PLAYBOOK.md`.** This writes down how the team works with Claude Code: Claude
+drafts, and a person in a named role signs each file that gates the work, by recording the
+file's hash. Signed by **Dana Okafor (em)** on 2026-11-14 at 12:00.
 
-On 2026-11-13 the SHA-256 of each of the ten signed single files matched the hash in its approval row, so none of them has changed since it was signed. `test/acceptance/` is a directory, and that check did not cover it. `work/findings.md`, the data analysis behind the intent, has no approval row.
+## Numbers
 
-## Three numbers
+From `work/metrics.md`, copied exactly as written there:
 
-From `work/metrics.md`, quoted exactly:
+- Lead time for changes: "**66.02 h** median, committed_at to deployed_at (69 deploys)"
+- Change failure rate: "9 of 69 deploys have an incident_id = **13.0%**"
+- Share of commits with Co-Authored-By: Claude: "11 of 17 = **64.7%**"
 
-- Change failure rate: "13.0% (9 of 69 deploys have an `incident_id`)"
-- Lead time for changes: "66.02 h median, `committed_at` to `deployed_at`, over 69 deploys"
-- Share of commits with the `Co-Authored-By: Claude` trailer: "60.0% (18 of 30 commits)"
+These numbers do not prove that this feature, or Claude, made the team faster or safer: the
+DORA figures stop at D-069 on 2026-10-31, before this feature shipped and without the North
+incident, and the 17 commits are one feature with no control group to compare against.
 
-These numbers do not prove that this workflow made spoke faster, safer or more correct: there is no baseline to compare against, the deploy data ends before this feature's rollout was approved, and the double-wrench bug shipped anyway.
+## How to check this page
 
-## How to check
-
-- To see who signed what, read `work/approvals.jsonl`. It has one JSON row per approval, in time order.
-- To check that a file has not changed since it was signed, run `sha256sum <file>` and compare the result with the row's `sha256`.
-- `work/metrics.md` lists the command behind each number. Run them from the repo root.
+Run `sha256sum` on any file above and compare the result with its latest line in
+`work/approvals.jsonl`. The commands behind each number are in `work/metrics.md`.

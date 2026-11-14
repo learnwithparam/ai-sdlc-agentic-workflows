@@ -1,9 +1,9 @@
-# Review: origin/teammate/deadline-labels against main
+# Review: origin/teammate/deadline-labels vs main
 
 | Pass | Severity | Where | What goes wrong | Criterion |
 | ---- | -------- | ----- | --------------- | --------- |
-| Compliance | Nit | src/crew-queue.ts:27 (with new file src/brannock-time.ts:1-18) | No plan item or criterion asks for the `deadline_local` label. `work/plan.md` lists only P-1 to P-3, `src/brannock-time.ts` is not in the plan's "Files that change", and the spec never mentions local-time labels. The label needs its own spec and plan item before it merges. | P-3 |
-| Compliance | Nit | commit 61f30be ("Show crews each deadline in Brannock time") | The commit message has no `P-n: ...` prefix, which CLAUDE.md requires. It can't have one, because no plan item covers this work. The commit is under the 200-line limit. | P-1 to P-3 (one commit per plan item) |
-| Bugs | Nit | src/brannock-time.ts:6-13 | The label shows neither the time zone nor the year. On the night the clocks go back (Sun 25 Oct 2026), 00:30Z and 01:30Z both read "Sun 25 Oct, 01:30", so a crew could think a job is due an hour later than it is. The UTC `deadline` that sorting and SLA checks use is still correct. | SLA-4 |
+| Bugs | Nit | src/brannock-time.ts:6 | The label has no GMT/BST marker. When the clocks go back (for example 25 Oct 2026), deadlines at 00:30Z and 01:30Z both read "Sun 25 Oct, 01:30", so a crew can't tell which comes first and may be an hour late against the 48h/96h limit. `deadline` and the order are still correct. Adding `timeZoneName: "short"` removes the doubt. | SLA-4 (label only) |
+| Compliance | Nit | src/crew-queue.ts:30 | No test covers `deadline_local`. Nothing checks that the label shows the same instant as `deadline` in GMT or BST, so a later change could make the label disagree with the real deadline without any test failing. | REVIEW.md Compliance (spec test notes: each behaviour needs a test) |
+| Compliance | Nit | src/brannock-time.ts:1 | The Architecture section of CLAUDE.md doesn't list `src/brannock-time.ts` or the new `deadline_local` field on `/crew/queue`, so the next reader won't know the label is Brannock time while `deadline` stays UTC. | P-5 (keep CLAUDE.md accurate) |
 
 Important findings left open: 0

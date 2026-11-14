@@ -49,6 +49,8 @@ bun run approve REVIEW.md --role tech-lead
 
 Expect: `Approved REVIEW.md as tech-lead`
 
+Want the same rules to run on every pull request? Read [the CI sketch](../ci-review.md) after this step.
+
 ## Done when
 
 - `REVIEW.md` has a heading for each pass: Bugs, Security, Compliance.

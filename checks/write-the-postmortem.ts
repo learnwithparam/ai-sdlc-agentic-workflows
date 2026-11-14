@@ -29,7 +29,7 @@ const REGRESSION_FOLDER = "test/regression";
 // "Be more careful" is a wish, not an action.
 const ACTION_VERBS = new Set(
   (
-    "add alert agree audit automate block build cap change check confirm cover create dedupe " +
+    "add alert agree ask audit automate block build cap change check confirm cover create dedupe " +
     "define delete document drop enforce escalate extend fix give investigate keep limit link " +
     "log look make measure merge monitor move notify page publish put raise record reject " +
     "remove rename replace require retry return review rewrite roll run schedule send set " +

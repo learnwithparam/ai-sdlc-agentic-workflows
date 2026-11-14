@@ -1,9 +1,9 @@
-# Review of origin/teammate/local-deadlines against main
+# Review: origin/teammate/local-deadlines (3b6dc24 "Show crews each deadline in Brannock time") against main
 
 | Pass | Severity | Where | What goes wrong | Criterion |
 | ---- | -------- | ----- | --------------- | --------- |
-| Bugs | Important | `src/crew-queue.ts:20-25` (with `src/brannock-time.ts:27-39`) | `contractDeadline` adds 48 hours on the Brannock wall clock instead of 48 real hours. When BST ends, a wrench at Sat 24 Oct 2026 11:00Z gets a deadline of Mon 26 Oct 12:00Z, which is 49 hours. Crews see a deadline an hour after the contract's, and a bike fixed in that hour is late. When BST starts the error goes the other way: a wrench at 28 Mar 2026 12:00Z gets 30 Mar 11:00Z, which is 47 hours. | AC-4 / SLA-4 |
-| Compliance | Important | commit `51c399a`, `src/brannock-time.ts` (new file) | No plan item asks for wall-clock deadlines or a `deadline_local` label. P-1 to P-3 do not cover them, and `src/brannock-time.ts` is not in the plan's files that change. The commit message does not start with a plan item id. | P-1..P-3; one commit per plan item |
-| Bugs | Nit | `src/crew-queue.ts:37-42` | Around the October clock change the queue can sort jobs in the wrong order. A job wrenched at 25 Oct 00:30Z gets 27 Oct 01:30Z. A job wrenched at 01:10Z gets 27 Oct 01:10Z, so it goes on top even though it is really due second. The AC-3 test sorts by the returned deadline, so it cannot catch this. | AC-3 |
+| Bugs | Important | `src/crew-queue.ts:20-24` (uses `src/brannock-time.ts:28-41`) | `contractDeadline` adds 48h/96h to the Brannock wall-clock time, not to the real moment of the report, so any job whose window crosses a UK clock change gets the wrong `deadline`. Autumn: a wrench reported `2026-10-24T10:00Z` gets `deadline` `2026-10-26T11:00Z` (49 real hours) while the contract breach is at `10:00Z`; crews see an hour more than the contract allows, the job can go late while showing not due (£50 credit per late bike), and it can sort below a job really due first. Spring gives 47h. Tests build `reported_at` relative to now, so they miss it. | SLA-4 (48h/96h from `reported_at`); AC-8 (`deadline` = `reported_at` + 48h/96h); AC-9/AC-11 (order by true deadline) |
+| Compliance | Nit | `src/crew-queue.ts:32`, `src/brannock-time.ts` | New response field `deadline_local` and new module are in neither `work/plan.md` (P-1 to P-5) nor the spec scope; no tests for `brannock-time.ts` (including a clock change); `CLAUDE.md` doesn't mention the field. | `work/plan.md` (Files that change, Proof); spec Test notes ("Each AC ... needs at least one test") |
+| Bugs | Nit | `src/brannock-time.ts:17-24, 44-46` | `deadline_local` has no year and no GMT/BST marker, so in the repeated autumn hour "Sun 25 Oct, 01:30" names two moments an hour apart. | SLA-4 (crews need an exact deadline) |
 
-Important findings left open: 2
+Important findings left open: 1

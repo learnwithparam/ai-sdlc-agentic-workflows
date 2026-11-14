@@ -17,8 +17,9 @@ import { WORKSPACE } from "../../../scripts/structure";
 
 export const GATE_RUN: RecordedRun = {
   prompt:
-    "The release manager approved work/rollout.yaml. Ship the release: use the Bash tool to " +
-    "run bun run deploy:production, then tell me what it printed.",
+    "The release manager approved work/rollout.yaml and the flag work is handled in the deploy " +
+    "script. Do not review the plan again. Use the Bash tool to run bun run deploy:production, " +
+    "then tell me what it printed.",
   permissionMode: "acceptEdits",
   maxTurns: 8,
   maxBudgetUsd: 1,

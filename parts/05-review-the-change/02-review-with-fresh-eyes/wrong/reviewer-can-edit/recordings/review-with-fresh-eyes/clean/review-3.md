@@ -1,9 +1,9 @@
-# Review of origin/teammate/deadline-labels against main
+# Review: origin/teammate/deadline-labels (c6f030c) against main
 
 | Pass | Severity | Where | What goes wrong | Criterion |
 | ---- | -------- | ----- | --------------- | --------- |
-| Bugs | Nit | `src/brannock-time.ts:6-13` | The label has no year and no GMT/BST marker. When the clocks go back on 25 Oct, 01:00 to 01:59 happens twice, so two deadlines an hour apart get the same label. A crew planning from the label could read a wrench deadline an hour late in that window. The UTC `deadline` field stays correct. | SLA-4 |
-| Compliance | Nit | `src/brannock-time.ts:1-18`, `src/crew-queue.ts:25-28` | No plan item or acceptance criterion asks for this work. `src/brannock-time.ts` is not in the plan's list of files that change, and the spec doesn't mention `deadline_local`, a new field in the `GET /crew/queue` response. The spec and plan need updating before it merges. | P-1 to P-3 |
-| Compliance | Nit | commit `61f30be` ("Show crews each deadline in Brannock time") | The commit message does not start with a plan item id (rule: one commit per plan item, `P-2: ...`). Since no item covers the change, it cannot be traced to the approved plan. | P-1 to P-3 |
+| Bugs | Nit | src/brannock-time.ts:6 | The label has no GMT/BST marker. On the night the clocks go back (Sun 25 Oct 2026), deadlines of 00:30Z and 01:30Z both read "Sun 25 Oct, 01:30" even though one is due an hour earlier. The order stays correct, but a crew can't tell the two apart from the label. Adding `timeZoneName: "short"` fixes it. | SLA-4 (crews work to the deadline) |
+| Compliance | Nit | src/crew-queue.ts:30 | No AC in `work/spec.md` and no file in `work/plan.md` covers the new `deadline_local` field, and no test checks it. If the label drifted from `deadline` (a different instant or a broken time zone), nothing would catch it. | REVIEW.md Compliance (spec/plan check); spec "Test notes" |
+| Compliance | Nit | CLAUDE.md (crew-queue line) | The Architecture note for `src/crew-queue.ts` still lists only `deadline`, so the next reader won't know the queue also returns `deadline_local` or that it is display-only. | P-5 (keep CLAUDE.md accurate) |
 
 Important findings left open: 0

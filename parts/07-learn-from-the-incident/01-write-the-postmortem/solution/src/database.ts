@@ -15,7 +15,7 @@ const TABLES = `
   CREATE TABLE bikes (bike_id TEXT PRIMARY KEY, bike_type TEXT, station_id TEXT,
     is_disabled INTEGER DEFAULT 0);
   CREATE TABLE wrenches (wrench_id INTEGER PRIMARY KEY AUTOINCREMENT, bike_id TEXT,
-    station_id TEXT, fault TEXT, reported_at TEXT, request_id TEXT, job_id TEXT);
+    station_id TEXT, fault TEXT, reported_at TEXT, request_id TEXT UNIQUE);
   CREATE TABLE repair_jobs (job_id TEXT PRIMARY KEY, bike_id TEXT, station_id TEXT, depot TEXT,
     source TEXT, fault TEXT, reported_at TEXT, opened_at TEXT, closed_at TEXT);
 `;
@@ -49,16 +49,6 @@ function fillOpenJobs(database: Database) {
   }
 }
 
-// A retried wrench carries the same request_id, so spoke can tell it is the same report.
-// Older spoke.db files get the columns here. The unique index keeps one wrench per request_id.
-function addWrenchRequestIds(database: Database) {
-  const columns = database.query("PRAGMA table_info(wrenches)").all() as { name: string }[];
-  const has = (name: string) => columns.some((column) => column.name === name);
-  if (!has("request_id")) database.exec("ALTER TABLE wrenches ADD COLUMN request_id TEXT");
-  if (!has("job_id")) database.exec("ALTER TABLE wrenches ADD COLUMN job_id TEXT");
-  database.exec("CREATE UNIQUE INDEX IF NOT EXISTS wrenches_request_id ON wrenches (request_id)");
-}
-
 export function openDatabase(): Database {
   const isNew = !existsSync(DATABASE_FILE);
   const database = new Database(DATABASE_FILE);
@@ -67,6 +57,5 @@ export function openDatabase(): Database {
     fillStationsAndBikes(database);
     fillOpenJobs(database);
   }
-  addWrenchRequestIds(database);
   return database;
 }

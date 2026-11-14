@@ -37,7 +37,7 @@ an incident_id) and Time to restore (median hours from started_at to resolved_at
 "approve: work/intent/next-dedupe-wrenches.md by pm". A table with Intent to spec (hours from
 the first commit that changed work/intent.md to the first commit that changed work/spec.md, by
 author date), Spec commits after the first plan commit, Files outside plan.md (files changed by
-commits whose subject starts with P- that work/plan.md does not name), Share of commits with the
+commits whose subject starts with P- whose full path does not appear in work/plan.md, written exactly as in the commit), Share of commits with the
 Co-Authored-By: Claude trailer (percent), and Median commit size (median of added plus deleted
 lines per commit, skipping the very first commit).
 ## What these numbers do not prove: compare one number with DORA or METR, and say what one
