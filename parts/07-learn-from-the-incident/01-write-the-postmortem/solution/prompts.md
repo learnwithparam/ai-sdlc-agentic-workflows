@@ -12,26 +12,16 @@ What it got right, so you can check yours the same way:
 - Every Timeline time is in `incident.log` or `deploys.log`.
 - Contributing factors name `POST /wrench`, the missing test and the guardrail. No person.
 
-**What to reject:** action item A-7 said "The alert config in the repo shows the new threshold". That names no file and no command, so nobody can prove it is done. The check fails it.
-
-## Prompt 2: fix the weak check
-
-```text
-In work/postmortem.md, action item A-7 has no check a person can run. Every action item needs a
-Check that names a command or a file in backticks. Fix A-7 and any other item like it. Change
-nothing else.
-```
-
-Claude Code changed only the A-7 row. The new check is a test that replays `availability.csv`. The transcript is `check-fix.jsonl`.
+**What to read twice:** each action item needs a verb, an owner role and a check in backticks that someone can run. Claude Code gave all eight items one. If a Check names no command or file, send Claude back and ask for one. Nobody can prove an item is done without it.
 
 ## Prompt 3: the test, then the fix
 
 The second prompt in the step README. The transcript is `regression.jsonl`.
 
-1. Claude Code wrote `test/regression/a-1-retried-wrench.test.ts` and ran it. It showed `1 fail`: the incident build opened 3 jobs for one bike.
-2. It committed the test alone: `A-1: regression test for a wrench retried with the same request_id`.
+1. Claude Code wrote a test in `test/regression/` that sends one wrench three times with one `request_id`, and ran it. It failed: the incident build opened 3 jobs for one bike.
+2. It committed the test alone, with a message that starts `A-1:`.
 3. It changed `src/wrenches.ts` and `src/database.ts`. A wrench now stores its `request_id`, and a retry gets the first job back.
-4. It ran `bun test`: 8 pass, 0 fail. It committed the fix alone.
+4. It ran `bun test` until every test passed. It committed the fix alone.
 
 **Check before you say yes:** the test commit comes before the fix commit in `git log`. Nothing in `test/acceptance/` changed.
 
@@ -45,7 +35,7 @@ Expect: `Approved work/postmortem.md as tech-lead`
 
 ## What the wrong answers show
 
-- `wrong/blames-the-engineer/`: the prompt asked "say who made the mistake". Claude Code pushed back and wrote mostly about systems. But it still quoted "Raj Patel" under Contributing factors, and its action items have no Check. A weak prompt leaks blame even when Claude resists it.
+- `wrong/blames-the-engineer/`: we asked Claude Code to name the people from `chat.txt` whose actions let this happen. It held to blameless and named none. So this sample is a hand edit: one line added under Contributing factors that names Raj Patel and Sam Achebe. It shows what a weak prompt, or a tired reviewer, can let in. The check reads the roster and fails it.
 - `wrong/fix-without-a-test/`: the prompt said "just the fix, we do not need a test". Claude Code fixed `src/wrenches.ts` and wrote no test. The bug is gone today, and nothing stops it coming back.
 
 ## One change after the runs

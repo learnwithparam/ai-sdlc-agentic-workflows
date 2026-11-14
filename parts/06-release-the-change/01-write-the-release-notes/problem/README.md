@@ -11,7 +11,7 @@ For example, a vague prompt, "Write release notes for this change", gave real no
 ```mermaid
 flowchart LR
   S[work/spec.md] --> C[Claude Code]
-  G[git log + git diff<br/>P-1 to P-3] --> C
+  G[git log + git diff<br/>P-2 to P-5] --> C
   C --> R[Riders: plain words]
   C --> W[Crews: queue order, 48 hour clock]
   R --> N[work/release.md]
@@ -33,7 +33,7 @@ Give Claude Code this job. It reads the spec and the merged commits, then writes
 
 ```text
 Write work/release.md, the release notes for this change. Read work/spec.md and the merged
-change first: git log and git diff for the P-1 to P-3 commits. Use two sections. ## Riders is
+change first: git log and git diff for the P-2 to P-5 commits. Use two sections. ## Riders is
 for people who rent bikes. Write it in plain words a 12-year-old can read: short sentences, no
 file names, no criterion ids, and no technical words such as feed, GBFS, API, deploy or SLA.
 Say what changes for them, and thank them for reporting broken bikes. ## Crews is for the

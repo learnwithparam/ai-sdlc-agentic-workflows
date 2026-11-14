@@ -1,97 +1,231 @@
-# Rollout plan: broken bikes leave the map, and crews fix the most urgent first
-# Built from the approved work/release.md (pm, 2026-11-13) and work/plan.md (tech-lead).
-# Status: DRAFT. Nobody runs `bun run deploy:production` until the release manager approves this file.
+# Rollout plan: a reported bike leaves service at once
+#
+# For sign-off by the release manager. This file is a plan, not a deploy: nothing in it has been
+# run. `bun run deploy:production` and `bun run rollback` need a person's yes (AGENTS.md).
+#
+# Sources: work/spec.md (AC-1 to AC-13, C-1 to C-4), work/plan.md (P-1 to P-5),
+# work/release.md (approved by pm 2026-11-13), data/contract/sla.yaml (read-only),
+# data/deploys.csv and data/incidents.csv (69 past deploys, 9 incidents), data/roster.csv.
 
 release:
-  name: wrench-disables-bike-and-queue-due-first
+  name: wrench-disables-bike
   service: spoke
-  commits:
-    - a44adf6 P-1 disable the bike when a wrench arrives
-    - c12460e P-2 start the deadline clock at the wrench reported_at
-    - 714a689 P-3 sort the crew queue by deadline, due first
-  files_changed: [src/wrenches.ts, src/crew-queue.ts]
+  candidate_commit: 53ba65d # main, "P-5: CLAUDE.md describes the fixed wrench and queue behaviour"
+  base_commit: 68e43cb # "Begin build-in-small-slices". The last commit before any src/ change
+  changes: # git diff 68e43cb 53ba65d --stat: 4 files, +39 -25
+    - src/wrenches.ts # one transaction: wrench row + repair job (J-W-<id>) + bikes.is_disabled = 1
+    - src/crew-queue.ts # deadline = reported_at + 48h/96h, sorted by deadline, reported_at, job_id
+    - src/map-page.ts # map counts come only from stationStatus
+    - CLAUDE.md
+  unchanged_on_purpose:
+    - src/feed.ts # ttl stays 60 (SLA-12, AC-12)
+    - data/contract/sla.yaml
   not_in_this_release:
-    - origin/teammate/local-deadlines. work/review.md left 2 Important findings open (the deadline is 1 hour off when summer time starts or ends). It is not merged and does not ship.
-    - The 15 minute grace period from operations. SLA-12 does not allow it (see work/spec.md, Concerns).
+    - branch: origin/teammate/local-deadlines
+      why: >-
+        work/review.md leaves 2 Important findings open. Deadlines are added to the London wall
+        clock, so they are 1 hour off when a job's window crosses a clock change (SLA-4), and no
+        test covers that case. The branch is not merged and does not ship.
+    - branch: origin/teammate/deadline-labels
+      why: Not in work/plan.md (P-1 to P-5). Not reviewed.
+    - branch: origin/teammate/queue-search
+      why: Not in work/plan.md (P-1 to P-5). Not reviewed.
+    - item: Closing a job / putting a bike back in service (spec C-3)
+      why: Out of scope. Needs a follow-up change (owner Theo Lindqvist).
+    - item: 15 minute grace period (spec C-1)
+      why: Not built. It breaks SLA-12. Only the city can change the contract.
 
-approvals_needed:
-  - role: release-manager
-    what: this file, work/rollout.yaml
-    status: pending
-already_approved:
-  [
-    work/intent.md,
-    work/spec.md,
-    work/decisions/0001-disable-in-feed.md,
-    work/plan.md,
-    test/acceptance,
-    REVIEW.md,
-    work/release.md,
-  ]
+people: # data/roster.csv
+  approves_deploy: Mei Tanaka (release manager)
+  on_call_engineer: Sam Achebe (engineer)
+  technical_owner: Ines Moreau (tech lead) # decides on rollback with the on-call engineer
+  verifies: Raj Patel (QA engineer)
+  crews_and_fleet: Ola Brennan (operations lead)
+  riders_city_and_feed_users: Theo Lindqvist (product manager)
+  escalation: Dana Okafor (engineering manager)
 
-before_deploy:
-  - check: bun test passes on main, including test/acceptance (AC-1 to AC-4)
-    owner: engineer
-  - check: no change under data/contract/ or test/acceptance/ since they were approved (git diff against approved commits is empty)
-    owner: engineer
-  - check: bun run world, then wrench B-2207. vehicle_status.json shows is_disabled true, and the station's num_vehicles_disabled goes up by 1
-    owner: engineer
-  - check: GET /crew/queue?depot=North lists the job due first on top, with deadline = reported_at + 48h
-    owner: engineer
-  - check: crew leads at the North and South depots have the crew section of work/release.md
-    owner: pm
-  - check: someone who can run `bun run rollback` is on hand for the whole watch window
-    owner: release-manager
-
-timing:
-  window: a weekday morning, Brannock time, outside the 07:00 to 09:30 commute peak
+# When. Brannock is on GMT in November, so local time = UTC. No clock change until 28 Mar 2027.
+window:
+  proposed: Tuesday 2026-11-17, deploy at 09:30 UTC
+  fallback: Wednesday 2026-11-18, deploy at 09:30 UTC
+  watch_until: 16:00 UTC the same day, with the on-call engineer on hand until 22:00 UTC
   avoid:
-    - Fridays and the day before a public holiday, so crews and engineers are on hand for 48 hours after
-    - the nights summer time starts or ends (last Sunday in March and October)
+    - Thursdays. Counted by hand from data/deploys.csv, 4 of the 9 incidents followed a
+      Thursday deploy (D-019, D-023, D-053, D-054), from 11 Thursday deploys. The other days
+      had 5 incidents from 58 deploys. The numbers are small, so treat this as a pattern to
+      check, not a cause. (Recount with a script before sign-off. Bun needed approval in this
+      session, so it was not run.)
+    - Fridays and weekends. Nobody would be around for an incident that starts late
+      (INC-09 began 5.8h after its deploy, at 22:08).
+    - Any day the operations lead says North or South is short of crew. The queue order
+      changes at launch, and crews need the briefing first.
+  why_watch_6_hours: >-
+    In the history every incident began 0.4h to 5.8h after its deploy (INC-02 the soonest,
+    INC-09 the latest). The 6 hour watch covers all of them.
 
-deploy:
-  shape: all at once. spoke runs as one service with no feature flag, so there is no canary or percentage step.
-  steps:
-    - release manager approves work/rollout.yaml
-    - engineer runs bun run deploy:production
-    - engineer checks GET /health returns ok true
+history_that_shapes_this_plan: # data/incidents.csv. Each one touches something this release changes
+  - incidents: [INC-01, INC-03, INC-08]
+    summary: crew queue page timed out
+    relevance: This release changes how /crew/queue sorts.
+  - incidents: [INC-04, INC-07]
+    summary: feed served stale station counts
+    relevance: This release changes station_status counts (SLA-12).
+  - incidents: [INC-09]
+    summary: docks shown free while full
+    relevance: AC-4 says num_docks_available must not move when a bike is disabled.
+  - incidents: [INC-02, INC-05, INC-06]
+    summary: e-bike battery levels missing from feed
+    relevance: vehicle_status.json changes. Check that the battery fields are still there.
+  time_to_resolve: >-
+    1.5h to 3.9h. SLA-11 limits a station outage to 4 hours, so this plan rolls back early
+    instead of fixing forward.
 
-verify_after_deploy:
-  first_15_minutes:
-    - GET /gbfs/v3/vehicle_status.json and station_status.json answer, keep GBFS v3 field names, and are no older than 60 seconds (SLA-12)
-    - the next real wrench in logs/spoke.log has a job_id, and that bike shows is_disabled true in the feed within 60 seconds (AC-1)
-    - that station's num_vehicles_disabled went up by 1 (AC-2)
-    - GET /crew/queue?depot=North and ?depot=South return every open job, sorted by deadline (AC-3), with deadline 48h after reported_at for wrench jobs (AC-4)
-  first_24_hours:
-    - no POST /wrench errors other than 404 for an unknown bike
-    - the open job count in the queue matches the open rows in repair_jobs, so sorting dropped no job
-    - SLA-9 bike availability stays at or above 96%. Disabled bikes now count as unavailable, so this number can drop. Watch it hourly.
-    - wrenched bikes rented again after the wrench is 0 (it was 8.94%)
-  first_14_days:
-    - wrenched bikes fixed within 48 hours of the wrench is at or above 95% (it was 94.54%)
-    - North depot BATT faults on e-bikes fixed late fall from 67 of 118 late bikes
+gates_before_deploy: # every one must be "yes" before Mei Tanaka is asked to approve
+  - id: G-1
+    check: The full `bun test` passes at 53ba65d, and each test/acceptance file passes on its own
+      (the "All" row in work/plan.md).
+    owner: Raj Patel
+  - id: G-2
+    check: The manual check in work/plan.md "All" passes against a temp DB on port 4199. A
+      wrench gives 201, the bike shows is_disabled true, the station's available count drops
+      by 1 and its disabled count rises by 1, and docks_available is unchanged. Then
+      /crew/queue?depot=North is sorted by deadline.
+    owner: Raj Patel
+  - id: G-3
+    check: "`git diff --stat 68e43cb 53ba65d -- data/contract src/feed.ts` is empty."
+    owner: Ines Moreau
+  - id: G-4
+    check: >-
+      SLA-9 headroom (spec C-2). For each district, the rentable share of bikes is at least
+      96% with every open job's bike counted as disabled, and there is room for a normal day
+      of wrenches on top. North needs the most care, because its repairs are slower
+      (work/findings.md has North at 9.9% late).
+    owner: Ola Brennan
+  - id: G-5
+    check: >-
+      Wrench jobs already open in production. The new code disables bikes only on new
+      wrenches. A bike whose wrench job was opened before launch stays rentable until a crew
+      reaches it. Count the open wrench jobs whose bike still has is_disabled = 0. Then decide:
+      accept this until those jobs close, or run a backfill as a separate, approved step.
+      The spec does not cover this. Do not backfill as part of this deploy without that
+      decision.
+    owner: Ines Moreau, with Theo Lindqvist
+  - id: G-6
+    check: >-
+      The crews at the North and South depots have been briefed with the "Crews" part of
+      work/release.md. Deadlines on open jobs come up by up to 1h, none goes overdue (AC-10),
+      and the queue order changes. A fixed bike stays out of service until a follow-up change.
+    owner: Ola Brennan
+  - id: G-7
+    check: >-
+      The Brannock City Transport contact and the third-party feed users have been told that
+      num_vehicles_disabled will rise (spec C-4).
+    owner: Theo Lindqvist
+  - id: G-8
+    check: >-
+      The working tree is clean, or its changes are committed on purpose. Today
+      work/approvals.jsonl is modified, and REVIEW.md, work/release.md and work/review.md are
+      untracked. None of them is in 53ba65d. Deploy the commit, not the working tree.
+    owner: Ines Moreau
+  - id: G-9
+    check: Mei Tanaka says yes in writing for this commit and this window.
+    owner: Mei Tanaka
+
+steps:
+  - id: S-1
+    at: T-15m
+    do: >-
+      Take a baseline. Save /gbfs/v3/station_status.json, /gbfs/v3/vehicle_status.json and
+      /crew/queue (all depots) from production. Note the fleet-wide and per-district
+      available and disabled counts, and the last_updated value.
+    who: Sam Achebe
+  - id: S-2
+    at: T+0
+    do: "`bun run deploy:production`. Only after G-9. Record the deploy in data/deploys.csv in the usual way."
+    who: Sam Achebe
+  - id: S-3
+    at: T+5m
+    do: >-
+      Smoke check. /health is OK. Both feeds have ttl 60, version "3.0" and last_updated no
+      older than 60s (AC-12). Vehicle records still carry the e-bike battery fields. The /crew/queue
+      response time is about what it was at baseline. The map at / loads.
+    who: Sam Achebe
+  - id: S-4
+    at: T+15m
+    do: >-
+      Check against the baseline. The fleet-wide disabled count is the baseline plus the new
+      wrenches since T+0, give or take rentals. Deadlines on jobs that were already open are
+      the same or up to 1h earlier, and none is now past due (AC-10). jobs[0] in each depot has
+      the earliest deadline (AC-9).
+    who: Raj Patel
+  - id: S-5
+    at: first real wrench after T+0
+    do: >-
+      Follow one wrench from end to end. The log has a wrench line with a J-W- job id. The bike
+      shows is_disabled true in vehicle_status within 60s. The station's available count drops
+      by 1, its disabled count rises by 1, and num_docks_available does not move. The job is
+      in /crew/queue with deadline = reported_at + 48h. The map matches the feed.
+    who: Raj Patel
+  - id: S-6
+    at: T+1h, T+3h, T+6h
+    do: >-
+      Watch. Check every rollback trigger below. Check per-district rentable % against SLA-9.
+      Ask the crew leads if the queue looks right.
+    who: Sam Achebe, with Ola Brennan
+  - id: S-7
+    at: T+6h
+    do: >-
+      Close the watch, or extend it if any trigger came close. Post a short result to the team,
+      then send the release notes to riders and crews.
+    who: Ines Moreau, with Theo Lindqvist
+  - id: S-8
+    at: T+48h
+    do: >-
+      Follow up. Look at the re-rent rate since launch (target near 0, from 8.9%), SLA-4 on-time
+      % for wrenches reported after launch, and SLA-9 per district. Bikes now pile up as
+      disabled until C-3 ships, so give the PM the trend.
+    who: Theo Lindqvist, with Ola Brennan
 
 rollback:
-  command: bun run rollback
-  who: the engineer on watch. Tell the release manager straight after.
-  when:
-    - a wrenched bike is still rentable in the feed after 60 seconds
-    - the feed fails to answer, changes shape, or is older than 60 seconds
-    - POST /wrench fails for a real bike
-    - the crew queue drops jobs, or shows a wrench deadline that is not reported_at + 48h
-    - SLA-9 availability falls under 96% and the cause is this release
-  data_after_rollback:
-    - bikes already set is_disabled stay disabled. That is correct, since they are broken, and crews clear the flag when they fix them.
-    - repair jobs created during the release stay in repair_jobs. The old queue keeps showing them, in its old order.
-  then: write what went wrong in work/, fix it in a new plan item, and run this plan again
+  how: "`bun run rollback`. A person must say yes first (Ines Moreau, or Mei Tanaka if she is not there)."
+  decide_within: >-
+    30 minutes of a trigger firing. Past incidents took 1.5h to 3.9h to fix, and SLA-11 allows
+    4h, so do not try to fix forward.
+  triggers:
+    - Either feed's last_updated is older than 60s, or a feed errors (SLA-12, AC-12). Like INC-04 and INC-07.
+    - A station's available + disabled + docks_available does not add up to what it did before
+      the change, or num_docks_available moves on a wrench (AC-4). Like INC-09.
+    - A bike with a wrench since T+0 shows as rentable in vehicle_status.json (AC-1).
+    - "POST /wrench returns 5xx, or a 201 without a repair_jobs row or without is_disabled = 1 (AC-2)."
+    - /crew/queue times out or is clearly slower than baseline. Like INC-01, INC-03 and INC-08.
+    - An open job shows a deadline that is not reported_at + 48h/96h, or a job goes overdue
+      because of the change (AC-8, AC-10).
+    - The e-bike battery fields are missing from vehicle_status.json. Like INC-02, INC-05 and INC-06.
+  not_a_trigger:
+    - >-
+      Disabled counts going up and available counts going down. That is the point of the
+      change (release notes: "the map is telling the truth"). If a district nears 96% rentable
+      (SLA-9), that is a decision for operations (more crew time at that district). Going back to
+      showing broken bikes as rentable would break SLA-12.
+  what_rollback_does_not_undo:
+    - >-
+      Bikes disabled by wrenches after T+0 keep is_disabled = 1. The old code reads the same
+      column, so they stay out of service after a rollback. That is the safe direction. There
+      is still no route to put them back (C-3).
+    - >-
+      Repair jobs created after T+0 keep their J-W-<id> ids. The old code makes J-<ms> ids, so
+      the two cannot clash.
+    - The crew queue goes back to deadlines from opened_at and oldest-first order. Tell the crews
+      straight away (Ola Brennan).
+  after_rollback:
+    - Log the incident in data/incidents.csv against this deploy.
+    - Tell the crews, and the city contact if the feed was affected.
+    - The fix goes back through review (REVIEW.md) before a new window is booked.
 
-communication:
-  - who: crews at the North and South depots
-    what: the crew section of work/release.md, before deploy
-    owner: pm
-  - who: riders
-    what: the rider section of work/release.md, after verify_after_deploy first_15_minutes passes
-    owner: pm
-  - who: Brannock City Transport
-    what: the release and its link to SLA-4 and SLA-12. The pm also raises the grace period question there, as the spec says.
-    owner: pm
+done_when:
+  - The 6h watch ended with no trigger fired.
+  - S-5 passed on at least one real wrench in each depot.
+  - Every district stayed at or above 96% rentable (SLA-9) through the watch.
+  - The release notes were sent to riders and crews (work/release.md).
+  - The follow-ups have owners. C-3 (close job / clear false report) goes to Theo Lindqvist. The
+    clock-change test gap from work/review.md goes to Ines Moreau.

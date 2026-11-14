@@ -1,51 +1,74 @@
-# Release notes: a wrenched bike leaves the feed and reaches the right crew in time
+# Release notes: a wrench takes the bike out of service
 
-Built from the approved `work/intent.md`, `work/spec.md`, `work/decisions/0001-disable-in-feed.md` and `work/plan.md`.
-Commits on `main`: `a44adf6` (P-1), `c12460e` (P-2), `714a689` (P-3).
+Commits on `main`: `c0913af` (P-1 tests) and `d838216`..`53ba65d` (P-2 to P-5).
+Spec: `work/spec.md` (AC-1 to AC-13). Plan: `work/plan.md`. Decision: `work/decisions/0001-disable-in-feed.md`.
+Contract: `data/contract/sla.yaml`, unchanged.
 
-## Why
-
-We fixed 118 of 2,160 wrenched bikes late (5.46%). That puts us at 94.54% against the 95% contract target and cost 5,900 pounds in credits over 90 days.
-Another 193 wrenched bikes (8.94%) were rented again before a crew reached them, because the feed still showed them as rentable. See `work/findings.md`.
+**Not yet deployed.** `bun run deploy:production` needs a person's approval (AGENTS.md).
 
 ## What changes
 
-### Riders: a wrenched bike stops being rentable at once (P-1, AC-1, AC-2)
+### Riders and feed users
 
-- `POST /wrench` now sets `is_disabled: true` on the bike, so it shows as disabled in `vehicle_status.json`.
-- `num_vehicles_disabled` in `station_status.json` goes up by 1 for that station.
-- The wrench, its repair job and the disabled flag are written in one transaction. If any write fails, none of them lands, so the feed never shows a bike as wrenched but still rentable (SLA-12).
-- The bike stays in the feed, marked disabled, and is not removed. Decision 0001 explains why: GBFS defines `is_disabled` for this case, and crews still need to find the bike.
+- **A wrenched bike can no longer be rented.** As soon as `POST /wrench` returns 201, the bike
+  shows `is_disabled: true` in `/gbfs/v3/vehicle_status.json`. There is no grace period (SLA-12).
+  Before this release a reported bike stayed rentable, and 193 bikes (8.9% of wrenches) were rented again.
+- **Station counts move with it.** In `/gbfs/v3/station_status.json` the bike's station shows
+  `num_vehicles_available` 1 lower and `num_vehicles_disabled` 1 higher. `num_docks_available`
+  does not change. A second wrench on a bike that is already disabled changes no counts.
+- The bike stays in `vehicle_status.json`, flagged as disabled. It is not dropped from the feed (decision 0001).
+- Feed `ttl` (60), `version` (`"3.0"`) and freshness do not change.
 
-### Crews: the deadline clock starts at the wrench (P-2, AC-4)
+### Crews (`/crew/queue`)
 
-- A wrench job's `deadline` is now 48 hours after the wrench `reported_at`, as SLA-4 says. Before, the clock started when the dispatch desk opened the job.
-- Jobs found by a crew keep their 96 hour limit, now also counted from `reported_at`.
+- **Deadlines start at the rider's report** (`reported_at`), not when the job was opened (SLA-4):
+  48h for a wrench, 96h for a defect a crew found itself.
+- **The job due first is on top.** Jobs are sorted by deadline, then `reported_at`, then `job_id`.
+  Before, the oldest opened job came first.
+- Jobs that are already open get the new deadlines straight away, with no migration. For the
+  40 seed open jobs, each deadline moves 0.1h to 1.0h earlier. None become overdue at launch.
+- `?depot=` filtering does not change.
 
-### Crews: the queue puts the job due first on top (P-3, AC-3)
+### Station map (`/`)
 
-- `GET /crew/queue?depot=...` returns jobs sorted by `deadline`, earliest first. Jobs with the same deadline keep the oldest-opened job first.
-- Before, the queue was sorted oldest-opened first. The North crew should notice the new order straight away.
+- Each station's hover title now shows its counts, for example
+  `S-001 Weaver Road: 7 available, 1 disabled`. The numbers come from `station_status.json`, so
+  the map always matches the feed. The red badge now goes up when a bike is wrenched.
 
-## What does not change
+## Technical notes
 
-- The feed keeps the GBFS v3 shape. Rider apps need no update.
-- `data/contract/` does not change.
-- No database migration and no new routes.
+- `src/wrenches.ts`: the wrench row, the repair job and `bikes.is_disabled = 1` are written in a
+  single transaction. If one write fails, none are kept. The log line is written after the commit.
+  Unknown bikes still get 404 before anything is written.
+- **Job id format change:** wrench jobs are now `J-W-<wrench id>` (were `J-<ms timestamp>`).
+  This fixes a primary-key clash when two wrenches arrive in the same millisecond. Nothing in
+  `src/` parses the id, but the `POST /wrench` response and `logs/spoke.log` carry it, so any
+  log reader or dashboard that matches `J-<digits>` must be updated.
+- `src/crew-queue.ts`: deadline from `reported_at`, new sort order.
+- `src/map-page.ts`: station title shows available and disabled counts.
+- No schema change, so `spoke.db` does not need deleting. No new packages. `src/feed.ts` is unchanged.
 
-## Known limits and open items
+## Tests
 
-- **No 15 minute grace period.** Operations asked for one, but SLA-12 says the feed must be accurate "at all times". The product manager is taking the question to the city.
-- **Third-party maps** may show wrenched bikes greyed out instead of hiding them (decision 0001).
-- **Not in this release:** `teammate/local-deadlines`. `work/review.md` lists 2 open Important findings on it: its deadlines are an hour off when summer time starts or ends.
+- New: `test/acceptance/`, one file per AC (AC-1 to AC-13), approved by QA (Raj Patel).
+  Written and committed before any `src/` change (P-1).
+- The P-4 commit records the full `bun test` as green: 28 pass, 0 fail. I did not run it again
+  while writing these notes.
 
-## Proof
+## Before release: open items
 
-- Acceptance tests in `test/acceptance/`, one per criterion, approved by QA on 2026-11-02.
-- Run `bun test` before releasing. It was not run when these notes were written.
-- Manual check from the plan: `bun run world`, then `bun run world wrench B-2207` should show `is_disabled: true`.
+| #   | Item                                                                                                                                                                        | Owner                          |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| C-1 | The 15 minute grace period Operations asked for is **not built**. It conflicts with SLA-12. Only the city can allow it. The PM decides whether to drop it or take it to the city. | PM / Brannock City Transport   |
+| C-2 | Fleet availability drops as wrenched bikes are disabled. The 40 seed jobs already take 1.9% of bikes out of service. Check how close each district (North especially) is to the SLA-9 minimum of 96%. | Operations                     |
+| C-3 | **No way to put a bike back in service yet.** No route closes a job or clears a false report, so a disabled bike stays disabled unless someone edits the DB. Needs a follow-up change. | PM                             |
+| C-4 | Brief North and South crews on the new queue order and earlier deadlines. Tell the city and third-party feed users that disabled counts will go up.                         | PM, Operations, city contact   |
+| —   | Tell log and dashboard owners about the `J-W-<n>` job id format.                                                                                                           | Tech lead                      |
+| —   | Decision 0001 still says `Status: proposed`, but the tech lead has approved it in `work/approvals.jsonl`. Set it to accepted.                                              | Tech lead                      |
 
-## Rollout
+## Not in this release
 
-- The release manager approves `work/rollout.yaml` before `bun run deploy:production` runs.
-- If anything goes wrong, `bun run rollback` goes back to the last good release. P-1 to P-3 only change code, with no schema change, so a rollback needs no data fix. Bikes this release disabled keep `is_disabled = 1` after a rollback. Check how they get re-enabled before rolling back.
+- The North e-bike battery issue (`work/findings.md`).
+- The teammate branches (`teammate/local-deadlines`, `deadline-labels`, `queue-search`).
+  `work/review.md` reviews `local-deadlines` separately. None of them are merged here.
+- No changes to `data/contract/sla.yaml` or the historical `data/*.csv` files.
