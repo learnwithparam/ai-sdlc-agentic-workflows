@@ -1,6 +1,7 @@
 // bun run check: the repo standard. CI runs this; any failure stops the build.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
+import { chainIdProblems } from "./chain-ids";
 import { allSteps, NOT_COURSE_CONTENT, type Part, parts, ROOT, type Step } from "./structure";
 
 const problems: string[] = [];
@@ -311,6 +312,11 @@ function checkTroubleshootingTable() {
   }
 }
 
+// 5b. Every sample uses the same P-1 and spec as Part 4.
+function checkChainIds() {
+  for (const problem of chainIdProblems()) report("chain samples", problem);
+}
+
 // 6. Every schedule covers every part, and the minutes add up.
 type Schedule = Record<string, { sessions: { parts: string[]; minutes: number }[] }>;
 
@@ -375,6 +381,7 @@ function runEveryCheck() {
   checkPythonPackagesPinned();
   checkTroubleshootingTable();
   checkSchedules(allParts);
+  checkChainIds();
   return allParts;
 }
 
