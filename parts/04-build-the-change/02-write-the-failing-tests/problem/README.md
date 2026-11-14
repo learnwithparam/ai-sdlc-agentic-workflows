@@ -46,18 +46,31 @@ bun run approve test/acceptance --role qa
 
 Expect: `Approved test/acceptance as qa`
 
+Now fence the signed tests, so the rule holds even when nobody is watching. A hook is a command Claude Code runs on its own at a set moment. Ask Claude Code for two hooks in `.claude/settings.json`:
+
+```text
+Add two hooks. First, a PreToolUse hook for Edit, Write and MultiEdit that exits 2 with a
+short message when the file is in test/acceptance/, and exits 0 for any other file. Second,
+a Stop hook that runs bun test and exits 2 while a test is red, so you cannot stop until they
+pass. If stop_hook_active is true, exit 0. Keep our current deny and ask rules.
+```
+
+Read `.claude/settings.json` and the two hook files before you accept them. Exit code 2 means "block this and tell Claude why". The Stop hook will keep Claude working through the next step until `bun test` is green. That is the point.
+
 ## Done when
 
 - `test/acceptance/` has one test file per AC id, named for its id.
 - The tests were committed before any change to `src/`, in a commit that names `P-1`.
 - On the code as it was, the tests for the feed, the clock and the queue order fail.
 - The qa approval matches the tests and comes after the plan's.
+- The edit hook exits 2 for a file in `test/acceptance/` and 0 for a file in `src/`.
+- The Stop hook exits 2 on a red test and 0 on a green one.
 
 ```bash
 bun run verify write-the-failing-tests
 ```
 
-Expect: `Done. All 5 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 ![What a pass looks like](../images/expected.png)
 
@@ -71,6 +84,8 @@ Expect: `Done. All 5 rules pass.`
 
 ## Words you will use
 
+- **Hook**: a command Claude Code runs by itself at a set moment, such as before an edit or before it stops. Exit code 2 blocks the action.
+- **Stop hook**: a hook that runs when Claude thinks it is done. It can send Claude back to work.
 - **Acceptance test**: a test for one acceptance criterion, named for its id.
 - **Red and green**: a failing test is red, a passing one is green.
 - **Guard test**: a test that passes today and must keep passing, so the change breaks nothing.

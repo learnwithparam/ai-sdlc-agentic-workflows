@@ -60,6 +60,35 @@ function allTestsPass(folder: string): boolean {
   return run.exitCode === 0;
 }
 
+// A merge of a slice branch: the files that branch brought in, read from the merge itself.
+function sliceMerges(folder: string): string[][] {
+  const log = git(folder, ["log", "--merges", "--format=%H %P|%s"]);
+  const merges = log.split("\n").filter((line) => /\|.*slice\//.test(line));
+  return merges.map((line) => {
+    const [hashes] = line.split("|");
+    const [merge, firstParent] = hashes.split(" ");
+    return git(folder, ["diff", "--name-only", firstParent, merge]).trim().split("\n");
+  });
+}
+
+function slicesDidNotCollide(folder: string): boolean {
+  const branches = sliceMerges(folder);
+  const files = branches.flat().filter(Boolean);
+  const nothingTwice = new Set(files).size === files.length;
+  return branches.length >= FEWEST_SLICES && files.length > 0 && nothingTwice;
+}
+
+// work/slices.md says "- P-2: 27 lines". The number must match what git counts for that commit.
+function diffsWereRead(folder: string): boolean {
+  const log = readFile(folder, "work/slices.md");
+  const slices = buildCommits(folder);
+  const said = (commit: Commit) => {
+    const id = commit.subject.match(/\bP-\d+\b/)?.[0] ?? "?";
+    return new RegExp(`${id}:\\s*${changedLines(folder, commit)}\\s*lines`).test(log);
+  };
+  return slices.length >= FEWEST_SLICES && slices.every(said);
+}
+
 export default [
   {
     says: "bun test passes, the acceptance tests included",
@@ -90,5 +119,16 @@ export default [
     says: "the running spoke lists the North crew queue with the job due first on top",
     test: (folder) => withWorld(folder, (world) => queueIsDueFirst(world.url, "North")),
     tryNext: "ask Claude Code to sort GET /crew/queue by deadline, the earliest first",
+  },
+  {
+    says: "two or more slices were built side by side on slice/ branches and merged without overlap",
+    test: (folder) => hasHistory(folder) && slicesDidNotCollide(folder),
+    tryNext:
+      "run claude -w for each slice, then merge each branch; slices must touch different files",
+  },
+  {
+    says: "work/slices.md gives the changed-line count of each build commit, and git agrees",
+    test: (folder) => hasHistory(folder) && diffsWereRead(folder),
+    tryNext: "run git show --numstat on each commit and write its count, such as P-2: 27 lines",
   },
 ] satisfies Rule[];
