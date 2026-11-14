@@ -1,71 +1,123 @@
-# Reviewing changes to spoke
+# REVIEW.md
 
-How to review a change to Kestrel spoke, by a person or by a coding agent.
-The rules in `AGENTS.md` and `CLAUDE.md` still apply. This file says what a reviewer checks.
+How to review a change to `spoke`. Read `AGENTS.md` and `data/contract/sla.yaml` first. This
+guide applies them to a diff. It does not replace them.
 
-Block the change if any **Blocker** below fails. Other problems are comments, and the author decides.
+`spoke` feeds the city's public data and the repair crews. If it is wrong, riders rent broken
+bikes and Kestrel pays the city credits. So review against the contract first and style last.
 
-## 1. Protected files — Blocker
+## 1. Blockers: reject the change if any of these hold
 
-- [ ] No change under `data/contract/`. The city owns the contract. If the code needs a different rule, the code is wrong or the PM must go to the city.
-- [ ] No change under `test/acceptance/` after QA approved it (see `work/approvals.jsonl`). A failing acceptance test means change the code.
-- [ ] No new or edited line in `work/approvals.jsonl` written by an agent. Only a person approves, through `bun run approve`.
-- [ ] No change to an approved `work/` file (intent, spec, decision, plan) unless the change comes with a new approval. Check that its sha256 still matches `work/approvals.jsonl`:
+- **The diff touches `data/contract/sla.yaml`.** Only the city edits it. If the change only
+  works with a different SLA, it is a contract conflict. Send it to the product manager. Do not
+  merge it.
+- **The diff runs, schedules or automates `bun run deploy:production` or `bun run rollback`**
+  without a named person's approval. That includes CI steps, hooks and scripts.
+- **It adds a dependency.** `package.json` must not gain `dependencies` or `devDependencies`.
+  Only Bun built-ins (`bun:sqlite`, `Bun.serve`, `bun:test`, `node:*`).
+- **It conflicts with the contract** (see section 2), even when a ticket asks for it. Example:
+  the 15-minute "grace period" before a wrenched bike leaves the feed (spec C-1) breaks SLA-12
+  and was deliberately not built. If a change brings it back in any form (delay, batching,
+  cache, "soft" disable), it is a blocker.
 
-  ```sh
-  sha256sum work/plan.md   # compare with the "sha256" for work/plan.md
-  ```
-- [ ] No change to `.claude/settings.json` that loosens the `deny` or `ask` rules.
+## 2. Contract checks, by area
 
-## 2. Traceability to the approved plan — Blocker
+Ask these whenever a diff touches `src/wrenches.ts`, `src/feed.ts`, `src/crew-queue.ts`,
+`src/map-page.ts`, `src/database.ts` or the seed CSVs.
 
-- [ ] Each commit serves one plan item, and its message starts with the item id, for example `P-2: ...`.
-- [ ] The change only touches files `work/plan.md` lists under "Files that change". Any other file needs a reason in the PR, or a plan update with a new approval.
-- [ ] The change does what the plan item and its acceptance criteria in `work/spec.md` say, and nothing more. Extra features wait for their own spec.
-- [ ] Each commit is under 200 changed lines (`git show --stat <sha>`).
+### Wrench reports (`POST /wrench`, `src/wrenches.ts`)
 
-## 3. The city contract — Blocker
+- The `wrenches` insert, the `repair_jobs` insert (`source='wrench'`) and
+  `UPDATE bikes SET is_disabled = 1` all happen **inside one `database.transaction`**. A new
+  write that belongs with them goes inside too.
+- `logEvent` is called **after** the commit, never inside the transaction. A failed log must
+  not roll back a wrench, and a rolled-back wrench must not be logged.
+- Unknown bikes still get **404 before any write**. Look for new code that writes before the
+  lookup.
+- Job ids still come from the wrench row id (`J-W-<wrench_id>`). Do not accept `Date.now()`
+  or random ids. Two wrenches in the same millisecond used to collide on the primary key.
+- `reported_at` is the moment the rider reported, taken on the server. Nothing may move it
+  later.
+- A second wrench on an already-disabled bike must not re-enable it or change other bikes
+  (AC-6, AC-13).
 
-Read `data/contract/sla.yaml` before reviewing code in `src/wrenches.ts`, `src/feed.ts` or `src/crew-queue.ts`.
+### Public feed (`src/feed.ts`, SLA-12)
 
-- [ ] **SLA-4: the clock starts at the wrench.** Deadlines are computed from `reported_at`, never from `opened_at`. A wrench gets 48 hours; a defect a crew finds gets 96 hours. This is the mistake agents make most often in this repo.
-- [ ] **SLA-12: the feed is accurate at all times.** A wrenched bike shows `is_disabled: true` straight away. No grace period, no cache, no batch job that delays it past 60 seconds.
-- [ ] **The wrench is atomic.** The wrench row, the repair job and `is_disabled = 1` are written in one transaction. A failure must never leave a broken bike rentable.
-- [ ] **The crew queue never drops jobs.** Sorting and filtering keep every open job for the depot. The job due first goes on top.
-- [ ] Contract numbers (48, 96, 60, 50) match `sla.yaml`. Prefer reading them from the contract over a new hard-coded copy.
+- `ttl` stays at **60 seconds or less**. `last_updated` is the time of the response.
+- Available and disabled counts come from `bikes.is_disabled` and nothing else. A wrenched bike
+  must show `is_disabled: true` in `vehicle_status.json` and count as disabled in
+  `station_status.json` at once.
+- **No caching, memoising or background refresh** that could serve older counts. "Feed served
+  stale station counts" has happened twice (INC-04, INC-07).
+- `num_docks_available` must not count docks that hold bikes, disabled ones included.
+  "Docks shown free while full" happened in INC-09.
+- Removing or renaming a field is a breaking change for rider apps and the city. Keep the
+  GBFS v3 shape. "E-bike battery levels missing from feed" has happened three times
+  (INC-02, INC-05, INC-06).
+- `src/map-page.ts` must take its counts from `stationStatus`, not its own query, so the map
+  always matches the feed (AC-5).
 
-If a change conflicts with the contract, do not approve it with a workaround. Ask for the conflict to be written down and sent to the PM.
+### Crew queue (`src/crew-queue.ts`, SLA-4)
 
-## 4. Public feed — Blocker for field names
+- Deadline = `reported_at` + **48h for `source='wrench'`, 96h for anything else**. Never
+  `opened_at`. Hours must not be hard-coded anywhere else in a way that can drift from
+  `sla.yaml`.
+- Order: deadline, then `reported_at`, then `job_id`. The sort must stay total and stable.
+- `?depot=` filtering still works, and no depot means all depots (AC-11).
+- Treat a lateness bug as a money bug. Each late wrenched bike costs £50. If a queue change
+  could push a job later, ask for a test that shows it does not.
+- Watch query cost. "Crew queue page timed out" has happened three times (INC-01, INC-03,
+  INC-08). Watch for per-job queries in a loop, unindexed scans added to the hot path, or
+  loading closed jobs.
 
-- [ ] Feed field names follow GBFS v3: snake_case, for example `is_disabled`, `num_vehicles_available`, `num_vehicles_disabled`. No invented names, no renamed fields.
-- [ ] Removing or changing the meaning of a feed field is a breaking change for outside apps. It needs a decision record in `work/decisions/`.
-- [ ] Station counts agree with the bikes table: a disabled bike counts as disabled, not available.
+### Schema and seed data (`src/database.ts`, `data/*.csv`)
 
-## 5. Correctness and code
+- A change to `TABLES` or to `stations.csv`, `bikes.csv` or `open-jobs.csv` means `spoke.db`
+  must be deleted and reseeded. The PR description should say so.
+- Seed jobs stay relative to now (`*_hours_ago`), and their bikes stay `is_disabled = 1`
+  (AC-10).
+- `src/csv.ts` splits on commas. Reject any CSV value containing a comma or a quote, or
+  replace the parser in the same PR.
+- `wrenches.csv`, `repairs.csv`, `deploys.csv`, `incidents.csv` and `roster.csv` are for
+  analysis only. Service code must not start reading them.
 
-- [ ] SQL uses bound parameters (`?`, `?1`). No values joined into a query string.
-- [ ] Times are stored and compared as UTC ISO 8601 strings (`toISOString()`). Watch for local time and for sorting dates as text in mixed formats.
-- [ ] Requests with a missing or unknown `bike_id`, `station_id` or `depot` return a clear 4xx, not a crash.
-- [ ] Every new route is listed in `src/server.ts`.
-- [ ] Changes to seeding in `src/database.ts` still work on a fresh start and on an existing database.
-- [ ] Comments say why, and name the SLA when a rule comes from the contract (as in `src/crew-queue.ts`).
-- [ ] Events that matter to operations (wrench, repair, disable) are logged with `logEvent`.
+## 3. Tests
 
-## 6. Tests
+- Behaviour changes in the three areas above need a test in `test/acceptance/` (one file per
+  AC) or `test/feed.test.ts`. A change that alters what an AC checks updates that AC's test
+  in the same PR. It must not delete the test.
+- Tests set `SPOKE_DB` and `SPOKE_LOG` to temp files **before** importing `src/database` or
+  `src/log`. Use `test/acceptance/helpers.ts` or the dynamic `await import(...)` pattern. A
+  static `import` from `src/` is hoisted above the env lines and writes to the real `spoke.db`.
+- Tests call functions directly (`recordWrench`, `vehicleStatus`, `crewQueue`, ...). They
+  never import `src/server.ts`, which starts `Bun.serve` on load.
+- Tests must not depend on wall-clock luck. Compare deadlines against `reported_at`, not
+  against `new Date()` with a tolerance.
+- Run `bun test` locally. All tests pass, and none are skipped or `.only`.
 
-- [ ] `bun test` passes, including `test/acceptance/`. Run it yourself; do not trust the PR text.
-- [ ] New behaviour has a unit test in `test/`, outside `test/acceptance/`.
-- [ ] Tests that touch the contract check the edge: a job at exactly 48 hours, a crew-found defect, a tie on deadline.
-- [ ] No test skipped, weakened, or made to pass by changing what it checks.
+## 4. Code and docs
 
-## 7. Release
+- Keep the existing style: small modules, plain SQL with `?` parameters (never string-built
+  SQL from request input), short comments that explain *why*, often naming the SLA.
+- Validate request bodies at the edge (`src/server.ts`). A bad JSON body must give a 4xx, not
+  an exception.
+- If a change makes `CLAUDE.md`, `README.md` or a code comment wrong (routes, SLA references,
+  "Things Claude gets wrong"), update it in the same PR.
+- Keep PRs small and in one slice, like the `P-n` commits. Tests for a behaviour come before or
+  with the `src/` change.
 
-- [ ] Nobody ran `bun run deploy:production` before the release manager approved `work/rollout.yaml`.
-- [ ] The PR says how to check the change after release and that `bun run rollback` is the way back.
+## 5. Reviewer checklist
 
-## How to write review comments
+```
+[ ] data/contract/ untouched; no deploy/rollback run or automated; no new packages
+[ ] Wrench writes in one transaction; log after commit; 404 before any write
+[ ] Feed: ttl ≤ 60, no caching, counts from bikes.is_disabled, GBFS fields kept
+[ ] Queue: deadline from reported_at (48h/96h); order deadline → reported_at → job_id
+[ ] Map counts still come from stationStatus
+[ ] Schema/seed change → spoke.db reseed noted
+[ ] Tests added/updated; temp SPOKE_DB/SPOKE_LOG; bun test passes
+[ ] Docs and comments still true
+```
 
-- Say what is wrong, where (`src/file.ts:line`), and why. Name the SLA, acceptance criterion or plan item it breaks.
-- Mark each comment **Blocker** or **Suggestion**.
-- Point to the approved file that settles the question rather than arguing taste. If no approved file settles it, it is a suggestion.
+If a change asks for something the contract forbids, write down which SLA, what the request
+asks for, and why they clash. Then escalate to the product manager. Do not approve it.
