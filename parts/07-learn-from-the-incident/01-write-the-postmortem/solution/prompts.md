@@ -8,7 +8,7 @@ The first prompt in the step README. Claude Code read the four log files, `work/
 
 What it got right, so you can check yours the same way:
 
-- Impact says 212 bikes, 3 hours 10 minutes, 97.8% and 89.0%. It names the log line for each number.
+- Impact says 212 bikes, over 3 hours, 97.8% and 89.0%. It names the log line for each number.
 - Every Timeline time is in `incident.log` or `deploys.log`.
 - Contributing factors name `POST /wrench`, the missing test and the guardrail. No person.
 
