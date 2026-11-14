@@ -1,9 +1,9 @@
-# Review of origin/teammate/deadline-labels against main
+# Review: origin/teammate/deadline-labels against main
 
 | Pass | Severity | Where | What goes wrong | Criterion |
 | ---- | -------- | ----- | --------------- | --------- |
-| Bugs | Nit | `src/brannock-time.ts:6-13` | The label has no year and no GMT/BST marker. When the clocks go back on 25 Oct, 01:00 to 01:59 happens twice, so two deadlines an hour apart get the same label. A crew planning from the label could read a wrench deadline an hour late in that window. The UTC `deadline` field stays correct. | SLA-4 |
-| Compliance | Nit | `src/brannock-time.ts:1-18`, `src/crew-queue.ts:25-28` | No plan item or acceptance criterion asks for this work. `src/brannock-time.ts` is not in the plan's list of files that change, and the spec doesn't mention `deadline_local`, a new field in the `GET /crew/queue` response. The spec and plan need updating before it merges. | P-1 to P-3 |
-| Compliance | Nit | commit `61f30be` ("Show crews each deadline in Brannock time") | The commit message does not start with a plan item id (rule: one commit per plan item, `P-2: ...`). Since no item covers the change, it cannot be traced to the approved plan. | P-1 to P-3 |
+| Bugs | Nit | `src/brannock-time.ts:6-13` | The label has no GMT/BST marker. When the clocks go back (next on 31 Oct 2027), 01:00 to 02:00 happens twice, so two deadlines an hour apart show the same text (for example "Sun 31 Oct, 01:15"). A crew working to the later one could finish the earlier job up to 1h late, which costs a £50 credit per late bike. The UTC `deadline` and the sort order are still correct. Fix: add `timeZoneName: "short"` to the label format. | SLA-4, AC-8 |
+| Compliance | Nit | `src/crew-queue.ts:28-31` | `deadline_local` is outside the spec's scope and not in the plan's list of files. It has no acceptance test, so nothing checks that crews see the right local time, and the C-4 briefing doesn't cover crews reading the new field. | spec Scope / Test notes, plan "Files that change", C-4 |
+| Compliance | Nit | `CLAUDE.md` (Architecture, `src/crew-queue.ts` line) | CLAUDE.md doesn't mention the new `src/brannock-time.ts` or the `deadline_local` field, so the next reader gets an incomplete picture of the queue. | P-5 |
 
 Important findings left open: 0

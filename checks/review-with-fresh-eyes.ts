@@ -121,6 +121,20 @@ function quietOnTheCleanBranch(folder: string): boolean {
   return quiet.length >= RUNS_THAT_MUST_HOLD;
 }
 
+// For example: "SQL injection: src/crew-queue.ts:25 ... search ... bound parameter".
+const SQL_HOLE = /sql.?injection|\bsql_injection\b/i;
+
+function securityReports(folder: string): string[] {
+  const reports: string[] = [];
+  for (let runNumber = 1; runNumber <= RUNS_PER_BRANCH; runNumber++) {
+    const path = join(RECORDINGS, "security", `review-${runNumber}.md`);
+    if (fileExists(folder, path)) reports.push(readFile(folder, path));
+  }
+  return reports;
+}
+
+const findsTheSqlHole = (report: string) => SQL_HOLE.test(report) && QUEUE_FILES.test(report);
+
 const RECORD_COMMAND = "bun parts/05-review-the-change/02-review-with-fresh-eyes/record.ts";
 
 export default [
@@ -167,6 +181,11 @@ export default [
     says: "on the clean branch, 2 of 3 reviews have no Important finding",
     test: quietOnTheCleanBranch,
     tryNext: "point the reviewer at What Important means here in REVIEW.md, then record again",
+  },
+  {
+    says: "on the branch with a planted hole, 2 of 3 /security-review reports find the SQL injection",
+    test: (folder) => securityReports(folder).filter(findsTheSqlHole).length >= RUNS_THAT_MUST_HOLD,
+    tryNext: `run ${RECORD_COMMAND} again. It runs /security-review on origin/teammate/queue-search`,
   },
   {
     says: "every recorded review keeps nits at or under the cap in REVIEW.md",

@@ -33,9 +33,9 @@ Then write its findings to work/review.md: a one-line heading, the findings tabl
 REVIEW.md asks, and a last line 'Important findings left open: N'.
 ```
 
-Claude Code handed the job to the reviewer. The reviewer read `REVIEW.md`, the spec and the plan, then the diff. It worked out real deadlines around both clock changes and found 49 hours in autumn and 47 in spring. It also tried to write a small test script. The permission rules stopped that, because a reviewer only reads. The transcript is `first-review.jsonl`.
+Claude Code handed the job to the reviewer. The reviewer read `REVIEW.md`, the spec and the plan, then the diff. It worked out real deadlines around the clock changes. It also noticed that the acceptance tests build jobs relative to today, so no test window crosses a clock change. That is why every test passes. The transcript is `first-review.jsonl`.
 
-**Check before you decide:** the Important finding names `src/crew-queue.ts`, the clock change and AC-4. The tech lead sends the branch back to Sam.
+**Check before you decide:** the Important finding names `src/crew-queue.ts`, the clock change and a criterion, AC-8 here. The tech lead sends the branch back to Sam.
 
 ## The recorded runs
 
@@ -44,8 +44,11 @@ Claude Code handed the job to the reviewer. The reviewer read `REVIEW.md`, the s
 | Branch                     | Run 1                  | Run 2                  | Run 3                  |
 | -------------------------- | ---------------------- | ---------------------- | ---------------------- |
 | `teammate/local-deadlines` | bug found, 2 Important | bug found, 1 Important | bug found, 1 Important |
-| `teammate/deadline-labels` | 0 Important, 3 nits    | 0 Important, 3 nits    | 0 Important, 3 nits    |
+| `teammate/deadline-labels` | 0 Important, 3 nits    | 0 Important, 2 nits    | 0 Important, 3 nits    |
+| `teammate/queue-search`    | SQL injection found    | SQL injection found    | SQL injection found    |
 
 On the clean branch, the reviewer still noticed that the label hides GMT or BST. It called that a nit, because the real deadline stays right. That is the meaning of Important in `REVIEW.md` at work.
+
+The last row is a different tool. `/security-review` is a command that comes with Claude Code. It reads the changes on your branch and looks only for ways to attack the code. In all 3 runs it flagged the search word that goes straight into the SQL text of `src/crew-queue.ts`, and told us to bind it as a parameter. The reports are in `recordings/review-with-fresh-eyes/security/`.
 
 **What to reject:** a review of only the planted branch. It shows that the reviewer finds bugs, but not that it stays quiet when there are none. That mistake is in `wrong/no-clean-run/`.
