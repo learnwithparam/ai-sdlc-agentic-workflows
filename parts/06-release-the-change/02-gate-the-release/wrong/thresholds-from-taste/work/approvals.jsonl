@@ -7,4 +7,4 @@
 {"file":"test/acceptance","sha256":"9478b9ae8026f0f02751203d27ba1b1c8d556a570e77a8beff7bca796addcf6d","role":"qa","at":"2026-11-13T05:58:47.090Z","by":"Raj Patel"}
 {"file":"REVIEW.md","sha256":"6e3b6d40bdff904c6ab713951d2880199a12f82d0e0ce33a2410a13aa6239293","role":"tech-lead","at":"2026-11-13T09:00:00.000Z","by":"Ines Moreau"}
 {"file":"work/release.md","sha256":"dace06719e18a5d7889f9c89571cc5735cc6c767f017e3b335d3562d458aa814","role":"pm","at":"2026-11-13T10:00:00.000Z","by":"Theo Lindqvist"}
-{"file":"work/rollout.yaml","sha256":"6f4ad679c17358974f7b8bbc1c6492f9183a8a17329887268b688758c8dcd5f6","role":"release-manager","at":"2026-11-13T11:00:00.000Z","by":"Mei Tanaka"}
+{"file":"work/rollout.yaml","sha256":"6a13fe476f58930ef9ed4570b64659b101900f91bc7e79c6ec3af8d403fffc6f","role":"release-manager","at":"2026-11-13T11:00:00.000Z","by":"Mei Tanaka"}

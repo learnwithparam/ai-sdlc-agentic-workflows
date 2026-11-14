@@ -10,4 +10,4 @@
 {"file":"work/rollout.yaml","sha256":"6b7ea512fb0146a47e4386836dcd17e119758db7f729d79be0780e7bac692016","role":"release-manager","at":"2026-11-13T11:00:00.000Z","by":"Mei Tanaka"}
 {"file":"work/postmortem.md","sha256":"296f9740745ce5e4fcc11083ebb3b4a33ae688d5e25382f0d459d5a13821c6be","role":"tech-lead","at":"2026-11-13T15:00:00.000Z","by":"Ines Moreau"}
 {"file":"work/intent/next-dedupe-wrenches.md","sha256":"d9548022c5d0f20f5ff358884e99390e38a14a87c73fc34969449bdd9b89bfc2","role":"pm","at":"2026-11-14T09:00:00.000Z","by":"Theo Lindqvist"}
-{"file":"PLAYBOOK.md","sha256":"ce90eff4bb00eaec4d799cf394d90fb746837a0b0a56f045e97ea5a10a21fc63","role":"em","at":"2026-11-14T12:00:00.000Z","by":"Dana Okafor"}
+{"file":"PLAYBOOK.md","sha256":"b4958832e4bcdfc0bef748782bf12a26abf492e02c6e6bbd5b94c80482168e1e","role":"em","at":"2026-11-14T12:00:00.000Z","by":"Dana Okafor"}
