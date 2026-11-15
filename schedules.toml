@@ -21,8 +21,7 @@ sessions = [
 
 [six-sessions]
 sessions = [
-  { parts = ["orientation", "ready-the-repo"], minutes = 35 },
-  { parts = ["plan-the-change"], minutes = 35 },
+  { parts = ["orientation", "ready-the-repo", "plan-the-change"], minutes = 70 },
   { parts = ["design-the-change"], minutes = 55 },
   { parts = ["build-the-change"], minutes = 95 },
   { parts = ["review-the-change", "release-the-change"], minutes = 60 },
