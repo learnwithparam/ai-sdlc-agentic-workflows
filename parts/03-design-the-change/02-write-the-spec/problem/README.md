@@ -2,7 +2,7 @@
 
 ## The problem
 
-The spec says how anyone can tell the change is done. Each line is an **acceptance criterion**: one WHEN, one THEN, and a number or field a test can check.
+The spec says how to tell the change is done. Each line is an **acceptance criterion**: one WHEN, one THEN, and a number or field a test can check.
 
 Operations still wants a 15-minute grace period before a wrenched bike leaves the feed. The contract says the feed is accurate "at all times" (SLA-12). A spec that builds it breaks the contract.
 
@@ -32,7 +32,7 @@ Open Claude Code in `kestrel/`. You play the product manager. First ask it to in
 Read work/intent.md. Interview me, one question at a time, until you could write the spec.
 ```
 
-Save the questions and your answers in `work/interview.md`, as a line starting `Q:` and then a line starting `A:`. Answer from the intent's open questions, with these facts.
+Save the questions and answers in `work/interview.md`, as a line starting `Q:` then one starting `A:`. Answer from the intent's open questions, with these facts.
 
 Operations still wants the 15-minute grace period. Station counts must change too. Crews want the job due first on top. Open jobs should follow the contract from launch. Then ask for the spec:
 
