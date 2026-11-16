@@ -34,7 +34,7 @@ bun run start write-the-release-notes
 
 Expect: `kestrel/ is ready at the start of write-the-release-notes.`
 
-In Claude Code, give Claude Code the prompt in the step's README. It writes `work/release.md` for riders and crews. Read it, then sign it in the course folder:
+In Claude Code, paste the prompt from the step's README. It writes `work/release.md` for riders and crews. Read it, then sign it in the course folder:
 
 ```bash
 bun run approve work/release.md --role pm
