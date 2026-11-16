@@ -131,7 +131,7 @@ Pass is 5 of 5.
 
 ## Finished
 
-You now have the design stage of the chain: a contract skill that loads when it should, a spec of checkable criteria that says no to the grace period, and a signed decision record. The product manager and the tech lead have each signed.
+You now have the design stage of the chain. It holds a contract skill that loads when it should. It also holds a spec of checkable criteria that says no to the grace period, and a signed decision record. The product manager and the tech lead have each signed.
 
 In Part 4, Claude Code plans the build from this spec in plan mode. Then it writes one failing test per criterion, and builds the change in small slices.
 

@@ -77,5 +77,5 @@ Expect: `Done. All 10 rules pass.`
 ## Words you will use
 
 - **Subagent**: a helper Claude Code starts with a fresh context and its own tools. It reports back, then ends.
-- **Clock change**: the night the clocks move one hour. The wall clock skips or repeats an hour; real time does not.
+- **Clock change**: the night the clocks move one hour. The wall clock skips or repeats an hour. Real time does not.
 - **Control branch**: a branch with no bug, to test that the reviewer stays quiet.

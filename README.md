@@ -23,7 +23,7 @@ bun run finished
 
 Expect: `The finished chain holds: 11 gates, tests pass, world contract passes.`
 
-With Claude Code signed in, this makes a real run: Claude Code builds the approved plan on a fresh copy, and the checks read what it made. With no Claude Code, or in CI, it replays a recorded run and says so in its first line. To skip the live run, type `bun run finished --replay`.
+With Claude Code signed in, this makes a real run. Claude Code builds the approved plan on a fresh copy, and the checks read what it made. With no Claude Code, or in CI, it replays a recorded run and says so in its first line. To skip the live run, type `bun run finished --replay`.
 
 ![The finished chain: every gate approved, every test green, the world contract met](images/finished-system.png)
 

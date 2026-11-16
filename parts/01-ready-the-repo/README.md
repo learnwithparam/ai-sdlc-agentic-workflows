@@ -6,7 +6,7 @@ This part moves the **Objective**: a repo the whole team can hand to Claude Code
 
 Three people opened Claude Code on Kestrel's repo last week. One wrote a `CLAUDE.md` of rules so long that Claude skipped half of them. One let Claude edit the city contract. One had no rules at all.
 
-A rule in `CLAUDE.md` is advice. Claude Code reads it and usually follows it. A deny rule in `.claude/settings.json` is a wall: Claude Code cannot pass it, even when someone tells it to. Anthropic's best practices say the same: if something has to happen every time, put it in "a hook, a deny rule, or a managed setting" ([best practices](https://code.claude.com/docs/en/best-practices.md)).
+A rule in `CLAUDE.md` is advice. Claude Code reads it and usually follows it. A deny rule in `.claude/settings.json` is a wall: Claude Code cannot pass it, even when someone tells it to. Anthropic's best practices say the same. If something has to happen every time, put it in "a hook, a deny rule, or a managed setting" ([best practices](https://code.claude.com/docs/en/best-practices.md)).
 
 Why it matters: Cox Communications has about 2,500 Claude Code users, "more than half of them outside engineering" ([Cox Communications](https://claude.com/customers/cox-communications-qa)). When the whole team works in one repo, the rules must live in the repo.
 
