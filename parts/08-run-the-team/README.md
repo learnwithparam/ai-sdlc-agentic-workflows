@@ -71,7 +71,7 @@ bun run verify ship-the-feature
 
 Expect: `Done. All 10 rules pass.`
 
-Last, take the habit to your own work. Follow the README of `ship-in-your-own-repo`. It asks for a small real feature in a repo of yours, and one file of evidence:
+Then take the habit to your own work. Follow the README of `ship-in-your-own-repo`. It asks for a small real feature in a repo of yours, and one file of evidence:
 
 ```bash
 bun run verify ship-in-your-own-repo

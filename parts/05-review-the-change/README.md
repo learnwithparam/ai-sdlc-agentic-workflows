@@ -36,7 +36,7 @@ bun run start write-the-review-rules
 
 Expect: `kestrel/ is ready at the start of write-the-review-rules.`
 
-In Claude Code, give it the prompt in the step's README. It writes `REVIEW.md`. Read it, then sign it in the course folder:
+In Claude Code, give Claude Code the prompt in the step's README. It writes `REVIEW.md`. Read it, then sign it in the course folder:
 
 ```bash
 bun run approve REVIEW.md --role tech-lead

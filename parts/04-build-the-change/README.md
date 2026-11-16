@@ -8,7 +8,7 @@ Last month an engineer let Claude write the whole queue rewrite in one go. The p
 
 DORA's guide to its AI capabilities model says: "AI can easily generate massive blocks of code, which are hard to review and test. Enforcing the discipline of small batches counteracts this risk." ([DORA, from adoption to impact](https://cloud.google.com/blog/products/ai-machine-learning/from-adoption-to-impact-putting-the-dora-ai-capabilities-model-to-work)).
 
-For example, the sample build is four commits after the tests, `P-2` to `P-5`. The largest changes 27 lines.
+For example, the sample build is four commits after the tests, `P-2` to `P-5`. The largest one changes 27 lines.
 
 ```mermaid
 flowchart LR

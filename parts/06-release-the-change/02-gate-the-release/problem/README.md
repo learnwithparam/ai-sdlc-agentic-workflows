@@ -4,9 +4,9 @@
 
 The last rollout went to all of Brannock at once. When it went wrong, every district felt it, and nobody had agreed when to stop.
 
-A rollout plan answers three questions before anything ships.
+A rollout plan answers three questions before anything ships. Who gets it first? Which number makes us stop? How do we go back?
 
-Who gets it first? Which number makes us stop? How do we go back? The stop numbers are not a matter of taste. The city contract already has them.
+The stop numbers are not a matter of taste. The city contract already has them.
 
 For example, SLA-9 says bike availability must stay at 96% or more. So the guardrail is "stop below 96", not "stop below 90 because that felt safe".
 
@@ -51,7 +51,7 @@ bun run approve work/rollout.yaml --role release-manager
 
 Expect: `Approved work/rollout.yaml as release-manager`
 
-Now test the gate. This asks Claude Code, headless, to ship. It even lists the deploy as an allowed tool:
+Now test the gate. This asks Claude Code, headless, to ship. The command even lists the deploy as an allowed tool:
 
 ```bash
 bun parts/06-release-the-change/02-gate-the-release/record.ts
