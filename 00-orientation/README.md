@@ -84,7 +84,7 @@ See how far you are from the goal:
 bun run scorecard
 ```
 
-Expect: a line per step, then `Scorecard: 0 of 19 steps pass.` The count grows as you finish each step.
+Expect: a line per step, then `Scorecard: 0 of 24 steps pass.` The count grows as you finish each step.
 
 The scorecard runs the check of every step, so it is slow. Wait for the last line.
 

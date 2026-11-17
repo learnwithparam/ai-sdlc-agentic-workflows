@@ -70,7 +70,7 @@ Expect: `Approved work/spec.md as pm`
 bun run verify write-the-spec
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 9 rules pass.`
 
 Last, the decision record:
 
@@ -107,7 +107,7 @@ For example, the passing table reads:
 ```text
 Part design-the-change:
   PASS   write-the-contract-skill  (8/8 rules)
-  PASS   write-the-spec  (8/8 rules)
+  PASS   write-the-spec  (9/9 rules)
   PASS   record-the-decision  (7/7 rules)
 ```
 

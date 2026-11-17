@@ -43,7 +43,7 @@ Open Claude Code in `kestrel/` and give it the prompt in the step's README. When
 bun run verify find-the-real-problem
 ```
 
-Expect: `Done. All 5 rules pass.`
+Expect: `Done. All 8 rules pass.`
 
 Go on to the intent. The next step starts from the sample findings, so your numbers match the README.
 
@@ -79,7 +79,7 @@ For example, the passing table reads:
 
 ```text
 Part plan-the-change:
-  PASS   find-the-real-problem  (5/5 rules)
+  PASS   find-the-real-problem  (8/8 rules)
   PASS   capture-the-intent  (6/6 rules)
 ```
 

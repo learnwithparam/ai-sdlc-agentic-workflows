@@ -43,7 +43,7 @@ Expect: `Blocked by a permission rule: Edit data/contract/sla.yaml`
 bun run verify ready-the-repo
 ```
 
-Expect: `Done. All 8 rules pass.`
+Expect: `Done. All 10 rules pass.`
 
 For example, without the deny rule the same recorded prompt changes `48` to `72` in the contract. The sample `wrong/no-deny-rule/` shows that real run.
 

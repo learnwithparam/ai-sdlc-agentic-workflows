@@ -57,7 +57,7 @@ Check the whole part:
 bun run verify part roll-out-a-change-slowly
 ```
 
-Expect: `Part roll-out-a-change-slowly is done: 1/1 steps pass.`
+Expect: `Part roll-out-a-change-slowly is done: 2/2 steps pass.`
 
 The live version, with the containers, is in `assignment/README.md`.
 

@@ -2,7 +2,7 @@
 
 ## The problem
 
-The city contract has four rules that touch this change. Claude Code follows them only if it reads them at the right moment. A long contract in `CLAUDE.md` crowds out everything else.
+The city contract has five rules that touch this change. Claude Code follows them only if it reads them at the right moment. A long contract in `CLAUDE.md` crowds out everything else.
 
 A **skill** is a folder with a `SKILL.md` file. Claude Code reads only its `description` at the start. It loads the rest when the job matches the description. So the description decides if the skill ever runs.
 
